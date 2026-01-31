@@ -20,6 +20,7 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ### M1 基础框架（推荐顺序）
 - [ ] 本地启动验证：`npm run dev`，确认首页可开。
+ - [x] 本地启动验证：`npm run dev`，确认首页可开。
 - [x] 清理模板：修改 `src/app/page.tsx` 为自定义布局骨架（导航/页脚/占位区块），删掉默认文案。
 - [x] 设计基线：在 `src/app/globals.css` 设定主题色变量、排版和暗/亮模式策略（修改 `:root` / `.dark` 变量即可换色）。
 - [x] 质量基线：已添加 `npm run type-check`；CI（.github/workflows/ci.yml）运行 `lint` 与 `type-check`。后续如需可再补充自定义 ESLint/Prettier 规则。
