@@ -19,8 +19,7 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 ## 详细执行步骤
 
 ### M1 基础框架（推荐顺序）
-- [ ] 本地启动验证：`npm run dev`，确认首页可开。
- - [x] 本地启动验证：`npm run dev`，确认首页可开。
+- [x] 本地启动验证：`npm run dev`，确认首页可开。
 - [x] 清理模板：修改 `src/app/page.tsx` 为自定义布局骨架（导航/页脚/占位区块），删掉默认文案。
 - [x] 设计基线：在 `src/app/globals.css` 设定主题色变量、排版和暗/亮模式策略（修改 `:root` / `.dark` 变量即可换色）。
 - [x] 质量基线：已添加 `npm run type-check`；CI（.github/workflows/ci.yml）运行 `lint` 与 `type-check`。后续如需可再补充自定义 ESLint/Prettier 规则。
@@ -28,9 +27,9 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 - [x] 主题切换：已集成 `next-themes`（见 `src/components/theme-provider.tsx`），在 header 添加 `ThemeToggle` 按钮；复用 `globals.css` 变量，后续可自定义样式。
 
 ### M2 内容系统
-- [ ] 接入 MDX：配置 `next.config.ts` 与 `@next/mdx`，在 `src/content` 放置示例文章，使用 frontmatter（title/slug/date/tags/summary/cover）。
-- [ ] 列表页：分页/摘要/封面占位，按标签过滤。
-- [ ] 详情页：正文渲染、代码高亮、目录（可用 remark-toc），社交分享链接。
+- [x] 接入 MDX：`@next/mdx` 已配置；文章放在 `src/content/posts/*.mdx`，使用 `export const metadata = {...}` 存 frontmatter（title/slug/date/tags/summary/cover）。
+- [ ] 列表页：基础列表已上线（/blog），分页/过滤/封面待做。
+- [ ] 详情页：基础渲染已上线（/blog/[slug]），目录、代码高亮与分享待做。
 - [ ] 关联推荐：基于标签或相似度返回相关文章。
 
 ### M3 搜索与 SEO
