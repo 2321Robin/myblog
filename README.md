@@ -16,6 +16,33 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 - [ ] M3 搜索与 SEO：分类/标签页，搜索 MVP（本地索引），RSS/sitemap/robots，OG/Twitter/结构化数据。
 - [ ] M4 互动与上线：评论（Giscus 或 Supabase），简单鉴权+草稿流程，性能/无障碍检查，部署 Vercel + 基础监控。
 
+## 详细执行步骤
+
+### M1 基础框架（推荐顺序）
+- [ ] 本地启动验证：`npm run dev`，确认首页可开。
+- [x] 清理模板：修改 `src/app/page.tsx` 为自定义布局骨架（导航/页脚/占位区块），删掉默认文案。
+- [ ] 设计基线：在 `tailwind.config.mjs` 定义主题色/字体/圆角/阴影；`src/app/globals.css` 设定排版和暗/亮模式策略。
+- [ ] 质量基线：补充 ESLint/Prettier 规则（如需要），新增 `npm run type-check`；在 CI（GitHub Actions）里跑 `lint` 和 `type-check`。
+- [ ] 目录约定：建立 `src/components`, `src/lib`, `src/content`，确认 `@/*` 别名可用。
+
+### M2 内容系统
+- [ ] 接入 MDX：配置 `next.config.ts` 与 `@next/mdx`，在 `src/content` 放置示例文章，使用 frontmatter（title/slug/date/tags/summary/cover）。
+- [ ] 列表页：分页/摘要/封面占位，按标签过滤。
+- [ ] 详情页：正文渲染、代码高亮、目录（可用 remark-toc），社交分享链接。
+- [ ] 关联推荐：基于标签或相似度返回相关文章。
+
+### M3 搜索与 SEO
+- [ ] 分类页/标签页：支持过滤和分页。
+- [ ] 搜索 MVP：生成静态索引（slug/title/summary/tags），前端过滤；预留切换到 Algolia/Typesense 的接口。
+- [ ] 生成 RSS、sitemap、robots；添加 OG/Twitter/结构化数据（`metadata` API）。
+- [ ] 跑 Lighthouse，目标 SEO ≥ 90。
+
+### M4 互动与上线
+- [ ] 评论：优先 Giscus（免后端）；若自托管，Supabase + rate limit。
+- [ ] 鉴权与草稿：受保护路由或 token，草稿不出现在公开列表。
+- [ ] 性能/无障碍：优化图片/字体、语义化标签、键盘可达性；Lighthouse 性能/可访问性/最佳实践 ≥ 90。
+- [ ] 部署：Vercel；开启监控（Vercel Analytics），可选接入 Sentry。
+
 ## Getting Started
 
 First, run the development server:
