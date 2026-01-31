@@ -28,6 +28,7 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ### M2 内容系统
 - [x] 接入 MDX：`@next/mdx` 已配置；文章放在 `src/content/posts/*.mdx`，使用 `export const metadata = {...}` 存 frontmatter（title/slug/date/tags/summary/cover）。
+- [ ] 开发模式兼容性：`npm run dev` 使用 `--no-turbo`（Webpack）以避免 Turbopack 对 MDX 插件序列化报错；后续若换方案可改回。
 - [x] 列表页：基础列表（/blog）已支持标签过滤 + 简单分页（page 参数）。封面占位待补。
 - [ ] 详情页：基础渲染已上线（/blog/[slug]），已启用 GFM + 代码高亮；目录与分享待做。
 - [ ] 关联推荐：基于标签或相似度返回相关文章。
