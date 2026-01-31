@@ -21,7 +21,7 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 ### M1 基础框架（推荐顺序）
 - [ ] 本地启动验证：`npm run dev`，确认首页可开。
 - [x] 清理模板：修改 `src/app/page.tsx` 为自定义布局骨架（导航/页脚/占位区块），删掉默认文案。
-- [ ] 设计基线：在 `tailwind.config.mjs` 定义主题色/字体/圆角/阴影；`src/app/globals.css` 设定排版和暗/亮模式策略。
+- [x] 设计基线：在 `src/app/globals.css` 设定主题色变量、排版和暗/亮模式策略（修改 `:root` / `.dark` 变量即可换色）。
 - [ ] 质量基线：补充 ESLint/Prettier 规则（如需要），新增 `npm run type-check`；在 CI（GitHub Actions）里跑 `lint` 和 `type-check`。
 - [ ] 目录约定：建立 `src/components`, `src/lib`, `src/content`，确认 `@/*` 别名可用。
 
