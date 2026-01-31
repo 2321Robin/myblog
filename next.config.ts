@@ -1,13 +1,12 @@
 import type { NextConfig } from "next";
 import createMDX from "@next/mdx";
-import remarkGfm from "remark-gfm";
-import rehypePrism from "rehype-prism-plus";
 
+// 使用字符串形式的插件名称以兼容 Turbopack 的可序列化要求
 const withMDX = createMDX({
   extension: /\.mdx?$/,
   options: {
-    remarkPlugins: [remarkGfm],
-    rehypePlugins: [rehypePrism],
+    remarkPlugins: ["remark-gfm"],
+    rehypePlugins: ["rehype-prism-plus"],
   },
 });
 
