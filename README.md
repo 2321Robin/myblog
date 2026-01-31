@@ -24,7 +24,7 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 - [x] 设计基线：在 `src/app/globals.css` 设定主题色变量、排版和暗/亮模式策略（修改 `:root` / `.dark` 变量即可换色）。
 - [x] 质量基线：已添加 `npm run type-check`；CI（.github/workflows/ci.yml）运行 `lint` 与 `type-check`。后续如需可再补充自定义 ESLint/Prettier 规则。
 - [x] 目录约定：已建立 `src/components`, `src/lib`, `src/content`；可用 `@/components`, `@/lib`, `@/content` 导入（见 `tsconfig.json`/`app` 默认别名）。
-- [ ] 主题切换（待办）：后续在 `<html>` 层注入 `.dark`/`.light` 切换（可用 `next-themes` 或自写 hook），复用 `globals.css` 中的变量。
+- [x] 主题切换：已集成 `next-themes`（见 `src/components/theme-provider.tsx`），在 header 添加 `ThemeToggle` 按钮；复用 `globals.css` 变量，后续可自定义样式。
 
 ### M2 内容系统
 - [ ] 接入 MDX：配置 `next.config.ts` 与 `@next/mdx`，在 `src/content` 放置示例文章，使用 frontmatter（title/slug/date/tags/summary/cover）。

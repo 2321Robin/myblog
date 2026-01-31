@@ -1,3 +1,5 @@
+import { ThemeToggle } from "@/components/theme-toggle";
+
 export default function Home() {
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -7,17 +9,20 @@ export default function Home() {
             <div className="h-9 w-9 rounded-full bg-gradient-to-br from-brand to-brand-strong" aria-hidden />
             <span>MyBlog</span>
           </div>
-          <nav className="flex items-center gap-4 text-sm font-medium text-muted-foreground">
-            <a className="hover:text-foreground" href="#blog">
-              博客
-            </a>
-            <a className="hover:text-foreground" href="#projects">
-              作品
-            </a>
-            <a className="hover:text-foreground" href="#about">
-              关于
-            </a>
-          </nav>
+          <div className="flex items-center gap-3">
+            <nav className="flex items-center gap-4 text-sm font-medium text-muted-foreground">
+              <a className="hover:text-foreground" href="#blog">
+                博客
+              </a>
+              <a className="hover:text-foreground" href="#projects">
+                作品
+              </a>
+              <a className="hover:text-foreground" href="#about">
+                关于
+              </a>
+            </nav>
+            <ThemeToggle />
+          </div>
         </header>
 
         <main className="flex flex-1 flex-col justify-center gap-12 py-8">
