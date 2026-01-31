@@ -23,7 +23,7 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 - [x] 清理模板：修改 `src/app/page.tsx` 为自定义布局骨架（导航/页脚/占位区块），删掉默认文案。
 - [x] 设计基线：在 `src/app/globals.css` 设定主题色变量、排版和暗/亮模式策略（修改 `:root` / `.dark` 变量即可换色）。
 - [x] 质量基线：已添加 `npm run type-check`；CI（.github/workflows/ci.yml）运行 `lint` 与 `type-check`。后续如需可再补充自定义 ESLint/Prettier 规则。
-- [ ] 目录约定：建立 `src/components`, `src/lib`, `src/content`，确认 `@/*` 别名可用。
+- [x] 目录约定：已建立 `src/components`, `src/lib`, `src/content`；可用 `@/components`, `@/lib`, `@/content` 导入（见 `tsconfig.json`/`app` 默认别名）。
 - [ ] 主题切换（待办）：后续在 `<html>` 层注入 `.dark`/`.light` 切换（可用 `next-themes` 或自写 hook），复用 `globals.css` 中的变量。
 
 ### M2 内容系统
