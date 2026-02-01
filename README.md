@@ -40,7 +40,7 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 ### M3 搜索与 SEO
 - [ ] 分类页/标签页：支持过滤和分页。
 - [x] 搜索 MVP：生成静态索引（slug/title/summary/tags），前端过滤；预留切换到 Algolia/Typesense 的接口（/search-index）。
-- [ ] 生成 RSS、sitemap、robots；添加 OG/Twitter/结构化数据（`metadata` API）。
+- [x] 生成 RSS、sitemap、robots；添加 OG/Twitter/结构化数据（`metadata` API）。
 - [ ] 跑 Lighthouse，目标 SEO ≥ 90。
 - [ ] 部署前检查：本地自测深色/浅色、代码高亮、分页和搜索；准备 Vercel 部署。
 
