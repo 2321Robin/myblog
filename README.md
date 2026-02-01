@@ -32,14 +32,17 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 - [ ] 若提示选择根目录或找不到依赖：已在 `next.config.ts` 设置 `turbopack.root = __dirname`，如仍有告警可删除上层 `pnpm-lock.yaml` 或改用 `npm run dev`（Webpack）。
 - [x] 动态路由 `params`（Next.js 16）为 Promise，需要 `await params` 后再解构 `slug`；已在 `/blog/[slug]` 处理。
 - [x] 列表页：基础列表（/blog）已支持标签过滤 + 简单分页（page 参数）。封面占位待补。
-- [ ] 详情页：基础渲染已上线（/blog/[slug]），已启用 GFM + 代码高亮；目录与分享待做。
+- [x] 详情页：基础渲染已上线（/blog/[slug]），已启用 GFM + 代码高亮；目录与分享已完成。
 - [ ] 关联推荐：基于标签或相似度返回相关文章。
+- [x] 详情增强：添加目录（解析 heading）、底部分享区、上一篇/下一篇推荐。
+- [ ] 列表体验：为列表项添加封面占位/真实封面，显示预计阅读时长。
 
 ### M3 搜索与 SEO
 - [ ] 分类页/标签页：支持过滤和分页。
 - [ ] 搜索 MVP：生成静态索引（slug/title/summary/tags），前端过滤；预留切换到 Algolia/Typesense 的接口。
 - [ ] 生成 RSS、sitemap、robots；添加 OG/Twitter/结构化数据（`metadata` API）。
 - [ ] 跑 Lighthouse，目标 SEO ≥ 90。
+- [ ] 部署前检查：本地自测深色/浅色、代码高亮、分页和搜索；准备 Vercel 部署。
 
 ### M4 互动与上线
 - [ ] 评论：优先 Giscus（免后端）；若自托管，Supabase + rate limit。

@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
-import { getAllPosts, getPostBySlug } from "@/lib/posts";
+import { PostContent } from "@/components/post-content";
+import { getAllPosts, getPostBySlug, getPostHeadings } from "@/lib/posts";
 
 // In Next.js 16 app router, dynamic route params arrive as a Promise; unwrap before use
 type PageParams = { params: Promise<{ slug: string }> };
@@ -21,6 +22,7 @@ export async function generateMetadata({ params }: PageParams) {
 
 export default async function PostPage({ params }: PageParams) {
   const { slug } = await params;
+  const posts = await getAllPosts();
   const mod = await getPostBySlug(slug).catch(() => null);
 
   if (!mod) {
@@ -29,26 +31,19 @@ export default async function PostPage({ params }: PageParams) {
 
   const MDXContent = mod.default;
   const { metadata } = mod;
+  const headings = await getPostHeadings(slug);
+  const currentIndex = posts.findIndex((p) => p.slug === slug);
+  const prev = currentIndex > 0 ? posts[currentIndex - 1] : null;
+  const next = currentIndex >= 0 && currentIndex < posts.length - 1 ? posts[currentIndex + 1] : null;
 
   return (
-    <div className="mx-auto flex min-h-screen max-w-3xl flex-col gap-6 px-6 py-12">
-      <div className="space-y-2">
-        <p className="text-sm font-semibold uppercase tracking-[0.2em] text-brand">Article</p>
-        <h1 className="text-3xl font-bold leading-tight">{metadata.title}</h1>
-        <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-          <span>{new Date(metadata.date).toLocaleDateString()}</span>
-          {metadata.tags?.map((tag) => (
-            <span key={tag} className="rounded-full bg-surface-muted px-2 py-0.5 text-xs font-medium text-brand">
-              {tag}
-            </span>
-          ))}
-        </div>
-        {metadata.summary ? <p className="text-muted-foreground">{metadata.summary}</p> : null}
-      </div>
-
-      <article className="prose prose-zinc max-w-none dark:prose-invert">
-        <MDXContent />
-      </article>
-    </div>
+    <PostContent
+      Content={MDXContent}
+      metadata={metadata}
+      slug={slug}
+      prev={prev}
+      next={next}
+      headings={headings}
+    />
   );
 }

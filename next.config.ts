@@ -6,7 +6,7 @@ const withMDX = createMDX({
   extension: /\.mdx?$/,
   options: {
     remarkPlugins: ["remark-gfm"],
-    rehypePlugins: ["rehype-prism-plus"],
+    rehypePlugins: ["rehype-prism-plus", "rehype-slug"],
   },
 });
 
