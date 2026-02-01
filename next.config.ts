@@ -12,6 +12,11 @@ const withMDX = createMDX({
 
 const nextConfig: NextConfig = {
   pageExtensions: ["ts", "tsx", "js", "jsx", "md", "mdx"],
+  experimental: {
+    turbo: {
+      root: __dirname,
+    },
+  },
 };
 
 export default withMDX(nextConfig);
