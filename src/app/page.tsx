@@ -1,7 +1,10 @@
 import Link from "next/link";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { getAllPosts } from "@/lib/posts";
 
-export default function Home() {
+export default async function Home() {
+  const latestPosts = (await getAllPosts()).slice(0, 4);
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <div className="mx-auto flex min-h-screen max-w-5xl flex-col px-6 py-10 sm:px-10">
@@ -62,21 +65,46 @@ export default function Home() {
                 <p className="text-xs uppercase tracking-[0.2em] text-muted">近期更新</p>
                 <h2 className="text-xl font-semibold">博客文章</h2>
               </div>
-              <span className="text-sm text-muted-foreground">占位数据，稍后接入 MDX</span>
+              <Link href="/blog" className="text-sm text-brand hover:underline">
+                查看全部 →
+              </Link>
             </div>
             <div className="grid gap-3 sm:grid-cols-2">
-              {[1, 2, 3, 4].map((item) => (
-                <article
-                  key={item}
-                  className="rounded-xl border border-border bg-card p-4 shadow-[0_6px_20px_-12px_rgba(0,0,0,0.25)] transition hover:-translate-y-0.5 hover:shadow-[0_10px_30px_-14px_rgba(0,0,0,0.35)]"
-                >
-                  <p className="text-xs uppercase tracking-[0.18em] text-brand">标签</p>
-                  <h3 className="mt-2 text-lg font-semibold">文章标题占位 {item}</h3>
-                  <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">
-                    简短摘要说明，后续将从 MDX frontmatter 读取。
-                  </p>
-                </article>
-              ))}
+              {latestPosts.length === 0 ? (
+                <p className="text-sm text-muted-foreground">暂无文章，稍后再来看看。</p>
+              ) : (
+                latestPosts.map((post) => (
+                  <article
+                    key={post.slug}
+                    className="rounded-xl border border-border bg-card p-4 shadow-[0_6px_20px_-12px_rgba(0,0,0,0.25)] transition hover:-translate-y-0.5 hover:shadow-[0_10px_30px_-14px_rgba(0,0,0,0.35)]"
+                  >
+                    <div className="flex flex-wrap items-center gap-2 text-xs uppercase tracking-[0.18em] text-muted">
+                      <span>{new Date(post.date).toLocaleDateString()}</span>
+                      {post.readingTimeMinutes ? <span>· {post.readingTimeMinutes} 分钟</span> : null}
+                    </div>
+                    <h3 className="mt-2 text-lg font-semibold">
+                      <Link href={`/blog/${post.slug}`} className="hover:text-brand">
+                        {post.title}
+                      </Link>
+                    </h3>
+                    {post.summary ? (
+                      <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">{post.summary}</p>
+                    ) : null}
+                    {post.tags?.length ? (
+                      <div className="mt-3 flex flex-wrap gap-2 text-[11px] uppercase tracking-[0.14em] text-muted">
+                        {post.tags.map((tag) => (
+                          <span
+                            key={tag}
+                            className="rounded-full bg-surface-muted px-2 py-0.5 text-brand"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    ) : null}
+                  </article>
+                ))
+              )}
             </div>
           </section>
 
