@@ -29,13 +29,13 @@ export default function Home() {
         <main className="flex flex-1 flex-col justify-center gap-12 py-8">
           <section className="space-y-6">
             <p className="text-sm font-semibold uppercase tracking-[0.2em] text-brand">
-              Personal Blog
+              Web / Frontend / Product
             </p>
             <h1 className="text-4xl font-bold leading-tight sm:text-5xl">
-              记录构建与思考，专注 Web、前端与产品体验。
+              记录构建、发布与迭代的全过程，聚焦 Web 技术与产品体验。
             </h1>
             <p className="max-w-2xl text-lg leading-8 text-muted-foreground">
-              下一步将接入 MDX、分类/标签与搜索，逐步上线评论与订阅。本站由 Next.js + TypeScript + Tailwind 驱动。
+              分享工程实践、产品思考与开发流水线的踩坑复盘。本站由 Next.js + TypeScript + Tailwind 驱动，文章以 MDX 管理，计划陆续加入搜索、订阅与评论。
             </p>
             <div className="flex flex-wrap gap-3">
               <Link
