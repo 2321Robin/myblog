@@ -44,6 +44,12 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 - [ ] 跑 Lighthouse，目标 SEO ≥ 90。
 - [ ] 部署前检查：本地自测深色/浅色、代码高亮、分页和搜索；准备 Vercel 部署。
 
+#### 部署前 QA 提示
+- 本地自测：/、/blog、/blog/[slug]、/search-index（返回 JSON），暗/亮模式切换、分页与标签过滤、代码高亮。
+- 无障碍：键盘可达性，焦点样式，语义化 heading 层级。
+- 性能/SEO：Lighthouse（Performance/SEO/Best Practices/Accessibility ≥ 90），确认 OG/Twitter 卡片。
+- 产物：确认 /rss.xml、/sitemap.xml、/robots.txt 均可访问；若部署到 Vercel，设置 SITE_URL 环境变量。
+
 ### M4 互动与上线
 - [ ] 评论：优先 Giscus（免后端）；若自托管，Supabase + rate limit。
 - [ ] 鉴权与草稿：受保护路由或 token，草稿不出现在公开列表。
