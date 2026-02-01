@@ -11,6 +11,8 @@ export type PostMeta = {
   date: string;
   summary?: string;
   tags?: string[];
+  cover?: string;
+  readingTimeMinutes?: number;
 };
 
 export type Heading = {
@@ -41,6 +43,12 @@ function extractHeadingsFromSource(source: string): Heading[] {
   return headings;
 }
 
+function computeReadingTimeMinutes(source: string) {
+  const cleaned = source.replace(/```[\s\S]*?```/g, " ");
+  const words = cleaned.trim().split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.ceil(words / 200));
+}
+
 export async function getPostSlugs(): Promise<string[]> {
   const entries = await fs.readdir(POSTS_DIR, { withFileTypes: true });
   return entries
@@ -50,7 +58,10 @@ export async function getPostSlugs(): Promise<string[]> {
 
 export async function getPostBySlug(slug: string): Promise<PostModule> {
   const mod = (await import(`@/content/posts/${slug}.mdx`)) as PostModule;
-  return mod;
+  const filePath = path.join(POSTS_DIR, `${slug}.mdx`);
+  const content = await fs.readFile(filePath, "utf8");
+  const readingTimeMinutes = computeReadingTimeMinutes(content);
+  return { ...mod, metadata: { ...mod.metadata, readingTimeMinutes } };
 }
 
 export async function getPostHeadings(slug: string): Promise<Heading[]> {
@@ -64,7 +75,10 @@ export async function getAllPosts(): Promise<PostMeta[]> {
   const posts = await Promise.all(
     slugs.map(async (slug) => {
       const mod = await getPostBySlug(slug);
-      return mod.metadata;
+      const filePath = path.join(POSTS_DIR, `${slug}.mdx`);
+      const content = await fs.readFile(filePath, "utf8");
+      const readingTimeMinutes = computeReadingTimeMinutes(content);
+      return { ...mod.metadata, readingTimeMinutes };
     })
   );
 

@@ -23,6 +23,7 @@ export function PostContent({ Content, metadata, slug, prev, next, headings }: P
         <h1 className="text-3xl font-bold leading-tight sm:text-4xl">{metadata.title}</h1>
         <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
           <span>{new Date(metadata.date).toLocaleDateString()}</span>
+          {metadata.readingTimeMinutes ? <span>· {metadata.readingTimeMinutes} 分钟阅读</span> : null}
           {metadata.tags?.map((tag) => (
             <span key={tag} className="rounded-full bg-surface-muted px-2 py-0.5 text-xs font-medium text-brand">
               {tag}

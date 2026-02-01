@@ -68,25 +68,44 @@ export default async function BlogPage({ searchParams }: Props) {
             key={post.slug}
             className="rounded-2xl border border-border bg-surface p-5 shadow-sm backdrop-blur-sm transition hover:-translate-y-0.5 hover:shadow-md"
           >
-            <div className="flex flex-wrap items-center gap-2 text-xs uppercase tracking-[0.16em] text-muted">
-              <span>{new Date(post.date).toLocaleDateString()}</span>
-              {post.tags?.map((tagItem) => (
-                <span
-                  key={tagItem}
-                  className="rounded-full bg-surface-muted px-2 py-0.5 text-[11px] font-medium text-brand"
-                >
-                  {tagItem}
-                </span>
-              ))}
+            <div className="grid gap-4 md:grid-cols-[180px,1fr] md:items-center">
+              <div className="relative overflow-hidden rounded-xl border border-border bg-surface-muted md:h-full">
+                {post.cover ? (
+                  <div
+                    className="absolute inset-0 bg-cover bg-center"
+                    style={{ backgroundImage: `url(${post.cover})` }}
+                    aria-hidden
+                  />
+                ) : (
+                  <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-brand/10 via-surface-muted to-brand/5 text-lg font-semibold text-brand">
+                    {post.title.slice(0, 2)}
+                  </div>
+                )}
+                <span className="sr-only">{post.title} 封面</span>
+                <div className="aspect-[4/3]" />
+              </div>
+
+              <div className="space-y-2">
+                <div className="flex flex-wrap items-center gap-2 text-xs uppercase tracking-[0.16em] text-muted">
+                  <span>{new Date(post.date).toLocaleDateString()}</span>
+                  {post.readingTimeMinutes ? <span>· {post.readingTimeMinutes} 分钟</span> : null}
+                  {post.tags?.map((tagItem) => (
+                    <span
+                      key={tagItem}
+                      className="rounded-full bg-surface-muted px-2 py-0.5 text-[11px] font-medium text-brand"
+                    >
+                      {tagItem}
+                    </span>
+                  ))}
+                </div>
+                <h2 className="text-xl font-semibold text-foreground">
+                  <Link href={`/blog/${post.slug}`} className="hover:text-brand">
+                    {post.title}
+                  </Link>
+                </h2>
+                {post.summary ? <p className="text-sm text-muted-foreground">{post.summary}</p> : null}
+              </div>
             </div>
-            <h2 className="mt-2 text-xl font-semibold text-foreground">
-              <Link href={`/blog/${post.slug}`} className="hover:text-brand">
-                {post.title}
-              </Link>
-            </h2>
-            {post.summary ? (
-              <p className="mt-2 text-sm text-muted-foreground">{post.summary}</p>
-            ) : null}
           </article>
         ))}
       </div>
