@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { ThemeToggle } from "@/components/theme-toggle";
 
 export default function Home() {
@@ -11,9 +12,9 @@ export default function Home() {
           </div>
           <div className="flex items-center gap-3">
             <nav className="flex items-center gap-4 text-sm font-medium text-muted-foreground">
-              <a className="hover:text-foreground" href="#blog">
+              <Link className="hover:text-foreground" href="/blog">
                 博客
-              </a>
+              </Link>
               <a className="hover:text-foreground" href="#projects">
                 作品
               </a>
@@ -37,12 +38,12 @@ export default function Home() {
               下一步将接入 MDX、分类/标签与搜索，逐步上线评论与订阅。本站由 Next.js + TypeScript + Tailwind 驱动。
             </p>
             <div className="flex flex-wrap gap-3">
-              <a
-                href="#blog"
+              <Link
+                href="/blog"
                 className="inline-flex items-center gap-2 rounded-full bg-brand px-4 py-2 text-sm font-medium text-white transition hover:bg-brand-strong"
               >
                 查看文章
-              </a>
+              </Link>
               <a
                 href="#about"
                 className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-2 text-sm font-medium text-muted-foreground transition hover:border-brand hover:text-foreground"

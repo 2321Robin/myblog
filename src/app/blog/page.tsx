@@ -36,6 +36,14 @@ export default async function BlogPage({ searchParams }: Props) {
 
   return (
     <div className="mx-auto flex min-h-screen max-w-4xl flex-col gap-8 px-6 py-12">
+      <div className="flex items-center gap-3 text-sm text-muted-foreground">
+        <Link href="/" className="rounded-full border border-border px-3 py-1 transition hover:border-brand hover:text-brand">
+          ← 返回主页
+        </Link>
+        <span className="text-muted">/</span>
+        <span className="text-foreground">博客</span>
+      </div>
+
       <div className="space-y-2">
         <p className="text-sm font-semibold uppercase tracking-[0.2em] text-brand">Blog</p>
         <h1 className="text-3xl font-bold">最新文章</h1>
