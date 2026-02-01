@@ -1,7 +1,8 @@
 import { notFound } from "next/navigation";
 import { getAllPosts, getPostBySlug } from "@/lib/posts";
 
-type PageParams = { params: { slug: string } };
+// In Next.js 16 app router, dynamic route params arrive as a Promise; unwrap before use
+type PageParams = { params: Promise<{ slug: string }> };
 
 export async function generateStaticParams() {
   const posts = await getAllPosts();
@@ -9,7 +10,7 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: PageParams) {
-  const { slug } = params;
+  const { slug } = await params;
   const mod = await getPostBySlug(slug).catch(() => null);
   if (!mod) return {};
   return {
@@ -19,7 +20,7 @@ export async function generateMetadata({ params }: PageParams) {
 }
 
 export default async function PostPage({ params }: PageParams) {
-  const { slug } = params;
+  const { slug } = await params;
   const mod = await getPostBySlug(slug).catch(() => null);
 
   if (!mod) {

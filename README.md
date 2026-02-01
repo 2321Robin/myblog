@@ -29,7 +29,8 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 ### M2 内容系统
 - [x] 接入 MDX：`@next/mdx` 已配置；文章放在 `src/content/posts/*.mdx`，使用 `export const metadata = {...}` 存 frontmatter（title/slug/date/tags/summary/cover）。
 - [x] 开发模式兼容性：MDX 插件改用字符串配置（remark-gfm、rehype-prism-plus），已兼容 Turbopack/webpack；`npm run dev` 直接使用默认命令。
-- [ ] 若提示选择根目录或找不到依赖：已在 `next.config.ts` 设置 `experimental.turbo.root = __dirname`，如仍有告警可删除上层 `pnpm-lock.yaml` 或改用 `npm run dev`（Webpack）。
+- [ ] 若提示选择根目录或找不到依赖：已在 `next.config.ts` 设置 `turbopack.root = __dirname`，如仍有告警可删除上层 `pnpm-lock.yaml` 或改用 `npm run dev`（Webpack）。
+- [x] 动态路由 `params`（Next.js 16）为 Promise，需要 `await params` 后再解构 `slug`；已在 `/blog/[slug]` 处理。
 - [x] 列表页：基础列表（/blog）已支持标签过滤 + 简单分页（page 参数）。封面占位待补。
 - [ ] 详情页：基础渲染已上线（/blog/[slug]），已启用 GFM + 代码高亮；目录与分享待做。
 - [ ] 关联推荐：基于标签或相似度返回相关文章。

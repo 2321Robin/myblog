@@ -12,10 +12,9 @@ const withMDX = createMDX({
 
 const nextConfig: NextConfig = {
   pageExtensions: ["ts", "tsx", "js", "jsx", "md", "mdx"],
-  experimental: {
-    turbo: {
-      root: __dirname,
-    },
+  // 明确 Turbopack 根目录，避免父级 pnpm-lock 误判工作区
+  turbopack: {
+    root: __dirname,
   },
 };
 
