@@ -18,6 +18,14 @@ type Props = {
 export function PostContent({ Content, metadata, slug, prev, next, headings }: Props) {
   return (
     <div className="mx-auto flex min-h-screen max-w-5xl flex-col gap-10 px-6 py-12">
+      <div className="flex items-center gap-3 text-sm text-muted-foreground">
+        <Link href="/blog" className="rounded-full border border-border px-3 py-1 transition hover:border-brand hover:text-brand">
+          ← 返回博客列表
+        </Link>
+        <span className="text-muted">/</span>
+        <span className="text-foreground">{metadata.title}</span>
+      </div>
+
       <div className="space-y-3">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand">Article</p>
         <h1 className="text-3xl font-bold leading-tight sm:text-4xl">{metadata.title}</h1>

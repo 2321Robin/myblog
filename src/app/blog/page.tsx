@@ -42,6 +42,12 @@ export default async function BlogPage({ searchParams }: Props) {
         </Link>
         <span className="text-muted">/</span>
         <span className="text-foreground">博客</span>
+        <Link
+          href="/blog/tags"
+          className="ml-auto inline-flex items-center gap-1 rounded-full border border-border px-3 py-1 text-xs transition hover:border-brand hover:text-brand"
+        >
+          查看标签
+        </Link>
       </div>
 
       <div className="space-y-2">

@@ -18,6 +18,9 @@ export default async function Home() {
               <Link className="hover:text-foreground" href="/blog">
                 博客
               </Link>
+              <Link className="hover:text-foreground" href="/blog/tags">
+                标签
+              </Link>
               <a className="hover:text-foreground" href="#projects">
                 作品
               </a>

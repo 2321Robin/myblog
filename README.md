@@ -1,92 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
-
 ## 项目简介
-- 个人博客站点，支持文章发布/分类/标签/搜索/评论，良好 SEO 与性能。
+- 个人自用博客，专注写作与阅读（文章、标签、搜索、RSS/站点地图、基础 SEO）。
+- 不做评论、鉴权、草稿流程，暂不接入监控，保持最简体验。
 - 技术栈：Next.js + TypeScript + Tailwind CSS（App Router + src 目录）。
 
-## 开发计划 / 里程碑
-- 第1周：初始化仓库、CI/CD、设计系统基线（颜色/排版/组件）、首页与导航/页脚。
-- 第2周：MDX 内容管线、文章列表与详情（代码高亮、目录）、基本封面/摘要。
-- 第3周：分类/标签页、搜索 MVP（本地索引）、RSS/站点地图、基础 SEO 与 OG 配置。
-- 第4周：评论方案（Giscus 或 Supabase）、简单鉴权与草稿流程、性能与无障碍检查，上线。
+## 状态总览
+**已完成**
+- 初始化框架、导航/页脚、主题切换（浅/深色）。
+- MDX 内容管线：支持 `src/content/posts/*.mdx`，frontmatter metadata 已接入。
+- 列表页：分页 + 标签过滤，封面占位，阅读时长显示。
+- 详情页：代码高亮、目录、分享条、上一篇/下一篇、返回博客列表按钮。
+- 搜索 MVP：静态索引，前端过滤，接口 `/search-index`。
+- SEO/分发：RSS、sitemap、robots，OG/Twitter/结构化数据。
+- 标签独立页：/blog/tags 汇总标签并跳转过滤。
 
-## 本地任务清单（可直接勾）
-- [ ] M1 基础框架：初始化 Next.js+TS+Tailwind，配好 ESLint/Prettier/测试/CI，确定设计基线，搭好导航/页脚/首页占位。
-- [ ] M2 内容系统：MDX + frontmatter，文章列表（分页/摘要/封面），详情页（高亮/目录/分享），相关文章/标签联动。
-- [ ] M3 搜索与 SEO：分类/标签页，搜索 MVP（本地索引），RSS/sitemap/robots，OG/Twitter/结构化数据。
-- [ ] M4 互动与上线：评论（Giscus 或 Supabase），简单鉴权+草稿流程，性能/无障碍检查，部署 Vercel + 基础监控。
+**待办**
+- Lighthouse 与无障碍检查，目标各分项 ≥ 90。
+- 部署准备：Vercel + `SITE_URL` 环境变量，可选开启 Analytics。
+- 内容充实：编写更多实际文章，补充真实封面。
 
-## 详细执行步骤
+## 路线图（自用精简版）
+- M1 基础框架（已完成）：Next.js+TS+Tailwind、CI（lint+type-check）、设计基线、导航/页脚。
+- M2 内容系统（已完成）：MDX、列表与详情、目录/分享、标签过滤、阅读时长/封面占位。
+- M3 搜索与 SEO（部分完成）：本地搜索、RSS/sitemap/robots、OG 元数据；待补分类/标签页与 Lighthouse 检查。
+- M4 上线与优化（未启动）：性能/无障碍优化，部署 Vercel，跳过评论/鉴权/草稿/监控。
 
-### M1 基础框架（推荐顺序）
-- [x] 本地启动验证：`npm run dev`，确认首页可开。
-- [x] 清理模板：修改 `src/app/page.tsx` 为自定义布局骨架（导航/页脚/占位区块），删掉默认文案。
-- [x] 设计基线：在 `src/app/globals.css` 设定主题色变量、排版和暗/亮模式策略（修改 `:root` / `.dark` 变量即可换色）。
-- [x] 质量基线：已添加 `npm run type-check`；CI（.github/workflows/ci.yml）运行 `lint` 与 `type-check`。后续如需可再补充自定义 ESLint/Prettier 规则。
-- [x] 目录约定：已建立 `src/components`, `src/lib`, `src/content`；可用 `@/components`, `@/lib`, `@/content` 导入（见 `tsconfig.json`/`app` 默认别名）。
-- [x] 主题切换：已集成 `next-themes`（见 `src/components/theme-provider.tsx`），在 header 添加 `ThemeToggle` 按钮；复用 `globals.css` 变量，后续可自定义样式。
+## 写作指南
+- 文章位置：`src/content/posts/*.mdx`
+- 元数据示例：
 
-### M2 内容系统
-- [x] 接入 MDX：`@next/mdx` 已配置；文章放在 `src/content/posts/*.mdx`，使用 `export const metadata = {...}` 存 frontmatter（title/slug/date/tags/summary/cover）。
-- [x] 开发模式兼容性：MDX 插件改用字符串配置（remark-gfm、rehype-prism-plus），已兼容 Turbopack/webpack；`npm run dev` 直接使用默认命令。
-- [ ] 若提示选择根目录或找不到依赖：已在 `next.config.ts` 设置 `turbopack.root = __dirname`，如仍有告警可删除上层 `pnpm-lock.yaml` 或改用 `npm run dev`（Webpack）。
-- [x] 动态路由 `params`（Next.js 16）为 Promise，需要 `await params` 后再解构 `slug`；已在 `/blog/[slug]` 处理。
-- [x] 列表页：基础列表（/blog）已支持标签过滤 + 简单分页（page 参数）。封面占位待补。
-- [x] 详情页：基础渲染已上线（/blog/[slug]），已启用 GFM + 代码高亮；目录与分享已完成。
-- [ ] 关联推荐：基于标签或相似度返回相关文章。
-- [x] 详情增强：添加目录（解析 heading）、底部分享区、上一篇/下一篇推荐。
-- [x] 列表体验：为列表项添加封面占位/真实封面，显示预计阅读时长。
-
-### M3 搜索与 SEO
-- [ ] 分类页/标签页：支持过滤和分页。
-- [x] 搜索 MVP：生成静态索引（slug/title/summary/tags），前端过滤；预留切换到 Algolia/Typesense 的接口（/search-index）。
-- [x] 生成 RSS、sitemap、robots；添加 OG/Twitter/结构化数据（`metadata` API）。
-- [ ] 跑 Lighthouse，目标 SEO ≥ 90。
-- [ ] 部署前检查：本地自测深色/浅色、代码高亮、分页和搜索；准备 Vercel 部署。
-
-#### 部署前 QA 提示
-- 本地自测：/、/blog、/blog/[slug]、/search-index（返回 JSON），暗/亮模式切换、分页与标签过滤、代码高亮。
-- 无障碍：键盘可达性，焦点样式，语义化 heading 层级。
-- 性能/SEO：Lighthouse（Performance/SEO/Best Practices/Accessibility ≥ 90），确认 OG/Twitter 卡片。
-- 产物：确认 /rss.xml、/sitemap.xml、/robots.txt 均可访问；若部署到 Vercel，设置 SITE_URL 环境变量。
-
-### M4 互动与上线
-- [ ] 评论：优先 Giscus（免后端）；若自托管，Supabase + rate limit。
-- [ ] 鉴权与草稿：受保护路由或 token，草稿不出现在公开列表。
-- [ ] 性能/无障碍：优化图片/字体、语义化标签、键盘可达性；Lighthouse 性能/可访问性/最佳实践 ≥ 90。
-- [ ] 部署：Vercel；开启监控（Vercel Analytics），可选接入 Sentry。
-
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```mdx
+export const metadata = {
+	title: "Hello World",
+	slug: "hello-world",
+	date: "2024-01-01",
+	tags: ["life", "notes"],
+	summary: "一句话摘要",
+	cover: "/covers/hello.jpg", // 可选
+	readingTimeMinutes: 3,       // 可选
+};
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+正文直接写 MDX，支持 GFM 与代码高亮。
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 开发与运行
+- 本地启动：`npm run dev`
+- 代码检查：`npm run lint`，类型检查：`npm run type-check`
+- 构建：`npm run build`，预览：`npm run start`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 部署提示（Vercel）
+- 设置环境变量 `SITE_URL` 为生产站点地址，用于生成绝对链接/OG/RSS。
+- 部署后自测：`/`、`/blog`、`/blog/[slug]`、`/search-index`、RSS/sitemap/robots；验证标签过滤与分页。
+- 可选开启 Vercel Analytics；暂不接入监控/日志平台。
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 质量检查
+- 跑一次 Lighthouse（桌面+移动），性能/可访问性/最佳实践/SEO 目标各 ≥ 90。
+- 无障碍：键盘可达、焦点样式、语义化 heading 层级。
