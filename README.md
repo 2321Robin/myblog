@@ -12,10 +12,11 @@
 - 搜索 MVP：静态索引，前端过滤，接口 `/search-index`。
 - SEO/分发：RSS、sitemap、robots，OG/Twitter/结构化数据。
 - 标签独立页：/blog/tags 汇总标签并跳转过滤。
+- 部署准备：新增 `.env.example`，使用 `SITE_URL` 生成绝对链接/OG/RSS。
 
 **待办**
 - Lighthouse 与无障碍检查，目标各分项 ≥ 90。
-- 部署准备：Vercel + `SITE_URL` 环境变量，可选开启 Analytics。
+- 部署上线：Vercel 部署并验证环境变量，可选开启 Analytics。
 - 内容充实：编写更多实际文章，补充真实封面。
 
 ## 路线图（自用精简版）
