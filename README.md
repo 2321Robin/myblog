@@ -56,3 +56,14 @@ export const metadata = {
 ## 质量检查
 - 跑一次 Lighthouse（桌面+移动），性能/可访问性/最佳实践/SEO 目标各 ≥ 90。
 - 无障碍：键盘可达、焦点样式、语义化 heading 层级。
+
+### Lighthouse 与无障碍操作步骤
+1) 本地启动：`npm run dev`，浏览器访问 http://localhost:3000。
+2) Chrome DevTools 打开 Lighthouse 面板，分别选择 Desktop 与 Mobile 预设，跑全量（Performance/Accessibility/Best Practices/SEO）。目标各分项 ≥ 90。
+3) 页面覆盖：`/`、`/blog`、`/blog/[slug]`、`/blog/tags`。若有跳转环节（分页、标签过滤）也做一次扫描。
+4) 若 Accessibility < 90，先检查：
+	- 焦点可见性：Tab 导航能看到明显焦点框；按钮/链接有 `:focus-visible` 样式。
+	- 语义结构：主要区域有 `<main>`，标题层级按顺序（h1/h2/h3）。
+	- 图像/封面：确保有可读文本（现用文字占位已满足；若加真实封面需 `alt`）。
+	- 对比度：主题色在浅/深模式下保持文字可读。
+5) 可选用 Axe DevTools（Chrome 插件）在 `/blog/[slug]` 跑一次快速扫描，确认无严重/中等级别问题。
