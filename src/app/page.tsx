@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { getAllPosts } from "@/lib/posts";
 
-type IconName = "home" | "github" | "projects" | "bilibili" | "csdn" | "mail";
+type IconName = "home" | "github" | "projects" | "bilibili" | "csdn" | "mail" | "score" | "resume" | "game";
 
 function Icon({ name, className = "" }: { name: IconName; className?: string }) {
   const common = `h-4 w-4 ${className}`;
@@ -51,6 +51,32 @@ function Icon({ name, className = "" }: { name: IconName; className?: string }) 
           <rect x="14" y="14" width="6" height="6" rx="1.2" fill="currentColor" />
         </svg>
       );
+    case "score":
+      return (
+        <svg aria-hidden viewBox="0 0 24 24" className={common}>
+          <rect x="4" y="5" width="16" height="14" rx="2" ry="2" fill="none" stroke="currentColor" strokeWidth="1.6" />
+          <path d="M4 10h16" stroke="currentColor" strokeWidth="1.6" />
+          <circle cx="9" cy="8" r="1" fill="currentColor" />
+          <circle cx="15" cy="8" r="1" fill="currentColor" />
+          <path d="M8 14h3l-1.5 3z" fill="currentColor" />
+          <path d="M13.5 17v-3h2.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+        </svg>
+      );
+    case "resume":
+      return (
+        <svg aria-hidden viewBox="0 0 24 24" className={common}>
+          <path d="M7 4.5A1.5 1.5 0 0 1 8.5 3h7A1.5 1.5 0 0 1 17 4.5v15l-4.5-2L8 19.5Z" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
+          <path d="M10 8h4M10 11h4M10 14h2" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+        </svg>
+      );
+    case "game":
+      return (
+        <svg aria-hidden viewBox="0 0 24 24" className={common}>
+          <path d="M5 18.5V6.3a.7.7 0 0 1 1-.63l7.2 3.6 4-1.6a.7.7 0 0 1 .96.64v8.2a.7.7 0 0 1-.96.64l-4-1.6-7.2 3.6a.7.7 0 0 1-1-.64Z" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
+          <circle cx="16.5" cy="12" r="0.8" fill="currentColor" />
+          <circle cx="18.5" cy="10" r="0.8" fill="currentColor" />
+        </svg>
+      );
     case "mail":
       return (
         <svg aria-hidden viewBox="0 0 24 24" className={common}>
@@ -72,6 +98,24 @@ const externalLinks = [
     href: "https://w2321.top",
     description: "个人域名的首页入口。",
     icon: "home" as const,
+  },
+  {
+    title: "打牌计分",
+    href: "https://score.w2321.top",
+    description: "线下牌局快速算分的小工具。",
+    icon: "score" as const,
+  },
+  {
+    title: "在线简历",
+    href: "https://resume.w2321.top",
+    description: "我的在线简历，可下载 PDF。",
+    icon: "resume" as const,
+  },
+  {
+    title: "扫雷游戏",
+    href: "https://minesweeper.w2321.top",
+    description: "自制网页版扫雷，支持快捷键。",
+    icon: "game" as const,
   },
   {
     title: "GitHub",
@@ -290,6 +334,9 @@ export default async function Home() {
             </a>
             <a className="hover:text-foreground" href="https://blog.csdn.net/Robin2321" target="_blank" rel="noreferrer">
               <span className="inline-flex items-center gap-1"><Icon name="csdn" className="text-brand" /> CSDN</span>
+            </a>
+            <a className="hover:text-foreground" href="https://beian.miit.gov.cn/" target="_blank" rel="noreferrer">
+              <span className="inline-flex items-center gap-1">赣ICP备2026002780号</span>
             </a>
           </div>
         </footer>

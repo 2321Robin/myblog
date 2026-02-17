@@ -13,6 +13,7 @@
 - SEO/分发：RSS、sitemap、robots，OG/Twitter/结构化数据。
 - 标签独立页：/blog/tags 汇总标签并跳转过滤。
 - 部署准备：新增 `.env.example`，使用 `SITE_URL` 生成绝对链接/OG/RSS。
+- 主页新增 score/resume/minesweeper 跳转，页脚展示备案号。
 
 **待办**
 - 部署上线：Vercel 部署并验证环境变量，可选开启 Analytics。
