@@ -95,25 +95,25 @@ function Icon({ name, className = "" }: { name: IconName; className?: string }) 
 const externalLinks = [
   {
     title: "主域名 / 主页",
-    href: "https://w2321.top",
+    href: "//w2321.top",
     description: "个人域名的首页入口。",
     icon: "home" as const,
   },
   {
     title: "打牌计分",
-    href: "https://score.w2321.top",
+    href: "//score.w2321.top",
     description: "线下牌局快速算分的小工具。",
     icon: "score" as const,
   },
   {
     title: "在线简历",
-    href: "https://resume.w2321.top",
+    href: "//resume.w2321.top",
     description: "我的在线简历，可下载 PDF。",
     icon: "resume" as const,
   },
   {
     title: "扫雷游戏",
-    href: "https://minesweeper.w2321.top",
+    href: "//minesweeper.w2321.top",
     description: "自制网页版扫雷，支持快捷键。",
     icon: "game" as const,
   },
