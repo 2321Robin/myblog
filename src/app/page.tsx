@@ -320,24 +320,43 @@ export default async function Home() {
           </section>
         </main>
 
-        <footer className="flex items-center justify-between border-t border-border py-6 text-sm text-muted-foreground">
-          <span>© {new Date().getFullYear()} Robin · Personal Site.</span>
-          <div className="flex items-center gap-3">
-            <a className="hover:text-foreground" href="mailto:2932547376@qq.com">
-              <span className="inline-flex items-center gap-1"><Icon name="mail" className="text-brand" /> 邮箱</span>
-            </a>
-            <a className="hover:text-foreground" href="https://github.com/2321Robin" target="_blank" rel="noreferrer">
-              <span className="inline-flex items-center gap-1"><Icon name="github" className="text-brand" /> GitHub</span>
-            </a>
-            <a className="hover:text-foreground" href="https://space.bilibili.com/2062699686" target="_blank" rel="noreferrer">
-              <span className="inline-flex items-center gap-1"><Icon name="bilibili" className="text-brand" /> 哔哩哔哩</span>
-            </a>
-            <a className="hover:text-foreground" href="https://blog.csdn.net/Robin2321" target="_blank" rel="noreferrer">
-              <span className="inline-flex items-center gap-1"><Icon name="csdn" className="text-brand" /> CSDN</span>
-            </a>
-            <a className="hover:text-foreground" href="https://beian.miit.gov.cn/" target="_blank" rel="noreferrer">
-              <span className="inline-flex items-center gap-1">赣ICP备2026002780号</span>
-            </a>
+        <footer className="border-t border-line bg-panel/90">
+          <div className="mx-auto flex max-w-5xl flex-col items-center justify-center gap-2 px-4 py-4 text-xs text-muted">
+            <div className="text-center">
+              Copyright © 2026 - Present{' '}
+              <a
+                href="https://w2321.top"
+                target="_blank"
+                rel="noreferrer"
+                className="underline decoration-line hover:text-text"
+              >
+                w2321
+              </a>
+              . All Rights Reserved.
+            </div>
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              <a
+                href="https://beian.miit.gov.cn/"
+                target="_blank"
+                rel="noreferrer"
+                className="underline decoration-line hover:text-text"
+              >
+                赣ICP备2026002780号
+              </a>
+              <a
+                href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=36098302260203"
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center gap-1 underline decoration-line hover:text-text"
+              >
+                <img
+                  src="/gongan_beian.png"
+                  alt="公安备案图标"
+                  className="h-4 w-4"
+                />
+                赣公网安备36098302260203号
+              </a>
+            </div>
           </div>
         </footer>
       </div>
