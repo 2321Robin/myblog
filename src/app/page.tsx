@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { getAllPosts } from "@/lib/posts";
@@ -349,9 +350,11 @@ export default async function Home() {
                 rel="noreferrer"
                 className="flex items-center gap-1 underline decoration-line hover:text-text"
               >
-                <img
+                <Image
                   src="/gongan_beian.png"
                   alt="公安备案图标"
+                  width={16}
+                  height={16}
                   className="h-4 w-4"
                 />
                 赣公网安备36098302260203号

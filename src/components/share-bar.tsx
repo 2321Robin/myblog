@@ -1,21 +1,33 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 
 function buildShareUrl(base: string, slug: string) {
   if (base.startsWith("http")) return `${base.replace(/\/$/, "")}${slug}`;
   return slug;
 }
 
-export function ShareBar({ title, url }: { title: string; url: string }) {
-  const [resolvedUrl, setResolvedUrl] = useState(url);
-  const [copied, setCopied] = useState(false);
+function subscribeToOriginChange(onStoreChange: () => void) {
+  queueMicrotask(onStoreChange);
+  return () => {};
+}
 
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const origin = window.location.origin;
-    setResolvedUrl(buildShareUrl(origin, url));
-  }, [url]);
+function getClientOrigin() {
+  return window.location.origin;
+}
+
+function getServerOrigin() {
+  return "";
+}
+
+export function ShareBar({ title, url }: { title: string; url: string }) {
+  const origin = useSyncExternalStore(
+    subscribeToOriginChange,
+    getClientOrigin,
+    getServerOrigin
+  );
+  const resolvedUrl = buildShareUrl(origin, url);
+  const [copied, setCopied] = useState(false);
 
   const encodedUrl = encodeURIComponent(resolvedUrl);
   const encodedTitle = encodeURIComponent(title);

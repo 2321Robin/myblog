@@ -4,6 +4,8 @@ import GithubSlugger from "github-slugger";
 import type { ComponentType } from "react";
 
 const POSTS_DIR = path.join(process.cwd(), "src", "content", "posts");
+const postSourceCache = new Map<string, Promise<string>>();
+const postCache = new Map<string, PostModule>();
 
 export type PostMeta = {
   title: string;
@@ -49,6 +51,82 @@ function computeReadingTimeMinutes(source: string) {
   return Math.max(1, Math.ceil(words / 200));
 }
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function requireString(metadata: Record<string, unknown>, field: string, slug: string) {
+  const value = metadata[field];
+  if (typeof value !== "string" || !value.trim()) {
+    throw new Error(`Post "${slug}" metadata.${field} must be a non-empty string.`);
+  }
+  return value;
+}
+
+function optionalString(metadata: Record<string, unknown>, field: string, slug: string) {
+  const value = metadata[field];
+  if (value === undefined) return undefined;
+  if (typeof value !== "string") {
+    throw new Error(`Post "${slug}" metadata.${field} must be a string when provided.`);
+  }
+  return value;
+}
+
+function optionalTags(metadata: Record<string, unknown>, slug: string) {
+  const value = metadata.tags;
+  if (value === undefined) return undefined;
+  if (!Array.isArray(value) || value.some((tag) => typeof tag !== "string" || !tag.trim())) {
+    throw new Error(`Post "${slug}" metadata.tags must be an array of non-empty strings when provided.`);
+  }
+  return value;
+}
+
+function optionalReadingTime(metadata: Record<string, unknown>, slug: string) {
+  const value = metadata.readingTimeMinutes;
+  if (value === undefined) return undefined;
+  if (typeof value !== "number" || !Number.isFinite(value) || value <= 0) {
+    throw new Error(`Post "${slug}" metadata.readingTimeMinutes must be a positive number when provided.`);
+  }
+  return value;
+}
+
+function validatePostMetadata(metadata: unknown, slug: string): PostMeta {
+  if (!isRecord(metadata)) {
+    throw new Error(`Post "${slug}" must export a metadata object.`);
+  }
+
+  const title = requireString(metadata, "title", slug);
+  const metadataSlug = requireString(metadata, "slug", slug);
+  const date = requireString(metadata, "date", slug);
+
+  if (metadataSlug !== slug) {
+    throw new Error(`Post "${slug}" metadata.slug must match its file name.`);
+  }
+  if (Number.isNaN(Date.parse(date))) {
+    throw new Error(`Post "${slug}" metadata.date must be a valid date string.`);
+  }
+
+  return {
+    title,
+    slug: metadataSlug,
+    date,
+    summary: optionalString(metadata, "summary", slug),
+    tags: optionalTags(metadata, slug),
+    cover: optionalString(metadata, "cover", slug),
+    readingTimeMinutes: optionalReadingTime(metadata, slug),
+  };
+}
+
+function readPostSource(slug: string) {
+  const cached = postSourceCache.get(slug);
+  if (cached) return cached;
+
+  const filePath = path.join(POSTS_DIR, `${slug}.mdx`);
+  const sourcePromise = fs.readFile(filePath, "utf8");
+  postSourceCache.set(slug, sourcePromise);
+  return sourcePromise;
+}
+
 export async function getPostSlugs(): Promise<string[]> {
   const entries = await fs.readdir(POSTS_DIR, { withFileTypes: true });
   return entries
@@ -57,16 +135,21 @@ export async function getPostSlugs(): Promise<string[]> {
 }
 
 export async function getPostBySlug(slug: string): Promise<PostModule> {
+  const cached = postCache.get(slug);
+  if (cached) return cached;
   const mod = (await import(`@/content/posts/${slug}.mdx`)) as PostModule;
-  const filePath = path.join(POSTS_DIR, `${slug}.mdx`);
-  const content = await fs.readFile(filePath, "utf8");
+  const content = await readPostSource(slug);
   const readingTimeMinutes = computeReadingTimeMinutes(content);
-  return { ...mod, metadata: { ...mod.metadata, readingTimeMinutes } };
+  const post: PostModule = {
+    ...mod,
+    metadata: { ...validatePostMetadata(mod.metadata, slug), readingTimeMinutes },
+  };
+  postCache.set(slug, post);
+  return post;
 }
 
 export async function getPostHeadings(slug: string): Promise<Heading[]> {
-  const filePath = path.join(POSTS_DIR, `${slug}.mdx`);
-  const content = await fs.readFile(filePath, "utf8");
+  const content = await readPostSource(slug);
   return extractHeadingsFromSource(content);
 }
 
@@ -75,10 +158,7 @@ export async function getAllPosts(): Promise<PostMeta[]> {
   const posts = await Promise.all(
     slugs.map(async (slug) => {
       const mod = await getPostBySlug(slug);
-      const filePath = path.join(POSTS_DIR, `${slug}.mdx`);
-      const content = await fs.readFile(filePath, "utf8");
-      const readingTimeMinutes = computeReadingTimeMinutes(content);
-      return { ...mod.metadata, readingTimeMinutes };
+      return mod.metadata;
     })
   );
 

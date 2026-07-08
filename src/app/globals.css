@@ -12,6 +12,8 @@
   --muted-foreground: #6b7280;
   --brand: #2563eb;
   --brand-strong: #1d4ed8;
+  --font-site-sans: Arial, "Microsoft YaHei", "PingFang SC", "Hiragino Sans GB", "Noto Sans CJK SC", sans-serif;
+  --font-site-mono: "Cascadia Code", "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
 }
 
 .dark {
@@ -44,8 +46,8 @@
   --color-muted-foreground: var(--muted-foreground);
   --color-brand: var(--brand);
   --color-brand-strong: var(--brand-strong);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-site-sans);
+  --font-mono: var(--font-site-mono);
   --radius-lg: 1.25rem;
   --radius-xl: 1.75rem;
 }
@@ -53,7 +55,7 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-geist-sans), system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-family: var(--font-site-sans);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
@@ -67,5 +69,5 @@ body {
 }
 
 .prose code {
-  font-family: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-family: var(--font-site-mono);
 }
