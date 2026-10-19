@@ -5,7 +5,7 @@ export const metadata = {
   summary:
     "从英伟达史上最大单日蒸发说起:用 DeepSeek、ChatGPT、智能音箱这些你熟得不能再熟的东西,把 AI、模型、Agent、Harness 四个词一次分清。",
   tags: ["ai", "agent", "concepts"],
-  cover: "/images/posts/ai-model-agent-harness/concept-map.svg",
+  cover: "/images/posts/ai-model-agent-harness/concept-map.png",
 };
 
 # AI、模型、Agent、Harness:四个词到底什么关系?
@@ -20,7 +20,7 @@ export const metadata = {
 
 先上全篇的地图,后文就按这条线讲:
 
-![四个概念的关系:AI 学科一路收窄出大语言模型,模型装进 Agent,Agent 外面再包一层 Harness,最后作用于真实环境](/images/posts/ai-model-agent-harness/concept-map.svg)
+![四个概念的关系:AI 学科一路收窄出大语言模型,模型装进 Agent,Agent 外面再包一层 Harness,最后作用于真实环境](/images/posts/ai-model-agent-harness/concept-map.png)
 
 一句话剧透:**AI 是一门学科,模型是大脑,Agent 是会干活的员工,Harness 是包在外面的整套装备。**
 
@@ -47,7 +47,7 @@ export const metadata = {
 
 模型是怎么来的?四步演变:
 
-![模型演变四阶段:写规则的专家系统、机器学习、深度学习、大语言模型](/images/posts/ai-model-agent-harness/model-evolution.svg)
+![模型演变四阶段:写规则的专家系统、机器学习、深度学习、大语言模型](/images/posts/ai-model-agent-harness/model-evolution.png)
 
 最早是**写规则**:把专家知识一条条录进机器,规则之外一概不会。然后是**机器学习**:别教答案了,给它看例子,让它自己学个函数出来。接着**深度学习**把这件事推到极致——2012 年 AlexNet 在图像识别大赛上把错误率大幅甩开对手,从此连"看哪些特征"都交给多层网络自己学,人只管喂数据、堆显卡。最后是**大语言模型**:2017 年 Google 那篇[《Attention Is All You Need》](https://arxiv.org/abs/1706.03762)提出 Transformer 架构,2020 年[规模定律](https://arxiv.org/abs/2001.08361)又发现模型能力随参数和数据规模可预测地增长——"大力出奇迹"从玄学变成了工程学,1750 亿参数的 [GPT-3](https://arxiv.org/abs/2005.14165) 就是这份底气的展示品。
 
@@ -83,7 +83,7 @@ while (目标未完成) {
 }
 ```
 
-![Agent 循环:目标交给模型,模型决定行动,工具执行,结果写回上下文,循环直到完成](/images/posts/ai-model-agent-harness/agent-loop.svg)
+![Agent 循环:目标交给模型,模型决定行动,工具执行,结果写回上下文,循环直到完成](/images/posts/ai-model-agent-harness/agent-loop.png)
 
 同一个模型,装不装进这个循环,体验天差地别。还拿 DeepSeek 举例:在官网聊天框里,它连你电脑的一个文件都碰不到;把它的 API 接进 Cline 这类编码工具,它就能自己读你的代码、自己改文件、自己跑测试。**模型没换,换的是它有没有被装进"模型 + 工具 + 循环"。**
 
@@ -105,7 +105,7 @@ R1 是开源模型,谁都能下载。于是同一只模型,活在了好几套完
 
 这个词最早在评测圈用开:EleutherAI 的 [lm-evaluation-harness](https://github.com/EleutherAI/lm-evaluation-harness) 把"模型"和"怎么测模型"拆开,同一套框架能套在任何模型外面跑分。到 2025 年编码智能体爆发,"agent harness"成了行业标准叫法:包住模型、让它真正能干活的整套工程。
 
-![Harness 解剖图:系统提示词、上下文工程、权限与沙箱、子 Agent 编排、工具层、主循环、错误恢复、记录与评测、环境边界](/images/posts/ai-model-agent-harness/harness-anatomy.svg)
+![Harness 解剖图:系统提示词、上下文工程、权限与沙箱、子 Agent 编排、工具层、主循环、错误恢复、记录与评测、环境边界](/images/posts/ai-model-agent-harness/harness-anatomy.png)
 
 一个编码 agent 的 harness 里大致装着:系统提示词(角色、规范、安全边界)、工具层(读写文件、跑命令、搜索)、主循环(结果回填、决定下一步)、上下文工程(历史裁剪、摘要、记忆文件)、权限与沙箱(什么自动做、什么先问人)、错误恢复(重试、中断、回滚),还有记录与评测(轨迹、成本、回放)。每一项单拎出来都不性感,合在一起却决定了"同一个模型能不能真的干活"。
 
