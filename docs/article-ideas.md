@@ -24,6 +24,6 @@
 
 ## 状态
 
-- [x] 选题 1:初稿完成(`ai-model-agent-harness.mdx`),待审阅调整
+- [x] 选题 1:二稿完成(`ai-model-agent-harness.mdx`),按反馈调整语气/配图/例子,待再审
 - [ ] 选题 2:未动笔
 - [ ] 选题 3:未动笔
