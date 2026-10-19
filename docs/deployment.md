@@ -11,6 +11,7 @@
 - 服务器流程按 runbook 执行：解压后以 `www` 用户 `npm ci`（发布目录独立缓存）、`SITE_URL=https://w2321.top` 生产构建、ESLint / 类型检查 / 6 项测试通过；3011 预览通过 `check-site` 全部路由；切换 `20-release.conf` 重启后，服务器 `127.0.0.1:3010` 与本机公网 `https://w2321.top` 双向通过全部检查（含 gzip/identity 缓存变体）。
 - 专项确认：新文章 `/blog/ai-model-agent-harness` 公网可访问且 RSS 已收录；`/blog/hello-world`、`/blog/next-roadmap` 公网返回 404；WebP 图片（`image/webp`）公网正常。
 - 注意：`scripts/check-site.mjs` 的路由清单已随文章上下线更新，后续发布新增/下线文章时同样需要维护该清单。
+- 同日追加（17:33 UTC）：发布文章专用封面图（`cover.webp`，67KB），`metadata.cover` 由概念图改为专用封面。发布目录 `20261019T173036Z`，源码包 SHA-256 `eb9e688f62c34154752b4ab07c0ae7d193886f98f84bc3631e9662dc0315c6cc`；lock 未变故复用上一发布目录的 `node_modules` 后重新构建，3011 预览与公网检查通过。上一发布目录 `20261019T165921Z` 保留回退。
 
 ## 运行方式
 
