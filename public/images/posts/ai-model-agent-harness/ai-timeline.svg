@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 330" font-family="system-ui,'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif">
+  <defs>
+    <marker id="arr2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#52627a"/>
+    </marker>
+  </defs>
+  <rect width="960" height="330" fill="#f8fafc"/>
+  <rect x="8" y="8" width="944" height="314" rx="16" fill="#ffffff" stroke="#dce3ee"/>
+
+  <line x1="60" y1="175" x2="900" y2="175" stroke="#dce3ee" stroke-width="2" marker-end="url(#arr2)"/>
+
+  <!-- 1950 above -->
+  <circle cx="90" cy="175" r="7" fill="#4255cf" stroke="#ffffff" stroke-width="2"/>
+  <line x1="90" y1="167" x2="90" y2="150" stroke="#dce3ee" stroke-width="2"/>
+  <text x="90" y="116" font-size="15" font-weight="650" fill="#3344ad" text-anchor="middle">1950</text>
+  <text x="90" y="140" font-size="12" fill="#52627a" text-anchor="middle">图灵:机器能思考吗</text>
+
+  <!-- 1956 below -->
+  <circle cx="226" cy="175" r="7" fill="#4255cf" stroke="#ffffff" stroke-width="2"/>
+  <line x1="226" y1="183" x2="226" y2="200" stroke="#dce3ee" stroke-width="2"/>
+  <text x="226" y="222" font-size="15" font-weight="650" fill="#3344ad" text-anchor="middle">1956</text>
+  <text x="226" y="246" font-size="12" fill="#52627a" text-anchor="middle">达特茅斯会议定名 AI</text>
+
+  <!-- 1997 above -->
+  <circle cx="362" cy="175" r="7" fill="#4255cf" stroke="#ffffff" stroke-width="2"/>
+  <line x1="362" y1="167" x2="362" y2="150" stroke="#dce3ee" stroke-width="2"/>
+  <text x="362" y="116" font-size="15" font-weight="650" fill="#3344ad" text-anchor="middle">1997</text>
+  <text x="362" y="140" font-size="12" fill="#52627a" text-anchor="middle">深蓝胜国际象棋冠军</text>
+
+  <!-- 2012 below -->
+  <circle cx="498" cy="175" r="7" fill="#4255cf" stroke="#ffffff" stroke-width="2"/>
+  <line x1="498" y1="183" x2="498" y2="200" stroke="#dce3ee" stroke-width="2"/>
+  <text x="498" y="222" font-size="15" font-weight="650" fill="#3344ad" text-anchor="middle">2012</text>
+  <text x="498" y="246" font-size="12" fill="#52627a" text-anchor="middle">AlexNet,深度学习爆发</text>
+
+  <!-- 2017 above -->
+  <circle cx="634" cy="175" r="7" fill="#4255cf" stroke="#ffffff" stroke-width="2"/>
+  <line x1="634" y1="167" x2="634" y2="150" stroke="#dce3ee" stroke-width="2"/>
+  <text x="634" y="116" font-size="15" font-weight="650" fill="#3344ad" text-anchor="middle">2017</text>
+  <text x="634" y="140" font-size="12" fill="#52627a" text-anchor="middle">Transformer 问世</text>
+
+  <!-- 2022 below -->
+  <circle cx="770" cy="175" r="7" fill="#4255cf" stroke="#ffffff" stroke-width="2"/>
+  <line x1="770" y1="183" x2="770" y2="200" stroke="#dce3ee" stroke-width="2"/>
+  <text x="770" y="222" font-size="15" font-weight="650" fill="#3344ad" text-anchor="middle">2022</text>
+  <text x="770" y="246" font-size="12" fill="#52627a" text-anchor="middle">ChatGPT 发布</text>
+
+  <!-- 2025 above -->
+  <circle cx="890" cy="175" r="7" fill="#4255cf" stroke="#ffffff" stroke-width="2"/>
+  <line x1="890" y1="167" x2="890" y2="150" stroke="#dce3ee" stroke-width="2"/>
+  <text x="890" y="116" font-size="15" font-weight="650" fill="#3344ad" text-anchor="middle">2025</text>
+  <text x="890" y="140" font-size="12" fill="#52627a" text-anchor="middle">编码 Agent 成主流</text>
+
+  <text x="480" y="300" font-size="13" fill="#52627a" text-anchor="middle">七十年里,技术路线换了好几轮,但"让机器表现出智能"这个目标一直没变</text>
+</svg>
