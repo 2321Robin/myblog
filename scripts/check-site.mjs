@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 
 const base = process.argv[2] ?? "http://127.0.0.1:3003";
-const routes = ["/", "/blog", "/blog/tags", "/blog/hello-world", "/blog/next-roadmap", "/blog?tag=nextjs", "/blog?page=1.5", "/blog?page=Infinity", "/blog?tag=nextjs&tag=plan", "/blog?page=1&page=2", "/blog?tag=no-such-tag", "/rss.xml", "/sitemap.xml", "/robots.txt", "/search-index", "/og.png", "/icon.svg"];
+const routes = ["/", "/blog", "/blog/tags", "/blog/ai-model-agent-harness", "/blog?tag=ai", "/blog?page=1.5", "/blog?page=Infinity", "/blog?tag=ai&tag=agent", "/blog?page=1&page=2", "/blog?tag=no-such-tag", "/rss.xml", "/sitemap.xml", "/robots.txt", "/search-index", "/og.png", "/icon.svg"];
 const bodies = new Map();
 
 for (const route of routes) {
@@ -41,12 +41,18 @@ assert.ok(home.includes("暂未维护，有需要可联系我。"), "count maint
 assert.ok(!home.includes("访问统计"), "capture counter must not be mislabeled as visitor analytics");
 for (const id of ["blog", "about", "projects", "links"]) assert.ok(home.includes(`id="${id}"`), `anchor ${id}`);
 assert.ok(home.indexOf('id="projects"') < home.indexOf('id="blog"'), "directory precedes articles");
-assert.ok(bodies.get("/blog/hello-world").includes('id="代码示例"'), "MDX heading anchor");
-assert.ok(bodies.get("/blog/hello-world").includes("较新文章"), "older article links to newer article");
-assert.ok(bodies.get("/blog/next-roadmap").includes("较早文章"), "newer article links to older article");
+assert.ok(bodies.get("/blog/ai-model-agent-harness").includes('id="先从一场股灾说起"'), "MDX heading anchor");
+assert.ok(bodies.get("/blog/ai-model-agent-harness").includes("记住这一句"), "section memory lines present");
 assert.ok(bodies.get("/blog?tag=no-such-tag").includes("这个标签下还没有文章"), "empty filter state");
 const indexed = JSON.parse(bodies.get("/search-index")).posts;
-for (const slug of ["hello-world", "next-roadmap"]) assert.ok(indexed.some((post) => post.slug === slug), `original post ${slug} indexed`);
+for (const slug of ["ai-model-agent-harness"]) assert.ok(indexed.some((post) => post.slug === slug), `post ${slug} indexed`);
+for (const slug of ["hello-world", "next-roadmap"]) assert.ok(!indexed.some((post) => post.slug === slug), `removed post ${slug} not indexed`);
 const missing = await fetch(`${base}/blog/not-an-existing-post`, { signal: AbortSignal.timeout(15000) });
 assert.equal(missing.status, 404, "unknown post");
 console.log("PASS selected destinations, project attribution, maintenance status, anchors, reading behavior, index and 404");
+
+for (const removed of ["/blog/hello-world", "/blog/next-roadmap"]) {
+  const response = await fetch(`${base}${removed}`, { signal: AbortSignal.timeout(45000) });
+  assert.equal(response.status, 404, `${removed} should be offline`);
+  console.log(`PASS ${removed} offline`);
+}
