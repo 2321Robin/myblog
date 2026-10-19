@@ -262,6 +262,7 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid 
 .article-prose table { display: block; overflow-x: auto; max-width: 100%; border-collapse: collapse; font-size: 14px; }
 .article-prose td, .article-prose th { border: 1px solid var(--border); padding: 10px 14px; text-align: left; }
 .article-prose img { max-width: 100%; height: auto; border-radius: 10px; }
+.article-prose .article-mascot { display: block; width: auto; max-width: min(340px, 82%); margin-inline: auto; }
 .share-bar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 18px; padding: 22px 0; margin-top: 40px; border-block: 1px solid var(--border); font-size: 12px; }
 .share-bar > div { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 .share-bar p { color: var(--muted); }
