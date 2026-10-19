@@ -29,5 +29,6 @@ export async function POST(request: Request) {
   }
 
   await fs.writeFile(target, content, "utf8");
-  return NextResponse.json({ ok: true });
+  const annotations = content.match(/【[^】]*】/g)?.length ?? 0;
+  return NextResponse.json({ ok: true, annotations });
 }

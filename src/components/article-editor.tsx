@@ -13,6 +13,7 @@ export function ArticleEditor({ slug, initialSource }: Props) {
   const [source, setSource] = useState(initialSource);
   const [status, setStatus] = useState<Status>("idle");
   const [message, setMessage] = useState("");
+  const [annotations, setAnnotations] = useState(0);
 
   const dirty = source !== initialSource;
 
@@ -33,6 +34,8 @@ export function ArticleEditor({ slug, initialSource }: Props) {
         const data = await res.json().catch(() => ({}));
         throw new Error(data.error ?? `HTTP ${res.status}`);
       }
+      const data = (await res.json()) as { annotations?: number };
+      setAnnotations(data.annotations ?? 0);
       setStatus("saved");
       setMessage("已保存，页面即将刷新");
       setTimeout(() => {
@@ -90,6 +93,7 @@ export function ArticleEditor({ slug, initialSource }: Props) {
         </button>
         {status === "saved" && <span className="ok">已保存 ✓</span>}
         {status === "error" && <span className="err">{message}</span>}
+        {annotations > 0 && <span className="warn">文中还有 {annotations} 处【】标注未处理</span>}
         <span className="hint">仅本地开发环境可用，不随站点部署 · Ctrl/Cmd+S 保存</span>
       </div>
     </div>

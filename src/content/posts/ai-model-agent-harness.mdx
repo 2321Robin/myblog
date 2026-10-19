@@ -24,8 +24,6 @@ export const metadata = {
 
 ![四个概念的关系：AI 学科一路收窄出大语言模型，模型装进 Agent，Agent 外面再包一层 Harness，最后作用于真实环境](/images/posts/ai-model-agent-harness/concept-map.png)
 
-　　一句话剧透：**AI 是一门学科，模型是大脑，Agent 是会干活的员工，Harness 是包在外面的整套装备。**
-
 ## AI：一个 70 岁还在出爆款的老学科
 
 　　1950 年，图灵发表[《Computing Machinery and Intelligence》](https://doi.org/10.1093/mind/LIX.236.433)，没跟人争论"机器能不能思考"这种哲学问题，而是换了个可操作的判法：如果你在对话里分不清对面是人还是机器，那该不该承认它在思考？这就是图灵测试。
@@ -53,7 +51,7 @@ export const metadata = {
 
 　　最早是**写规则**：把专家知识一条条录进机器，规则之外一概不会。然后是**机器学习**：别教答案了，给它看例子，让它自己学个函数出来。接着**深度学习**把这件事推到极致——2012 年 AlexNet 在图像识别大赛上把错误率大幅甩开对手，从此连"看哪些特征"都交给多层网络自己学，人只管喂数据、堆显卡。最后是**大语言模型**：2017 年 Google 那篇[《Attention Is All You Need》](https://arxiv.org/abs/1706.03762)提出 Transformer 架构，2020 年[规模定律](https://arxiv.org/abs/2001.08361)又发现模型能力随参数和数据规模可预测地增长——"大力出奇迹"从玄学变成了工程学，1750 亿参数的 [GPT-3](https://arxiv.org/abs/2005.14165) 就是这份底气的展示品。
 
-　　2022 年 11 月 30 日，ChatGPT 上线，五天百万用户，两个月破亿。这里又是一个容易踩的坑：**ChatGPT 不是模型**——GPT-3.5、GPT-4o 这些才是模型，ChatGPT 是 OpenAI 给模型套上的对话产品。发动机不等于汽车，就是这个区别。
+　　2022 年 11 月 30 日，ChatGPT 上线，五天百万用户，两个月破亿。这里又是一个容易踩的坑：**ChatGPT 不是模型**——从早期的 GPT-3.5、GPT-4o，到如今的 GPT-6 Astra、GPT-6.1 Sol，这些才是模型，ChatGPT 是 OpenAI 给模型套上的对话产品。发动机不等于汽车，就是这个区别。
 
 <img src="/images/posts/ai-model-agent-harness/deepseek-reach.png" alt="DeepSeek 拟人形象：拼命伸手去够一张悬浮的文档，却怎么也够不着" className="article-mascot-left" />
 
@@ -93,7 +91,7 @@ while (目标未完成) {
 
 ![Agent 循环：目标交给模型，模型决定行动，工具执行，结果写回上下文，循环直到完成](/images/posts/ai-model-agent-harness/agent-loop.png)
 
-　　同一个模型，装不装进这个循环，体验天差地别。还拿 DeepSeek 举例：在官网聊天框里，它连你电脑的一个文件都碰不到；把它的 API 接进 Cline 这类编码工具，它就能自己读你的代码、自己改文件、自己跑测试。**模型没换，换的是它有没有被装进"模型 + 工具 + 循环"。**
+　　同一个模型，装不装进这个循环，体验天差地别。还拿 DeepSeek 举例：在官网聊天框里，它连你电脑的一个文件都碰不到；把它的 API 接进 Codex、ZCode 这类编码工具，它就能自己读你的代码、自己改文件、自己跑测试。**模型没换，换的是它有没有被装进"模型 + 工具 + 循环"。**
 
 　　2024 年底，Anthropic 在[《Building effective agents》](https://www.anthropic.com/engineering/building-effective-agents)里给过一组至今被反复引用的辨析：代码写死的流程叫 workflow，模型只是流水线上的工人；模型自己在循环里决定下一步怎么干，才叫 agent。他们的建议也很实在：能简单就别复杂，大多数活儿，编排好的 workflow 就够用。
 
@@ -103,11 +101,11 @@ while (目标未完成) {
 
 　　终于可以正面回答"DeepSeek 和 Harness 是什么关系"了。
 
-　　R1 是开源模型，谁都能下载。于是同一只模型，活在了好几套完全不同的"装备"里：
+　　R1 和最新的 V4.1-Flash 都是开源模型，谁都能下载。于是同一只模型，活在了好几套完全不同的"装备"里：
 
 - 在**官网或 App** 里聊：背后是深度求索官方做的对话系统；
 - 用 **Ollama** 把它拉到本地，再套个 **Open WebUI**：这套界面、参数和配置，就是你亲手搭的；
-- 把它的 API 接进 **Cline、Cursor** 这类编码工具：它又成了别人家 agent 里的引擎。
+- 把它的 API 接进 **Codex、OpenCode、ZCode** 这类编码工具：它又成了别人家 agent 里的引擎。
 
 <img src="/images/posts/ai-model-agent-harness/deepseek-outfits.png" alt="同一只 DeepSeek 拟人形象的三套装扮：官网聊天、本地部署、编码 Agent" className="article-mascot-wide" />
 
@@ -130,13 +128,13 @@ while (目标未完成) {
 | 概念 | 本质 | 一眼认出它 |
 | --- | --- | --- |
 | AI | 一门学科、一个目标 | 达特茅斯会议、AI 寒冬、AlphaGo |
-| 模型 | 参数化的函数，文本进文本出 | GPT-4o、DeepSeek-R1、Qwen |
+| 模型 | 参数化的函数，文本进文本出 | GPT-6.1 Sol、DeepSeek-V4.1-Flash、Qwen |
 | Agent | 模型 + 工具 + 循环 + 目标 | Claude Code、接了工具的 DeepSeek |
-| Harness | 包住模型的整套工程 | ChatGPT 的对话层、Cline、Agent SDK |
+| Harness | 包住模型的整套工程 | ChatGPT 的对话层、Codex、Agent SDK |
 
 <img src="/images/posts/ai-model-agent-harness/deepseek-pointing.png" alt="DeepSeek 拟人形象：举起手指，敲黑板划重点" className="article-mascot-left" />
 
-　　现在再把"DeepSeek"这个词掰开，它其实有四副面孔：**深度求索**是公司（在 AI 行业里）；**R1** 是模型（文本进文本出）；**官方 App** 是产品（模型套了一层官方 harness）；**接进 Cline 里自动改代码的 R1** 是 agent（模型 + 工具 + 循环）。下次再用这个词，你知道自己在说哪一层。
+　　现在再把"DeepSeek"这个词掰开，它其实有四副面孔：**深度求索**是公司（在 AI 行业里）；**R1** 是模型（文本进文本出）；**官方 App** 是产品（模型套了一层官方 harness）；**接进 Codex 里自动改代码的 R1** 是 agent（模型 + 工具 + 循环）。下次再用这个词，你知道自己在说哪一层。
 
 　　顺手把几个邻居也分清楚：模型加对话界面是聊天助手（ChatGPT）；模型在编辑器里打字辅助是 Copilot；模型在循环里自己决策干活，才是 Agent；而 Agent 加上生产级的工程包装，才是 Claude Code、Codex 这种能签收需求的产品。
 
