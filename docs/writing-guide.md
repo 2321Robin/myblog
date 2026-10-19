@@ -56,7 +56,7 @@
 **展示（样式类已定义在 globals.css）：**
 
 - 方形立绘 `.article-mascot`（右浮动）/ `.article-mascot-left`（左浮动），左右交替；必须插在"后面还有足够正文"的位置，否则清除浮动的元素会留下一列空白；
-- 横版场景图 `.article-mascot-wide`：居中，最宽 560px；
+- 横版场景图 `.article-mascot-wide`：全宽展示，与信息图同宽；
 - 信息图：全宽展示；
 - 小屏（≤640px）立绘自动回退为居中，不环绕；
 - 纯文本伪代码块用浅色卡片（`pre.language-text`），带语法高亮的代码块保持深色。

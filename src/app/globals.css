@@ -266,7 +266,7 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid 
 .article-prose img { max-width: 100%; height: auto; border-radius: 10px; }
 .article-prose .article-mascot { float: right; max-width: min(320px, 55%); margin: 0.4rem 0 1.1rem 1.6rem; }
 .article-prose .article-mascot-left { float: left; max-width: min(320px, 55%); margin: 0.4rem 1.6rem 1.1rem 0; }
-.article-prose .article-mascot-wide { display: block; width: auto; max-width: min(560px, 100%); margin-inline: auto; }
+.article-prose .article-mascot-wide { display: block; width: auto; max-width: 100%; margin-inline: auto; }
 .article-prose h2, .article-prose h3, .article-prose pre, .article-prose table, .article-prose ul, .article-prose ol, .article-prose img { clear: both; }
 @media (max-width: 640px) { .article-prose .article-mascot, .article-prose .article-mascot-left { float: none; display: block; margin: 1rem auto; } }
 
