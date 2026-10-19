@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
   lint-and-typecheck:
@@ -16,7 +16,8 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          # npm test relies on Node's type stripping, available from 22.6
+          node-version: 22
           cache: npm
 
       - name: Install dependencies
@@ -27,6 +28,9 @@ jobs:
 
       - name: Type check
         run: npm run type-check
+
+      - name: Test
+        run: npm test
 
       - name: Build
         run: npm run build
