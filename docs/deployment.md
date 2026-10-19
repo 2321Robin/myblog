@@ -2,6 +2,16 @@
 
 日期：2026-10-18。当前状态：新版本已部署至 `https://w2321.top`，正式服务与公网检查通过。
 
+## 2026-10-20 首篇正式文章发布（《AI、模型、Agent、Harness》）
+
+- 发布目录：`/www/wwwroot/w2321.top-releases/20261019T165921Z`（systemd `20-release.conf` 已指向此目录，服务 active/enabled）。
+- 上一版本目录：`/www/wwwroot/w2321.top-releases/20261018T111207Z`，保留用于回退；回退方式为把 `20-release.conf` 中的时间戳改回 `20261018T111207Z` 后 `daemon-reload` 并重启服务。
+- 源码包：`/root/myblog-deploy/myblog-20261019T165921Z.tar.gz`，SHA-256 `5911de36d6c13a1fe0a36dbffdd0dd2b98dd74496c6950aa7bcba54faac5d408`，本机与服务器核对一致。
+- 内容变化：发布《AI、模型、Agent、Harness：四个词到底什么关系？》；`hello-world.mdx`、`next-roadmap.mdx` 下线（对应路由 404）；全部配图转为 WebP（21.5MB→1.3MB）；博客新增 dev-only 本地编辑器与【】标注工作流（均不进入生产构建）。
+- 服务器流程按 runbook 执行：解压后以 `www` 用户 `npm ci`（发布目录独立缓存）、`SITE_URL=https://w2321.top` 生产构建、ESLint / 类型检查 / 6 项测试通过；3011 预览通过 `check-site` 全部路由；切换 `20-release.conf` 重启后，服务器 `127.0.0.1:3010` 与本机公网 `https://w2321.top` 双向通过全部检查（含 gzip/identity 缓存变体）。
+- 专项确认：新文章 `/blog/ai-model-agent-harness` 公网可访问且 RSS 已收录；`/blog/hello-world`、`/blog/next-roadmap` 公网返回 404；WebP 图片（`image/webp`）公网正常。
+- 注意：`scripts/check-site.mjs` 的路由清单已随文章上下线更新，后续发布新增/下线文章时同样需要维护该清单。
+
 ## 运行方式
 
 - 正式域名：`https://w2321.top`。
