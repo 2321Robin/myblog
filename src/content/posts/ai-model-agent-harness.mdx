@@ -5,7 +5,7 @@ export const metadata = {
   summary:
     "从英伟达创纪录的单日蒸发说起：用 DeepSeek、ChatGPT、智能音箱这些你熟得不能再熟的东西，把 AI、模型、Agent、Harness 四个词一次分清。",
   tags: ["ai", "agent", "concepts"],
-  cover: "/images/posts/ai-model-agent-harness/concept-map.png",
+  cover: "/images/posts/ai-model-agent-harness/concept-map.webp",
 };
 
 # AI、模型、Agent、Harness：四个词到底什么关系？
@@ -14,7 +14,7 @@ export const metadata = {
 
 　　2025 年 1 月 27 日，英伟达股价单日暴跌约 17%，市值蒸发近 6000 亿美元，创下当时美股历史最大单日市值损失。引发市场震动的关键因素之一，是一家杭州公司几天前刚开源的模型——DeepSeek-R1：它让投资者重新评估，高水平 AI 是否一定要靠此前设想的巨额算力投入。
 
-<img src="/images/posts/ai-model-agent-harness/deepseek-typing.png" alt="DeepSeek 拟人形象：趴在印有蓝鲸标志的笔记本前打字" className="article-mascot" />
+<img src="/images/posts/ai-model-agent-harness/deepseek-typing.webp" alt="DeepSeek 拟人形象：趴在印有蓝鲸标志的笔记本前打字" className="article-mascot" />
 
 　　那几天，连我家的家族群都在转"DeepSeek 爆了"。但听得多了，你会发现一个有意思的现象：同一个人嘴里的"DeepSeek"，前一句指手机里那个 App，后一句指模型本身，再后一句又变成了"用 DeepSeek 帮我写周报的那个智能体"。
 
@@ -22,7 +22,7 @@ export const metadata = {
 
 　　先给一句粗略的关系判断：AI 是一个研究领域，模型提供能力；模型在 Harness 提供的运行机制支持下，可以组成能够自主推进任务的 Agent。全篇就按这条线讲，先上地图：
 
-![四个概念的关系：AI 是研究领域；大语言模型提供理解与生成能力；Harness 提供工具、上下文管理与运行控制；模型与这些机制共同组成能够自主推进任务的 Agent](/images/posts/ai-model-agent-harness/concept-map.png)
+![四个概念的关系：AI 是研究领域；大语言模型提供理解与生成能力；Harness 提供工具、上下文管理与运行控制；模型与这些机制共同组成能够自主推进任务的 Agent](/images/posts/ai-model-agent-harness/concept-map.webp)
 
 ## AI：一个 70 岁还在出爆款的老学科
 
@@ -47,7 +47,7 @@ export const metadata = {
 
 　　模型是怎么来的？粗看是一条从"人教机器"到"机器自学"的技术脉络：
 
-![AI 技术脉络：规则与专家系统、机器学习、深度学习、大语言模型四个方法族及各自代表性里程碑；机器学习包含深度学习，主流大语言模型采用深度学习，规则系统可与学习方法组合使用；所列年份为代表性事件，不代表方法的诞生时间，这些方法长期并存](/images/posts/ai-model-agent-harness/model-evolution.png)
+![AI 技术脉络：规则与专家系统、机器学习、深度学习、大语言模型四个方法族及各自代表性里程碑；机器学习包含深度学习，主流大语言模型采用深度学习，规则系统可与学习方法组合使用；所列年份为代表性事件，不代表方法的诞生时间，这些方法长期并存](/images/posts/ai-model-agent-harness/model-evolution.webp)
 
 　　先把关系摆清：深度学习属于机器学习，当下主流大语言模型采用的正是深度学习；写规则的系统今天也还在大量服役，可以与这些方法配合使用。最早是**写规则**（专家系统）：把专家知识一条条录进机器，规则之外一概不会。然后是**机器学习**：别教答案了，给它看例子，让它自己学个函数出来。
 
@@ -57,7 +57,7 @@ export const metadata = {
 
 　　2022 年 11 月 30 日，ChatGPT 上线，五天内注册用户破百万；据 UBS 基于 Similarweb 数据的估算，到 2023 年 1 月，月活跃用户已约达一亿。这里又是一个容易踩的坑：**ChatGPT 不是模型**——从早期的 GPT-3.5、GPT-4o，到如今的 GPT-6 Astra、GPT-6.1 Sol，这些才是模型，ChatGPT 是 OpenAI 给模型套上的对话产品。发动机不等于汽车，就是这个区别。
 
-<img src="/images/posts/ai-model-agent-harness/deepseek-reach.png" alt="DeepSeek 拟人形象：拼命伸手去够一张悬浮的文档，却怎么也够不着" className="article-mascot-left" />
+<img src="/images/posts/ai-model-agent-harness/deepseek-reach.webp" alt="DeepSeek 拟人形象：拼命伸手去够一张悬浮的文档，却怎么也够不着" className="article-mascot-left" />
 
 　　那模型的本体到底是什么？**一大团参数构成的函数：给它输入，它算出输出。** 本文拿大语言模型举例，所以是文本进、文本出；其实模型也能看图、听声——V4.1-Flash 就带原生视觉理解——但"输入是什么"和"能访问什么"，是两个不同的问题。训练让它学会了语言、代码和海量知识，可"学过"不等于"够得着"：你问它"现在几点"，它只能连蒙带猜；让它看看你桌面上那份报告，它连你的桌面在哪儿都够不着——读文件、跑程序，得靠外部系统给它工具和权限。
 
@@ -67,7 +67,7 @@ export const metadata = {
 
 　　做个小实验：对着小爱同学、天猫精灵这类主要依靠预设技能工作的传统智能音箱说——"帮我把这个月的账单整理成表格，发给老婆。"它大概率会答非所问，或者给你放一首《老婆最大》。
 
-<img src="/images/posts/ai-model-agent-harness/deepseek-speaker.png" alt="DeepSeek 拟人形象：盯着智能音箱满脸问号" className="article-mascot" />
+<img src="/images/posts/ai-model-agent-harness/deepseek-speaker.webp" alt="DeepSeek 拟人形象：盯着智能音箱满脸问号" className="article-mascot" />
 
 　　音箱能"听懂指令"和"执行技能"，但账单这个任务它接不住。按最宽的定义，它也算 agent——能感知环境，也能对环境产生作用。不过本文要聊的，是**由大模型自主推进任务的那种 Agent**：判断关键在于，下一步是模型自己根据反馈决定的，还是预设流程安排好的。如果一个传统音箱只是识别意图、调用预设技能，它就更像一个语音遥控器，还不具备本文讨论的自主任务执行能力。
 
@@ -80,7 +80,7 @@ export const metadata = {
 - 2023 年春天，AutoGPT 让"模型自行拆解目标、调用工具、反复尝试"的演示火遍全网。但演示离可靠交付还有距离：目标可能迟迟无法完成，连续调用又会不断产生费用——项目早期文档也明确提醒，它仍是实验，运行成本需要监控。热闹散场，所有人记住的是同一件事：**光有模型和工具还不够，缺的是工程。**
 - 2023 年 6 月，OpenAI 把 function calling 做成 API 标准能力，从此"模型报工具名和参数，程序负责执行"成了通用模式。
 
-<img src="/images/posts/ai-model-agent-harness/deepseek-burning-bill.png" alt="DeepSeek 拟人形象：抱着一张烧焦冒烟的超长 API 账单，脚下散落更多冒烟账单" className="article-mascot-wide" />
+<img src="/images/posts/ai-model-agent-harness/deepseek-burning-bill.webp" alt="DeepSeek 拟人形象：抱着一张烧焦冒烟的超长 API 账单，脚下散落更多冒烟账单" className="article-mascot-wide" />
 
 　　这个循环写出来就这么几行：
 
@@ -93,7 +93,7 @@ while (目标未完成) {
 }
 ```
 
-![Agent 循环：目标交给模型，模型决定行动、调用工具，环境结果写回上下文；未完成就继续，已完成才交付](/images/posts/ai-model-agent-harness/agent-loop.png)
+![Agent 循环：目标交给模型，模型决定行动、调用工具，环境结果写回上下文；未完成就继续，已完成才交付](/images/posts/ai-model-agent-harness/agent-loop.webp)
 
 　　同一个模型，装不装进这个循环，体验天差地别。还拿 DeepSeek 举例：只在官网聊天、没有开放本地访问权限时，它不能主动浏览你的代码目录；接入具备文件和终端工具的编码 Agent 后，它才可以在授权范围内读取代码、修改文件、运行测试。**模型没换，换的是它有没有被装进那个自己决定下一步的循环。**
 
@@ -111,13 +111,13 @@ while (目标未完成) {
 - 用 **Ollama** 把它拉到本地，再套个 **Open WebUI**：这套界面、参数和配置，就是你亲手搭的；
 - 把它的 API 接进 **Codex、OpenCode、ZCode** 这类编码工具：它又成了别人家 agent 里的引擎。
 
-<img src="/images/posts/ai-model-agent-harness/deepseek-outfits.png" alt="同一只 DeepSeek 拟人形象的三套装扮：官网聊天、本地部署、编码 Agent" className="article-mascot-wide" />
+<img src="/images/posts/ai-model-agent-harness/deepseek-outfits.webp" alt="同一只 DeepSeek 拟人形象的三套装扮：官网聊天、本地部署、编码 Agent" className="article-mascot-wide" />
 
 　　模型是同一只，体验天差地别。不过先打个补丁：官网、本地部署和 API 用的未必是同一个版本、同一种量化精度，比较前先确认引擎是不是同一台。在把模型配置对齐之后，外围系统给的提示词、工具、上下文管理和权限，仍然会明显改变体验。这层包在模型外面、决定它怎么干活的东西，就是 Harness（马具）。**Harness 是模型权重之外、组织模型运行的那部分系统；它可以由深度求索官方提供，也可以由第三方开发。**
 
 　　这个词不是哪份标准文件钦定的，而是社区里叫开的习惯：在模型评测中，EleutherAI 的 [lm-evaluation-harness](https://github.com/EleutherAI/lm-evaluation-harness) 就用它指代统一组织评测任务、对接不同模型的框架，同一套框架套在不同模型外面跑分；编码智能体兴起后，"agent harness"也成了常见说法。本文用它指：**包住模型、支撑它持续执行任务的工具、上下文管理与运行控制机制。**
 
-![Harness 解剖图：模型是引擎，四周环绕着系统提示词、上下文工程、权限与沙箱、工具层、子 Agent 编排和错误恢复，外围是文件系统、终端、浏览器等环境边界](/images/posts/ai-model-agent-harness/harness-anatomy.png)
+![Harness 解剖图：模型是引擎，四周环绕着系统提示词、上下文工程、权限与沙箱、工具层、子 Agent 编排和错误恢复，外围是文件系统、终端、浏览器等环境边界](/images/posts/ai-model-agent-harness/harness-anatomy.webp)
 
 　　一个编码 agent 的 harness 里大致装着：系统提示词（角色、规范、安全边界）、工具层（读写文件、跑命令、搜索）、主循环（结果回填、决定下一步）、上下文工程（历史裁剪、摘要、记忆文件）、权限与沙箱（什么自动做、什么先问人）、子 Agent 编排（把大任务分给小 agent）、错误恢复（重试、中断、回滚），还有记录与评测（轨迹、成本、回放）。每一项单拎出来都不性感，合在一起却决定了"同一个模型能不能真的干活"。
 
@@ -136,7 +136,7 @@ while (目标未完成) {
 | Agent | 模型自主决定下一步，配工具、循环、目标 | Claude Code、接了工具的 DeepSeek |
 | Harness | 包住模型的工具、上下文与运行控制机制 | Claude Agent SDK；Codex 中的工具、上下文管理与执行控制机制 |
 
-<img src="/images/posts/ai-model-agent-harness/deepseek-pointing.png" alt="DeepSeek 拟人形象：举起手指，敲黑板划重点" className="article-mascot-left" />
+<img src="/images/posts/ai-model-agent-harness/deepseek-pointing.webp" alt="DeepSeek 拟人形象：举起手指，敲黑板划重点" className="article-mascot-left" />
 
 　　现在再把"DeepSeek"这个词掰开：**深度求索**是公司（在 AI 行业里）；**R1** 是模型（给它输入，它生成输出）；**官方 App** 是产品（模型套了一层官方 harness）；而把 **V4.1-Flash** 接入 Codex、配上工具与自主执行循环，得到的则是一套 Agent 系统（模型自主决策 + 工具 + 循环）。下次再用这个词，你知道自己在说哪一层。
 
@@ -150,7 +150,7 @@ while (目标未完成) {
 
 　　最后照例说句题外话：这篇从大纲、配图到成文，是一个人、一个模型和一套 harness 协作的产物——写它的 agent，也没能逃出本文的任何一条定义。
 
-<img src="/images/posts/ai-model-agent-harness/deepseek-farewell.png" alt="DeepSeek 拟人形象：合上印有小蓝鲸标志的笔记本电脑，对镜头竖起大拇指" className="article-mascot-wide" />
+<img src="/images/posts/ai-model-agent-harness/deepseek-farewell.webp" alt="DeepSeek 拟人形象：合上印有小蓝鲸标志的笔记本电脑，对镜头竖起大拇指" className="article-mascot-wide" />
 
 ## 七十年大事记
 

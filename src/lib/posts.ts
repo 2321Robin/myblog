@@ -46,9 +46,10 @@ function extractHeadingsFromSource(source: string): Heading[] {
 }
 
 function computeReadingTimeMinutes(source: string) {
-  const cleaned = source.replace(/```[\s\S]*?```/g, " ");
-  const words = cleaned.trim().split(/\s+/).filter(Boolean).length;
-  return Math.max(1, Math.ceil(words / 200));
+  const cleaned = source.replace(/```[\s\S]*?```/g, " ").replace(/<img[^>]*>/g, " ");
+  const cjkChars = (cleaned.match(/[\u4e00-\u9fff]/g) ?? []).length;
+  const latinWords = (cleaned.match(/[A-Za-z0-9]+(?:[-'’][A-Za-z0-9]+)*/g) ?? []).length;
+  return Math.max(1, Math.ceil(cjkChars / 400 + latinWords / 200));
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
