@@ -1,88 +1,86 @@
 export const metadata = {
-  title: "AI、模型、Agent、Harness:四个词到底什么关系?",
+  title: "AI、模型、Agent、Harness：四个词到底什么关系？",
   slug: "ai-model-agent-harness",
   date: "2026-10-19",
   summary:
-    "从英伟达史上最大单日蒸发说起:用 DeepSeek、ChatGPT、智能音箱这些你熟得不能再熟的东西,把 AI、模型、Agent、Harness 四个词一次分清。",
+    "从英伟达史上最大单日蒸发说起：用 DeepSeek、ChatGPT、智能音箱这些你熟得不能再熟的东西，把 AI、模型、Agent、Harness 四个词一次分清。",
   tags: ["ai", "agent", "concepts"],
   cover: "/images/posts/ai-model-agent-harness/concept-map.png",
 };
 
-# AI、模型、Agent、Harness:四个词到底什么关系?
+# AI、模型、Agent、Harness：四个词到底什么关系？
 
 ## 先从一场股灾说起
 
-2025 年 1 月 27 日,英伟达股价单日暴跌约 17%,市值蒸发近 6000 亿美元,创下当时美股历史最大单日市值损失。肇事者不是什么金融危机,而是一家杭州公司几天前刚开源的模型——DeepSeek-R1。
+　　2025 年 1 月 27 日，英伟达股价单日暴跌约 17%，市值蒸发近 6000 亿美元，创下当时美股历史最大单日市值损失。肇事者不是什么金融危机，而是一家杭州公司几天前刚开源的模型——DeepSeek-R1。
 
-那几天,连我家的家族群都在转"DeepSeek 爆了"。但听得多了,你会发现一个有意思的现象:同一个人嘴里的"DeepSeek",前一句指手机里那个 App,后一句指模型本身,再后一句又变成了"用 DeepSeek 帮我写周报的那个智能体"。
+<img src="/images/posts/ai-model-agent-harness/deepseek-typing.png" alt="DeepSeek 拟人形象：趴在印有蓝鲸标志的笔记本前打字" className="article-mascot" />
 
-<img src="/images/posts/ai-model-agent-harness/deepseek-typing.png" alt="DeepSeek 拟人形象:趴在印有蓝鲸标志的笔记本前打字" className="article-mascot" />
+　　那几天，连我家的家族群都在转"DeepSeek 爆了"。但听得多了，你会发现一个有意思的现象：同一个人嘴里的"DeepSeek"，前一句指手机里那个 App，后一句指模型本身，再后一句又变成了"用 DeepSeek 帮我写周报的那个智能体"。
 
-这真不能怪大家。AI、模型、Agent、Harness,这四个词本来就长在完全不同的层面上,却天天被当成同义词搅在一起。这篇文章就把它们放回各自的历史里,一个一个拆开——顺便回答开头埋下的问题:你说的 DeepSeek,到底是哪个 DeepSeek?
+　　这真不能怪大家。AI、模型、Agent、Harness，这四个词本来就长在完全不同的层面上，却天天被当成同义词搅在一起。这篇文章就把它们放回各自的历史里，一个一个拆开——顺便回答开头埋下的问题：你说的 DeepSeek，到底是哪个 DeepSeek？
 
-先上全篇的地图,后文就按这条线讲:
+　　先上全篇的地图，后文就按这条线讲：
 
-![四个概念的关系:AI 学科一路收窄出大语言模型,模型装进 Agent,Agent 外面再包一层 Harness,最后作用于真实环境](/images/posts/ai-model-agent-harness/concept-map.png)
+![四个概念的关系：AI 学科一路收窄出大语言模型，模型装进 Agent，Agent 外面再包一层 Harness，最后作用于真实环境](/images/posts/ai-model-agent-harness/concept-map.png)
 
-一句话剧透:**AI 是一门学科,模型是大脑,Agent 是会干活的员工,Harness 是包在外面的整套装备。**
+　　一句话剧透：**AI 是一门学科，模型是大脑，Agent 是会干活的员工，Harness 是包在外面的整套装备。**
 
-## AI:一个 70 岁还在出爆款的老学科
+## AI：一个 70 岁还在出爆款的老学科
 
-1950 年,图灵发表[《Computing Machinery and Intelligence》](https://doi.org/10.1093/mind/LIX.236.433),没跟人争论"机器能不能思考"这种哲学问题,而是换了个可操作的判法:如果你在对话里分不清对面是人还是机器,那该不该承认它在思考?这就是图灵测试。
+　　1950 年，图灵发表[《Computing Machinery and Intelligence》](https://doi.org/10.1093/mind/LIX.236.433)，没跟人争论"机器能不能思考"这种哲学问题，而是换了个可操作的判法：如果你在对话里分不清对面是人还是机器，那该不该承认它在思考？这就是图灵测试。
 
-顺便说个你天天都在参与的冷知识:今天的验证码,本质上是一场**反向图灵测试**——只不过这回是机器在验证"你是人"。图灵 70 年前设想的那种人机边界测试,就这么润物细无声地进了每个人的生活。
+　　顺便说个你天天都在参与的冷知识：今天的验证码，本质上是一场**反向图灵测试**——只不过这回是机器在验证"你是人"。图灵 70 年前设想的那种人机边界测试，就这么润物细无声地进了每个人的生活。
 
-"Artificial Intelligence"这个名字,要到 1956 年的达特茅斯夏季研讨会才被造出来([项目提案](https://dl.acm.org/doi/10.1145/365866.365868)上署名的还有信息论之父香农)。说起来有趣:这场被奉为创世的会议本身没产出什么惊人成果,但它给这个领域起了名字。起名这件事,从来都很重要。
+　　"Artificial Intelligence"这个名字，要到 1956 年的达特茅斯夏季研讨会才被造出来（[项目提案](https://dl.acm.org/doi/10.1145/365866.365868)上署名的还有信息论之父香农）。说起来有趣：这场被奉为创世的会议本身没产出什么惊人成果，但它给这个领域起了名字。起名这件事，从来都很重要。
 
-之后七十年的主线,可以概括成两条路线的接力:
+　　之后七十年的主线，可以概括成两条路线的接力：
 
-- **符号主义**(人写规则):1997 年深蓝击败国际象棋世界冠军卡斯帕罗夫,是这条路线的巅峰。但深蓝赢棋的办法说穿了并不优雅——暴力穷举加上人类棋手手写的评估函数,一台"下了魔的国际象棋专用超算"。
-- **连接主义**(长神经网络):2016 年 AlphaGo 战胜李世石,靠的是深度神经网络加强化学习,自己跟自己下了几百万盘棋。同年年底它的升级版 Master 在网上横扫 60 连胜,2017 年柯洁 0:3 认输后当场落泪。同一目标,换了一条路线,20 年后彻底走通。
+- **符号主义**（人写规则）：1997 年深蓝击败国际象棋世界冠军卡斯帕罗夫，是这条路线的巅峰。但深蓝赢棋的办法说穿了并不优雅——暴力穷举加上人类棋手手写的评估函数，一台"下了魔的国际象棋专用超算"。
+- **连接主义**（长神经网络）：2016 年 AlphaGo 战胜李世石，靠的是深度神经网络加强化学习，自己跟自己下了几百万盘棋。同年年底它的升级版 Master 在网上横扫 60 连胜，2017 年柯洁 0:3 认输后当场落泪。同一目标，换了一条路线，20 年后彻底走通。
 
-中间还夹着两次"AI 寒冬"(约 1974–1980、1987–1993),剧情都一样:牛皮吹出去了,兑现不了,经费撤了,全场冷却。
+　　中间还夹着两次"AI 寒冬"（约 1974–1980、1987–1993），剧情都一样：牛皮吹出去了，兑现不了，经费撤了，全场冷却。
 
-**记住这一句:AI 不是一样东西,是一个目标——"让机器表现出智能"。七十年里实现手段换了四代,目标本身没变过。**
+　　**记住这一句：AI 不是一样东西，是一个目标——"让机器表现出智能"。七十年里实现手段换了四代，目标本身没变过。**
 
-## 模型:DeepSeek 到底是"谁"?
+## 模型：DeepSeek 到底是"谁"?
 
-现在回答前面的问题。严格来说,"DeepSeek"是一家公司(深度求索,2023 年成立);2024 年 12 月的 V3、2025 年 1 月的 R1,才是"模型";你手机里那个蓝鲸图标的 App,是模型外面套的一层**产品**。公司、模型、产品,三层东西共用一个名字,混用的噩梦从这儿就开始了。
+　　现在回答前面的问题。严格来说，"DeepSeek"是一家公司（深度求索，2023 年成立）；2024 年 12 月的 V3、2025 年 1 月的 R1，才是"模型"；你手机里那个蓝鲸图标的 App，是模型外面套的一层**产品**。公司、模型、产品，三层东西共用一个名字，混用的噩梦从这儿就开始了。
 
-<img src="/images/posts/ai-model-agent-harness/deepseek-pointing.png" alt="DeepSeek 拟人形象:举起手指,敲黑板划重点" className="article-mascot" />
+　　模型是怎么来的？四步演变：
 
-模型是怎么来的?四步演变:
+![模型演变四阶段：写规则的专家系统、机器学习、深度学习、大语言模型](/images/posts/ai-model-agent-harness/model-evolution.png)
 
-![模型演变四阶段:写规则的专家系统、机器学习、深度学习、大语言模型](/images/posts/ai-model-agent-harness/model-evolution.png)
+　　最早是**写规则**：把专家知识一条条录进机器，规则之外一概不会。然后是**机器学习**：别教答案了，给它看例子，让它自己学个函数出来。接着**深度学习**把这件事推到极致——2012 年 AlexNet 在图像识别大赛上把错误率大幅甩开对手，从此连"看哪些特征"都交给多层网络自己学，人只管喂数据、堆显卡。最后是**大语言模型**：2017 年 Google 那篇[《Attention Is All You Need》](https://arxiv.org/abs/1706.03762)提出 Transformer 架构，2020 年[规模定律](https://arxiv.org/abs/2001.08361)又发现模型能力随参数和数据规模可预测地增长——"大力出奇迹"从玄学变成了工程学，1750 亿参数的 [GPT-3](https://arxiv.org/abs/2005.14165) 就是这份底气的展示品。
 
-最早是**写规则**:把专家知识一条条录进机器,规则之外一概不会。然后是**机器学习**:别教答案了,给它看例子,让它自己学个函数出来。接着**深度学习**把这件事推到极致——2012 年 AlexNet 在图像识别大赛上把错误率大幅甩开对手,从此连"看哪些特征"都交给多层网络自己学,人只管喂数据、堆显卡。最后是**大语言模型**:2017 年 Google 那篇[《Attention Is All You Need》](https://arxiv.org/abs/1706.03762)提出 Transformer 架构,2020 年[规模定律](https://arxiv.org/abs/2001.08361)又发现模型能力随参数和数据规模可预测地增长——"大力出奇迹"从玄学变成了工程学,1750 亿参数的 [GPT-3](https://arxiv.org/abs/2005.14165) 就是这份底气的展示品。
+　　2022 年 11 月 30 日，ChatGPT 上线，五天百万用户，两个月破亿。这里又是一个容易踩的坑：**ChatGPT 不是模型**——GPT-3.5、GPT-4o 这些才是模型，ChatGPT 是 OpenAI 给模型套上的对话产品。发动机不等于汽车，就是这个区别。
 
-2022 年 11 月 30 日,ChatGPT 上线,五天百万用户,两个月破亿。这里又是一个容易踩的坑:**ChatGPT 不是模型**——GPT-3.5、GPT-4o 这些才是模型,ChatGPT 是 OpenAI 给模型套上的对话产品。发动机不等于汽车,就是这个区别。
+<img src="/images/posts/ai-model-agent-harness/deepseek-reach.png" alt="DeepSeek 拟人形象：拼命伸手去够一张悬浮的文档，却怎么也够不着" className="article-mascot-left" />
 
-那模型的本体到底是什么?一句话:**一大团参数构成的函数,文本进,文本出。** 它读遍了整个互联网,聊天、写代码、做翻译样样精通——但它没有手。你问它"现在几点",它只能连蒙带猜;让它看看你桌面上那份报告,它连你的桌面在哪儿都够不着。
+　　那模型的本体到底是什么？一句话：**一大团参数构成的函数，文本进，文本出。** 它读遍了整个互联网，聊天、写代码、做翻译样样精通——但它没有手。你问它"现在几点"，它只能连蒙带猜；让它看看你桌面上那份报告，它连你的桌面在哪儿都够不着。
 
-<img src="/images/posts/ai-model-agent-harness/deepseek-reach.png" alt="DeepSeek 拟人形象:拼命伸手去够一张悬浮的文档,却怎么也够不着" className="article-mascot" />
+　　聪明，但没有手。这个伏笔，下一节收。
 
-聪明,但没有手。这个伏笔,下一节收。
+## Agent：为什么你家音箱不是 Agent？
 
-## Agent:为什么你家音箱不是 Agent?
+　　做个小实验：对着小爱同学、天猫精灵或者任何一个智能音箱说——"帮我把这个月的账单整理成表格，发给老婆。"它大概率会答非所问，或者给你放一首《老婆最大》。
 
-做个小实验:对着小爱同学、天猫精灵或者任何一个智能音箱说——"帮我把这个月的账单整理成表格,发给老婆。"它大概率会答非所问,或者给你放一首《老婆最大》。
+<img src="/images/posts/ai-model-agent-harness/deepseek-speaker.png" alt="DeepSeek 拟人形象：盯着智能音箱满脸问号" className="article-mascot" />
 
-<img src="/images/posts/ai-model-agent-harness/deepseek-speaker.png" alt="DeepSeek 拟人形象:盯着智能音箱满脸问号" className="article-mascot" />
+　　智能音箱能"听懂指令"和"执行技能"，但它不会把一个大任务拆成小步骤、自己决定先干什么后干什么、干错了换个法子再来。它没有循环，没有自主决策。所以它不是 Agent，顶多算一个语音遥控器。
 
-智能音箱能"听懂指令"和"执行技能",但它不会把一个大任务拆成小步骤、自己决定先干什么后干什么、干错了换个法子再来。它没有循环,没有自主决策。所以它不是 Agent,顶多算一个语音遥控器。
+　　Agent 这个词，其实比大模型老得多。它来自拉丁语 *agere*,"去做"。1995 年 Russell 和 Norvig 的经典教材里给过定义：**能感知环境、并能对环境产生作用的，都是 agent**。强化学习领域更是把"agent–环境循环"用了几十年：agent 观察状态、做出动作、环境给反馈，循环往复——AlphaGo 就是在这个循环里练出来的。
 
-Agent 这个词,其实比大模型老得多。它来自拉丁语 *agere*,"去做"。1995 年 Russell 和 Norvig 的经典教材里给过定义:**能感知环境、并能对环境产生作用的,都是 agent**。强化学习领域更是把"agent–环境循环"用了几十年:agent 观察状态、做出动作、环境给反馈,循环往复——AlphaGo 就是在这个循环里练出来的。
+　　大模型登场后，戏剧性的一幕出现了：模型自己会"说"了，但依然不会"做"。于是人们把强化学习里那个现成的循环直接搬过来，给模型挂上工具：
 
-大模型登场后,戏剧性的一幕出现了:模型自己会"说"了,但依然不会"做"。于是人们把强化学习里那个现成的循环直接搬过来,给模型挂上工具:
+- 2022 年 10 月，[ReAct](https://arxiv.org/abs/2210.03629) 论文让模型"想一步、动一步"：推理和行动交替进行；
+- 2023 年 2 月，[Toolformer](https://arxiv.org/abs/2302.04761) 展示模型能在训练中学会自己插 API 调用；
+- 2023 年 6 月，OpenAI 把 function calling 做成 API 标准能力，从此"模型报工具名和参数，程序负责执行"成了通用模式；
+- 2023 年春天，AutoGPT 火遍全网——普通人第一次看见"模型自己拆任务、自己找工具、自己迭代"，也第一次看见它翻车：给它定个"赚钱"目标，它真能自己写邮件、自己建项目，一晚上烧掉可观的 API 费，最后一事无成。热闹散场后，所有人记住了同一件事：**光有模型和工具还不够，缺的是工程。**
 
-- 2022 年 10 月,[ReAct](https://arxiv.org/abs/2210.03629) 论文让模型"想一步、动一步":推理和行动交替进行;
-- 2023 年 2 月,[Toolformer](https://arxiv.org/abs/2302.04761) 展示模型能在训练中学会自己插 API 调用;
-- 2023 年 6 月,OpenAI 把 function calling 做成 API 标准能力,从此"模型报工具名和参数,程序负责执行"成了通用模式;
-- 2023 年春天,AutoGPT 火遍全网——普通人第一次看见"模型自己拆任务、自己找工具、自己迭代",也第一次看见它翻车:给它定个"赚钱"目标,它真能自己写邮件、自己建项目,一晚上烧掉可观的 API 费,最后一事无成。热闹散场后,所有人记住了同一件事:**光有模型和工具还不够,缺的是工程。**
+<img src="/images/posts/ai-model-agent-harness/deepseek-burning-bill.png" alt="DeepSeek 拟人形象：抱着一张烧焦冒烟的超长 API 账单，脚下散落更多冒烟账单" className="article-mascot-wide" />
 
-<img src="/images/posts/ai-model-agent-harness/deepseek-burning-bill.png" alt="DeepSeek 拟人形象:抱着一张烧焦冒烟的超长 API 账单,脚下散落更多冒烟账单" className="article-mascot-wide" />
-
-这个循环写出来就这么几行:
+　　这个循环写出来就这么几行：
 
 ```text
 while (目标未完成) {
@@ -93,52 +91,54 @@ while (目标未完成) {
 }
 ```
 
-![Agent 循环:目标交给模型,模型决定行动,工具执行,结果写回上下文,循环直到完成](/images/posts/ai-model-agent-harness/agent-loop.png)
+![Agent 循环：目标交给模型，模型决定行动，工具执行，结果写回上下文，循环直到完成](/images/posts/ai-model-agent-harness/agent-loop.png)
 
-同一个模型,装不装进这个循环,体验天差地别。还拿 DeepSeek 举例:在官网聊天框里,它连你电脑的一个文件都碰不到;把它的 API 接进 Cline 这类编码工具,它就能自己读你的代码、自己改文件、自己跑测试。**模型没换,换的是它有没有被装进"模型 + 工具 + 循环"。**
+　　同一个模型，装不装进这个循环，体验天差地别。还拿 DeepSeek 举例：在官网聊天框里，它连你电脑的一个文件都碰不到；把它的 API 接进 Cline 这类编码工具，它就能自己读你的代码、自己改文件、自己跑测试。**模型没换，换的是它有没有被装进"模型 + 工具 + 循环"。**
 
-2024 年底,Anthropic 在[《Building effective agents》](https://www.anthropic.com/engineering/building-effective-agents)里给过一组至今被反复引用的辨析:代码写死的流程叫 workflow,模型只是流水线上的工人;模型自己在循环里决定下一步怎么干,才叫 agent。他们的建议也很实在:能简单就别复杂,大多数活儿,编排好的 workflow 就够用。
+　　2024 年底，Anthropic 在[《Building effective agents》](https://www.anthropic.com/engineering/building-effective-agents)里给过一组至今被反复引用的辨析：代码写死的流程叫 workflow，模型只是流水线上的工人；模型自己在循环里决定下一步怎么干，才叫 agent。他们的建议也很实在：能简单就别复杂，大多数活儿，编排好的 workflow 就够用。
 
-**记住这一句:Agent = 模型 + 工具 + 循环 + 目标。模型负责想,工具负责做,循环负责连,目标负责停。**
+　　**记住这一句：Agent = 模型 + 工具 + 循环 + 目标。模型负责想，工具负责做，循环负责连，目标负责停。**
 
-## Harness:同一只 DeepSeek,为什么处处不一样?
+## Harness：同一只 DeepSeek，为什么处处不一样？
 
-终于可以正面回答"DeepSeek 和 Harness 是什么关系"了。
+　　终于可以正面回答"DeepSeek 和 Harness 是什么关系"了。
 
-R1 是开源模型,谁都能下载。于是同一只模型,活在了好几套完全不同的"装备"里:
+　　R1 是开源模型，谁都能下载。于是同一只模型，活在了好几套完全不同的"装备"里：
 
-- 在**官网或 App** 里聊:背后是深度求索官方做的对话系统;
-- 用 **Ollama** 把它拉到本地,再套个 **Open WebUI**:这套界面、参数和配置,就是你亲手搭的;
-- 把它的 API 接进 **Cline、Cursor** 这类编码工具:它又成了别人家 agent 里的引擎。
+- 在**官网或 App** 里聊：背后是深度求索官方做的对话系统；
+- 用 **Ollama** 把它拉到本地，再套个 **Open WebUI**：这套界面、参数和配置，就是你亲手搭的；
+- 把它的 API 接进 **Cline、Cursor** 这类编码工具：它又成了别人家 agent 里的引擎。
 
-<img src="/images/posts/ai-model-agent-harness/deepseek-outfits.png" alt="同一只 DeepSeek 拟人形象的三套装扮:官网聊天、本地部署、编码 Agent" className="article-mascot-wide" />
+<img src="/images/posts/ai-model-agent-harness/deepseek-outfits.png" alt="同一只 DeepSeek 拟人形象的三套装扮：官网聊天、本地部署、编码 Agent" className="article-mascot-wide" />
 
-模型是同一只,体验天差地别。差别不在模型,全在外围那层东西给了它什么提示词、什么工具、什么权限。这层东西,就是 Harness(马具)。**Harness 不是 DeepSeek 的一部分,而是包在 DeepSeek 外面的那一部分。**
+　　模型是同一只，体验天差地别。差别不在模型，全在外围那层东西给了它什么提示词、什么工具、什么权限。这层东西，就是 Harness（马具）。**Harness 不是 DeepSeek 的一部分，而是包在 DeepSeek 外面的那一部分。**
 
-这个词最早在评测圈用开:EleutherAI 的 [lm-evaluation-harness](https://github.com/EleutherAI/lm-evaluation-harness) 把"模型"和"怎么测模型"拆开,同一套框架能套在任何模型外面跑分。到 2025 年编码智能体爆发,"agent harness"成了行业标准叫法:包住模型、让它真正能干活的整套工程。
+　　这个词最早在评测圈用开：EleutherAI 的 [lm-evaluation-harness](https://github.com/EleutherAI/lm-evaluation-harness) 把"模型"和"怎么测模型"拆开，同一套框架能套在任何模型外面跑分。到 2025 年编码智能体爆发，"agent harness"成了行业标准叫法：包住模型、让它真正能干活的整套工程。
 
-![Harness 解剖图:系统提示词、上下文工程、权限与沙箱、子 Agent 编排、工具层、主循环、错误恢复、记录与评测、环境边界](/images/posts/ai-model-agent-harness/harness-anatomy.png)
+![Harness 解剖图：系统提示词、上下文工程、权限与沙箱、子 Agent 编排、工具层、主循环、错误恢复、记录与评测、环境边界](/images/posts/ai-model-agent-harness/harness-anatomy.png)
 
-一个编码 agent 的 harness 里大致装着:系统提示词(角色、规范、安全边界)、工具层(读写文件、跑命令、搜索)、主循环(结果回填、决定下一步)、上下文工程(历史裁剪、摘要、记忆文件)、权限与沙箱(什么自动做、什么先问人)、错误恢复(重试、中断、回滚),还有记录与评测(轨迹、成本、回放)。每一项单拎出来都不性感,合在一起却决定了"同一个模型能不能真的干活"。
+　　一个编码 agent 的 harness 里大致装着：系统提示词（角色、规范、安全边界）、工具层（读写文件、跑命令、搜索）、主循环（结果回填、决定下一步）、上下文工程（历史裁剪、摘要、记忆文件）、权限与沙箱（什么自动做、什么先问人）、错误恢复（重试、中断、回滚），还有记录与评测（轨迹、成本、回放）。每一项单拎出来都不性感，合在一起却决定了"同一个模型能不能真的干活"。
 
-为什么这么说?因为**同一个模型,换一套 harness,成绩能差出一个数量级**。SWE-bench 这类编程榜单上的分数,从来不是模型一个人的成绩,而是"模型 + harness"这个组合的成绩——工具给得全不全、上下文管得好不好,都直接写进分数里。所以以后看榜单,记得多问一句:这成绩里,模型占几成,Harness 占几成?
+　　为什么这么说？因为**同一个模型，换一套 harness，成绩能差出一个数量级**。SWE-bench 这类编程榜单上的分数，从来不是模型一个人的成绩，而是"模型 + harness"这个组合的成绩——工具给得全不全、上下文管得好不好，都直接写进分数里。所以以后看榜单，记得多问一句：这成绩里，模型占几成，Harness 占几成？
 
-类比还是那句话:模型是发动机,Harness 是整辆车——发动机决定上限,车决定你敢不敢上路。2025 年 Anthropic 干脆把自家验证过的 harness 打包成 [Claude Agent SDK](https://www.anthropic.com/engineering/building-agents-with-the-claude-agent-sdk) 卖给开发者:发动机大厂开始卖整车,这大概是 harness 重要性的最好注脚。
+　　类比还是那句话：模型是发动机，Harness 是整辆车——发动机决定上限，车决定你敢不敢上路。2025 年 Anthropic 干脆把自家验证过的 harness 打包成 [Claude Agent SDK](https://www.anthropic.com/engineering/building-agents-with-the-claude-agent-sdk) 卖给开发者：发动机大厂开始卖整车，这大概是 harness 重要性的最好注脚。
 
-**记住这一句:模型是发动机,Harness 是整辆车。换车不换发动机,跑出来的完全是两种人生。**
+　　**记住这一句：模型是发动机，Harness 是整辆车。换车不换发动机，跑出来的完全是两种人生。**
 
-## 四个词,各自归位
+## 四个词，各自归位
 
 | 概念 | 本质 | 一眼认出它 |
 | --- | --- | --- |
 | AI | 一门学科、一个目标 | 达特茅斯会议、AI 寒冬、AlphaGo |
-| 模型 | 参数化的函数,文本进文本出 | GPT-4o、DeepSeek-R1、Qwen |
+| 模型 | 参数化的函数，文本进文本出 | GPT-4o、DeepSeek-R1、Qwen |
 | Agent | 模型 + 工具 + 循环 + 目标 | Claude Code、接了工具的 DeepSeek |
 | Harness | 包住模型的整套工程 | ChatGPT 的对话层、Cline、Agent SDK |
 
-现在再把"DeepSeek"这个词掰开,它其实有四副面孔:**深度求索**是公司(在 AI 行业里);**R1** 是模型(文本进文本出);**官方 App** 是产品(模型套了一层官方 harness);**接进 Cline 里自动改代码的 R1** 是 agent(模型 + 工具 + 循环)。下次再用这个词,你知道自己在说哪一层。
+<img src="/images/posts/ai-model-agent-harness/deepseek-pointing.png" alt="DeepSeek 拟人形象：举起手指，敲黑板划重点" className="article-mascot-left" />
 
-顺手把几个邻居也分清楚:模型加对话界面是聊天助手(ChatGPT);模型在编辑器里打字辅助是 Copilot;模型在循环里自己决策干活,才是 Agent;而 Agent 加上生产级的工程包装,才是 Claude Code、Codex 这种能签收需求的产品。
+　　现在再把"DeepSeek"这个词掰开，它其实有四副面孔：**深度求索**是公司（在 AI 行业里）；**R1** 是模型（文本进文本出）；**官方 App** 是产品（模型套了一层官方 harness）；**接进 Cline 里自动改代码的 R1** 是 agent（模型 + 工具 + 循环）。下次再用这个词，你知道自己在说哪一层。
+
+　　顺手把几个邻居也分清楚：模型加对话界面是聊天助手（ChatGPT）；模型在编辑器里打字辅助是 Copilot；模型在循环里自己决策干活，才是 Agent；而 Agent 加上生产级的工程包装，才是 Claude Code、Codex 这种能签收需求的产品。
 
 ## 七十年大事记
 
@@ -146,40 +146,40 @@ R1 是开源模型,谁都能下载。于是同一只模型,活在了好几套完
 | --- | --- | --- |
 | 1950 | 图灵测试 | "机器能思考吗"第一次有了可判定的形式 |
 | 1956 | 达特茅斯会议 | "Artificial Intelligence" 正式定名 |
-| 1966 | ELIZA | 第一个聊天程序,也留下"ELIZA 效应"这个警示 |
-| 1974–1993 | 两次 AI 寒冬 | 牛皮与兑现的落差周期,此后反复上演 |
+| 1966 | ELIZA | 第一个聊天程序，也留下"ELIZA 效应"这个警示 |
+| 1974–1993 | 两次 AI 寒冬 | 牛皮与兑现的落差周期，此后反复上演 |
 | 1997 | 深蓝胜卡斯帕罗夫 | 符号主义路线的巅峰 |
 | 2012 | AlexNet | 深度学习接管主线 |
 | 2016 | AlphaGo 胜李世石 | 连接主义拿下智力的象征性高地 |
 | 2017 | Transformer | 今天所有大模型的共同底座 |
 | 2020 | GPT-3 与规模定律 | "大力出奇迹"有了可预测的理论依据 |
-| 2022 | ChatGPT / ReAct | 模型被大众直接使用;agent 循环挂上大模型 |
-| 2023 | function calling / AutoGPT | 工具调用标准化;Agent 出圈也暴露工程短板 |
-| 2024 | MCP / 《Building effective agents》 | 工具接入有了开放协议;agent 方法论成形 |
-| 2025.1 | DeepSeek-R1 开源 | 开源模型第一次全球级出圈;"公司/模型/产品"混用的活教材 |
-| 2025 | 编码 Agent 与 Agent SDK | Harness 产品化,agent 进入日常工作 |
+| 2022 | ChatGPT / ReAct | 模型被大众直接使用；agent 循环挂上大模型 |
+| 2023 | function calling / AutoGPT | 工具调用标准化；Agent 出圈也暴露工程短板 |
+| 2024 | MCP / 《Building effective agents》 | 工具接入有了开放协议；agent 方法论成形 |
+| 2025.1 | DeepSeek-R1 开源 | 开源模型第一次全球级出圈；"公司/模型/产品"混用的活教材 |
+| 2025 | 编码 Agent 与 Agent SDK | Harness 产品化，agent 进入日常工作 |
 
 ## 延伸阅读
 
-按文中出现顺序,挑几篇值得读原文的:
+　　按文中出现顺序，挑几篇值得读原文的：
 
-- 图灵,《Computing Machinery and Intelligence》(1950):[doi.org/10.1093/mind/LIX.236.433](https://doi.org/10.1093/mind/LIX.236.433)
-- 达特茅斯项目提案(1955):[dl.acm.org/doi/10.1145/365866.365868](https://dl.acm.org/doi/10.1145/365866.365868)
-- 《Attention Is All You Need》(2017):[arxiv.org/abs/1706.03762](https://arxiv.org/abs/1706.03762)
-- 规模定律《Scaling Laws for Neural Language Models》(2020):[arxiv.org/abs/2001.08361](https://arxiv.org/abs/2001.08361)
-- GPT-3,《Language Models are Few-Shot Learners》(2020):[arxiv.org/abs/2005.14165](https://arxiv.org/abs/2005.14165)
+- 图灵，《Computing Machinery and Intelligence》（1950）：[doi.org/10.1093/mind/LIX.236.433](https://doi.org/10.1093/mind/LIX.236.433)
+- 达特茅斯项目提案（1955）：[dl.acm.org/doi/10.1145/365866.365868](https://dl.acm.org/doi/10.1145/365866.365868)
+- 《Attention Is All You Need》（2017）：[arxiv.org/abs/1706.03762](https://arxiv.org/abs/1706.03762)
+- 规模定律《Scaling Laws for Neural Language Models》（2020）：[arxiv.org/abs/2001.08361](https://arxiv.org/abs/2001.08361)
+- GPT-3，《Language Models are Few-Shot Learners》（2020）：[arxiv.org/abs/2005.14165](https://arxiv.org/abs/2005.14165)
 - ReAct(2022):[arxiv.org/abs/2210.03629](https://arxiv.org/abs/2210.03629)
 - DeepSeek-R1(2025):[arxiv.org/abs/2501.12948](https://arxiv.org/abs/2501.12948)
-- Anthropic,《Building effective agents》(2024):[anthropic.com/engineering/building-effective-agents](https://www.anthropic.com/engineering/building-effective-agents)
-- Anthropic,《Building agents with the Claude Agent SDK》(2025):[anthropic.com/engineering/building-agents-with-the-claude-agent-sdk](https://www.anthropic.com/engineering/building-agents-with-the-claude-agent-sdk)
+- Anthropic，《Building effective agents》（2024）：[anthropic.com/engineering/building-effective-agents](https://www.anthropic.com/engineering/building-effective-agents)
+- Anthropic，《Building agents with the Claude Agent SDK》（2025）：[anthropic.com/engineering/building-agents-with-the-claude-agent-sdk](https://www.anthropic.com/engineering/building-agents-with-the-claude-agent-sdk)
 - EleutherAI,lm-evaluation-harness:[github.com/EleutherAI/lm-evaluation-harness](https://github.com/EleutherAI/lm-evaluation-harness)
 
 ## 写在最后
 
-把这四个词分清,不只是聊天时不被术语绕晕。它更像一张导航地图:AI 告诉你目的地,模型告诉你发动机有几匹马力,Agent 告诉你活儿由谁来干,Harness 提醒你——**想法和产品之间隔着的,往往不是模型能力,而是那一整层工程。**
+　　把这四个词分清，不只是聊天时不被术语绕晕。它更像一张导航地图：AI 告诉你目的地，模型告诉你发动机有几匹马力，Agent 告诉你活儿由谁来干，Harness 提醒你——**想法和产品之间隔着的，往往不是模型能力，而是那一整层工程。**
 
-下一篇顺着 Harness 往下挖:Skills、MCP、hooks、插件、子智能体、指令……这些名词分别对应 harness 里的哪一层,以及怎么用起来。
+　　下一篇顺着 Harness 往下挖：Skills、MCP、hooks、插件、子智能体、指令……这些名词分别对应 harness 里的哪一层，以及怎么用起来。
 
-最后照例说句题外话:这篇从大纲、配图到成文,是一个人、一个模型和一套 harness 协作的产物——写它的 agent,也没能逃出本文的任何一条定义。
+　　最后照例说句题外话：这篇从大纲、配图到成文，是一个人、一个模型和一套 harness 协作的产物——写它的 agent，也没能逃出本文的任何一条定义。
 
-<img src="/images/posts/ai-model-agent-harness/deepseek-farewell.png" alt="DeepSeek 拟人形象:合上印有小蓝鲸标志的笔记本电脑,对镜头竖起大拇指" className="article-mascot-wide" />
+<img src="/images/posts/ai-model-agent-harness/deepseek-farewell.png" alt="DeepSeek 拟人形象：合上印有小蓝鲸标志的笔记本电脑，对镜头竖起大拇指" className="article-mascot-wide" />
