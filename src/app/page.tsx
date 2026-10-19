@@ -1,368 +1,63 @@
-import Image from "next/image";
 import Link from "next/link";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { ArrowDown, ArrowRight, ArrowUpRight, Mail, Rss } from "lucide-react";
+import { SiteDirectory } from "@/components/site-directory";
+import { getLinkHost, siteLinks } from "@/lib/site-links";
 import { getAllPosts } from "@/lib/posts";
-
-type IconName = "home" | "github" | "projects" | "bilibili" | "csdn" | "mail" | "score" | "resume" | "game";
-
-function Icon({ name, className = "" }: { name: IconName; className?: string }) {
-  const common = `h-4 w-4 ${className}`;
-  switch (name) {
-    case "github":
-      return (
-        <svg aria-hidden viewBox="0 0 24 24" className={common}>
-          <path
-            fill="currentColor"
-            d="M12 .5a11.5 11.5 0 0 0-3.64 22.4c.57.1.78-.25.78-.56v-2c-3.18.7-3.85-1.37-3.85-1.37-.52-1.3-1.26-1.64-1.26-1.64-1.03-.7.08-.69.08-.69 1.15.08 1.75 1.2 1.75 1.2 1.01 1.74 2.66 1.23 3.31.94.1-.75.4-1.24.72-1.53-2.54-.29-5.22-1.28-5.22-5.7 0-1.26.45-2.29 1.2-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.8 0c2.2-1.49 3.17-1.18 3.17-1.18.64 1.59.24 2.76.12 3.05.75.81 1.2 1.84 1.2 3.1 0 4.43-2.68 5.4-5.24 5.68.41.35.77 1.05.77 2.13v3.16c0 .31.2.67.78.56A11.5 11.5 0 0 0 12 .5Z"
-          />
-        </svg>
-      );
-    case "bilibili":
-      return (
-        <svg aria-hidden viewBox="0 0 24 24" className={common}>
-          <rect x="3" y="7" width="18" height="11" rx="2" ry="2" fill="none" stroke="currentColor" strokeWidth="1.6" />
-          <path d="M8 5.5 6 7.5m10-2 2 2" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-          <path d="M9 11v3m6-3v3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-        </svg>
-      );
-    case "csdn":
-      return (
-        <svg aria-hidden viewBox="0 0 24 24" className={common}>
-          <path
-            fill="currentColor"
-            d="M19.5 7.5c-1.7-1.7-3.8-2.5-6.3-2.5-4.3 0-7.8 3.3-7.8 7s3.5 7 7.8 7c2 0 3.7-.6 5.2-1.9.4-.4.4-1 0-1.4l-.6-.6c-.4-.4-1-.4-1.5 0-1 .8-2.1 1.2-3.3 1.2-2.8 0-5-2.1-5-4.7 0-2.6 2.3-4.7 5-4.7 1.5 0 2.6.5 3.7 1.5l.5.5c.4.4 1 .4 1.4 0l.7-.7c.4-.4.4-1.1-.1-1.6Z"
-          />
-        </svg>
-      );
-    case "home":
-      return (
-        <svg aria-hidden viewBox="0 0 24 24" className={common}>
-          <path
-            fill="currentColor"
-            d="M11 3.2a2 2 0 0 1 2 0l6.5 3.8c.3.17.5.5.5.86V18a2 2 0 0 1-2 2h-3a1 1 0 0 1-1-1v-4.5a1.5 1.5 0 0 0-3 0V19a1 1 0 0 1-1 1H7a2 2 0 0 1-2-2V7.86c0-.36.19-.69.5-.86Z"
-          />
-        </svg>
-      );
-    case "projects":
-      return (
-        <svg aria-hidden viewBox="0 0 24 24" className={common}>
-          <rect x="4" y="4" width="6" height="6" rx="1.2" fill="currentColor" />
-          <rect x="14" y="4" width="6" height="6" rx="1.2" fill="currentColor" />
-          <rect x="4" y="14" width="6" height="6" rx="1.2" fill="currentColor" />
-          <rect x="14" y="14" width="6" height="6" rx="1.2" fill="currentColor" />
-        </svg>
-      );
-    case "score":
-      return (
-        <svg aria-hidden viewBox="0 0 24 24" className={common}>
-          <rect x="4" y="5" width="16" height="14" rx="2" ry="2" fill="none" stroke="currentColor" strokeWidth="1.6" />
-          <path d="M4 10h16" stroke="currentColor" strokeWidth="1.6" />
-          <circle cx="9" cy="8" r="1" fill="currentColor" />
-          <circle cx="15" cy="8" r="1" fill="currentColor" />
-          <path d="M8 14h3l-1.5 3z" fill="currentColor" />
-          <path d="M13.5 17v-3h2.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
-        </svg>
-      );
-    case "resume":
-      return (
-        <svg aria-hidden viewBox="0 0 24 24" className={common}>
-          <path d="M7 4.5A1.5 1.5 0 0 1 8.5 3h7A1.5 1.5 0 0 1 17 4.5v15l-4.5-2L8 19.5Z" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
-          <path d="M10 8h4M10 11h4M10 14h2" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-        </svg>
-      );
-    case "game":
-      return (
-        <svg aria-hidden viewBox="0 0 24 24" className={common}>
-          <path d="M5 18.5V6.3a.7.7 0 0 1 1-.63l7.2 3.6 4-1.6a.7.7 0 0 1 .96.64v8.2a.7.7 0 0 1-.96.64l-4-1.6-7.2 3.6a.7.7 0 0 1-1-.64Z" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
-          <circle cx="16.5" cy="12" r="0.8" fill="currentColor" />
-          <circle cx="18.5" cy="10" r="0.8" fill="currentColor" />
-        </svg>
-      );
-    case "mail":
-      return (
-        <svg aria-hidden viewBox="0 0 24 24" className={common}>
-          <path
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.6"
-            d="M4 6h16a1 1 0 0 1 1 1.1v9.8a1 1 0 0 1-1 1.1H4a1 1 0 0 1-1-1.1V7.1A1 1 0 0 1 4 6Z"
-          />
-          <path d="m4 7 8 5 8-5" stroke="currentColor" strokeWidth="1.6" fill="none" />
-        </svg>
-      );
-  }
-}
-
-const externalLinks = [
-  {
-    title: "主域名 / 主页",
-    href: "//w2321.top",
-    description: "个人域名的首页入口。",
-    icon: "home" as const,
-  },
-  {
-    title: "打牌计分",
-    href: "//score.w2321.top",
-    description: "线下牌局快速算分的小工具。",
-    icon: "score" as const,
-  },
-  {
-    title: "在线简历",
-    href: "//resume.w2321.top",
-    description: "我的在线简历，可下载 PDF。",
-    icon: "resume" as const,
-  },
-  {
-    title: "扫雷游戏",
-    href: "//minesweeper.w2321.top",
-    description: "自制网页版扫雷，支持快捷键。",
-    icon: "game" as const,
-  },
-  {
-    title: "GitHub",
-    href: "https://github.com/2321Robin",
-    description: "项目代码与开源贡献。",
-    icon: "github" as const,
-  },
-  {
-    title: "个人项目集合",
-    href: "https://projects.w2321.top",
-    description: "小工具、实验性产品和 Demo。",
-    icon: "projects" as const,
-  },
-  {
-    title: "哔哩哔哩",
-    href: "https://space.bilibili.com/2062699686",
-    description: "视频与内容更新。",
-    icon: "bilibili" as const,
-  },
-  {
-    title: "CSDN 博客",
-    href: "https://blog.csdn.net/Robin2321",
-    description: "技术文章与随笔。",
-    icon: "csdn" as const,
-  },
-];
+import { formatDate } from "@/lib/utils";
 
 export default async function Home() {
-  const latestPosts = (await getAllPosts()).slice(0, 4);
+  const posts = await getAllPosts();
+  const tags = Array.from(new Set(posts.flatMap((post) => post.tags ?? []))).sort();
+  const tools = siteLinks.filter((link) => link.category === "tools");
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <div className="mx-auto flex min-h-screen max-w-5xl flex-col px-6 py-10 sm:px-10">
-        <header className="flex items-center justify-between gap-6 py-4">
-          <div className="flex items-center gap-2 text-lg font-semibold">
-            <div className="h-9 w-9 rounded-full bg-gradient-to-br from-brand to-brand-strong" aria-hidden />
-            <span>Robin · Personal Site</span>
+    <main id="main-content" className="site-width home-main">
+      <section className="home-intro" aria-labelledby="home-title">
+        <div className="intro-copy">
+          <p className="intro-greeting"><span className="greeting-line" />你好，我是 Robin</p>
+          <h1 id="home-title">一些想法，<br />一些<span className="title-accent">正在做的事。</span></h1>
+          <p className="intro-description">写作、构建，把想法落到可用的界面里。<br className="desktop-break" />这里收录了我的工具、项目和日常记录，欢迎随意逛逛。</p>
+          <a href="#projects" className="intro-link">探索我的站点 <ArrowDown size={16} aria-hidden="true" /></a>
+        </div>
+        <div className="intro-index" aria-label="站点索引">
+          <div className="index-top"><span className="index-favicon" aria-hidden="true">r.</span><span translate="no">w2321.top</span><span className="index-label">个人空间</span></div>
+          <div className="index-body">
+            <p>把好奇心，<br />变成可以打开的链接<span>↗</span></p>
+            <div className="index-branches" aria-hidden="true">{tools.map((link) => <span key={link.id}>{getLinkHost(link.href).split(".")[0]}.</span>)}</div>
           </div>
-          <div className="flex items-center gap-3">
-            <nav className="flex items-center gap-4 text-sm font-medium text-muted-foreground">
-              <Link className="hover:text-foreground" href="/blog">
-                博客
-              </Link>
-              <Link className="hover:text-foreground" href="/blog/tags">
-                标签
-              </Link>
-              <a className="hover:text-foreground" href="#projects">
-                作品
-              </a>
-              <a className="hover:text-foreground" href="#about">
-                关于
-              </a>
-            </nav>
-            <ThemeToggle />
+          <div className="index-bottom"><span>Web · 工具 · 生活</span><span>保持好奇 <span aria-hidden="true">✳</span></span></div>
+        </div>
+      </section>
+
+      <SiteDirectory links={siteLinks} />
+
+      <section id="blog" className="home-writing" aria-labelledby="writing-title">
+        <div className="section-heading">
+          <div><p className="eyebrow">NOTES & THOUGHTS</p><h2 id="writing-title">最近写了什么</h2></div>
+          <Link href="/blog" className="text-link">全部文章 <ArrowRight size={16} aria-hidden="true" /></Link>
+        </div>
+        <div className="writing-layout">
+          <div className="recent-posts">
+            {posts.length ? posts.slice(0, 4).map((post) => (
+              <article key={post.slug} className="recent-post">
+                <time dateTime={post.date}>{formatDate(post.date)}</time>
+                <div><h3><Link href={`/blog/${post.slug}`}>{post.title}<ArrowUpRight size={18} aria-hidden="true" /></Link></h3>{post.summary && <p>{post.summary}</p>}</div>
+                <span className="reading-time">{post.readingTimeMinutes ?? 1} 分钟阅读</span>
+              </article>
+            )) : <p className="empty-state">还没有文章，过段时间再来看看。</p>}
           </div>
-        </header>
+          <aside className="writing-aside">
+            <h3>从一个主题开始</h3>
+            <div className="tag-list">{tags.map((tag) => <Link className="tag" key={tag} href={`/blog?tag=${encodeURIComponent(tag)}`}>#{tag}</Link>)}</div>
+            <div className="aside-links"><Link href="/blog/tags">全部标签 <ArrowUpRight size={14} aria-hidden="true" /></Link><a href="/rss.xml"><Rss size={14} aria-hidden="true" /> 订阅更新</a></div>
+          </aside>
+        </div>
+      </section>
 
-        <main className="flex flex-1 flex-col justify-center gap-12 py-8">
-          <section className="space-y-6">
-            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-brand">
-              Personal · Builder · Writer
-            </p>
-            <p className="max-w-2xl text-lg leading-8 text-muted-foreground">
-              关注 Web 体验、工程效率和产品落地。这里收录了我的文章、项目和常用链接，也可以通过下面的方式联系我。
-            </p>
-            <div className="flex flex-wrap gap-3">
-              <Link
-                href="/blog"
-                className="inline-flex items-center gap-2 rounded-full bg-brand px-4 py-2 text-sm font-medium text-white transition hover:bg-brand-strong"
-              >
-                浏览文章
-              </Link>
-              <a
-                href="mailto:2932547376@qq.com"
-                className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-2 text-sm font-medium text-muted-foreground transition hover:border-brand hover:text-foreground"
-              >
-                <Icon name="mail" className="text-brand" /> 给我发邮件
-              </a>
-              <a
-                href="https://github.com/2321Robin"
-                className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-2 text-sm font-medium text-muted-foreground transition hover:border-brand hover:text-foreground"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <Icon name="github" className="text-brand" /> GitHub
-              </a>
-              <a
-                href="https://space.bilibili.com/2062699686"
-                className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-2 text-sm font-medium text-muted-foreground transition hover:border-brand hover:text-foreground"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <Icon name="bilibili" className="text-brand" /> 哔哩哔哩
-              </a>
-              <a
-                href="https://blog.csdn.net/Robin2321"
-                className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-2 text-sm font-medium text-muted-foreground transition hover:border-brand hover:text-foreground"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <Icon name="csdn" className="text-brand" /> CSDN
-              </a>
-            </div>
-          </section>
-
-          <section
-            id="blog"
-            className="grid gap-4 rounded-2xl border border-border bg-surface p-6 shadow-sm backdrop-blur-sm"
-          >
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs uppercase tracking-[0.2em] text-muted">近期更新</p>
-                <h2 className="text-xl font-semibold">博客文章</h2>
-              </div>
-              <Link href="/blog" className="text-sm text-brand hover:underline">
-                查看全部 →
-              </Link>
-            </div>
-            <div className="grid gap-3 sm:grid-cols-2">
-              {latestPosts.length === 0 ? (
-                <p className="text-sm text-muted-foreground">暂无文章，稍后再来看看。</p>
-              ) : (
-                latestPosts.map((post) => (
-                  <article
-                    key={post.slug}
-                    className="rounded-xl border border-border bg-card p-4 shadow-[0_6px_20px_-12px_rgba(0,0,0,0.25)] transition hover:-translate-y-0.5 hover:shadow-[0_10px_30px_-14px_rgba(0,0,0,0.35)]"
-                  >
-                    <div className="flex flex-wrap items-center gap-2 text-xs uppercase tracking-[0.18em] text-muted">
-                      <span>{new Date(post.date).toLocaleDateString()}</span>
-                      {post.readingTimeMinutes ? <span>· {post.readingTimeMinutes} 分钟</span> : null}
-                    </div>
-                    <h3 className="mt-2 text-lg font-semibold">
-                      <Link href={`/blog/${post.slug}`} className="hover:text-brand">
-                        {post.title}
-                      </Link>
-                    </h3>
-                    {post.summary ? (
-                      <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">{post.summary}</p>
-                    ) : null}
-                    {post.tags?.length ? (
-                      <div className="mt-3 flex flex-wrap gap-2 text-[11px] uppercase tracking-[0.14em] text-muted">
-                        {post.tags.map((tag) => (
-                          <span
-                            key={tag}
-                            className="rounded-full bg-surface-muted px-2 py-0.5 text-brand"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    ) : null}
-                  </article>
-                ))
-              )}
-            </div>
-          </section>
-
-          <section id="about" className="grid gap-4 rounded-2xl border border-border bg-surface p-6 shadow-sm backdrop-blur-sm">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs uppercase tracking-[0.2em] text-muted">About</p>
-                <h2 className="text-xl font-semibold">关于我</h2>
-              </div>
-              <a
-                href="mailto:2932547376@qq.com"
-                className="text-sm text-brand underline-offset-4 hover:underline"
-              >
-                2932547376@qq.com
-              </a>
-            </div>
-            <div className="space-y-3 text-muted-foreground">
-              <p>专注 Web 前端与产品体验，喜欢把想法做成可用的产品与工具。熟悉 Next.js/TypeScript/Tailwind，偶尔写写后端与自动化脚本。</p>
-              <p>目前在维护个人博客与若干小工具，欢迎交流合作或反馈想法。</p>
-            </div>
-          </section>
-
-          <section id="links" className="grid gap-4 rounded-2xl border border-border bg-surface p-6 shadow-sm backdrop-blur-sm">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs uppercase tracking-[0.2em] text-muted">Links</p>
-                <h2 className="text-xl font-semibold">其它网站与入口</h2>
-              </div>
-            </div>
-            <div className="grid gap-3 sm:grid-cols-2">
-              {externalLinks.map((item) => (
-                <a
-                  key={item.href}
-                  href={item.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex flex-col gap-2 rounded-xl border border-border bg-card p-4 transition hover:-translate-y-0.5 hover:border-brand hover:shadow-md"
-                >
-                  <span className="flex items-center gap-2 text-base font-semibold text-foreground">
-                    <Icon name={item.icon} className="text-brand" />
-                    {item.title}
-                  </span>
-                  <span className="text-sm text-muted-foreground">{item.description}</span>
-                  <span className="text-xs text-brand">访问 →</span>
-                </a>
-              ))}
-            </div>
-          </section>
-        </main>
-
-        <footer className="border-t border-line bg-panel/90">
-          <div className="mx-auto flex max-w-5xl flex-col items-center justify-center gap-2 px-4 py-4 text-xs text-muted">
-            <div className="text-center">
-              Copyright © 2026 - Present{' '}
-              <a
-                href="https://w2321.top"
-                target="_blank"
-                rel="noreferrer"
-                className="underline decoration-line hover:text-text"
-              >
-                w2321
-              </a>
-              . All Rights Reserved.
-            </div>
-            <div className="flex flex-wrap items-center justify-center gap-3">
-              <a
-                href="https://beian.miit.gov.cn/"
-                target="_blank"
-                rel="noreferrer"
-                className="underline decoration-line hover:text-text"
-              >
-                赣ICP备2026002780号
-              </a>
-              <a
-                href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=36098302260203"
-                target="_blank"
-                rel="noreferrer"
-                className="flex items-center gap-1 underline decoration-line hover:text-text"
-              >
-                <Image
-                  src="/gongan_beian.png"
-                  alt="公安备案图标"
-                  width={16}
-                  height={16}
-                  className="h-4 w-4"
-                />
-                赣公网安备36098302260203号
-              </a>
-            </div>
-          </div>
-        </footer>
-      </div>
-    </div>
+      <section id="about" className="about-section" aria-labelledby="about-title">
+        <div><p className="eyebrow">A LITTLE ABOUT ME</p><h2 id="about-title">在屏幕这边</h2><a href="mailto:2932547376@qq.com" className="about-email"><Mail size={17} aria-hidden="true" />2932547376@qq.com<ArrowUpRight size={15} aria-hidden="true" /></a></div>
+        <div className="about-copy"><p>专注 Web 前端与产品体验，喜欢把想法做成可用的产品与工具。熟悉 Next.js / TypeScript / Tailwind，偶尔写写后端与自动化脚本。</p><p>目前在维护个人博客与若干小工具，关注 Web 体验、工程效率和产品落地。欢迎交流合作，或把你的想法和反馈发给我。</p><div className="about-topics"><span>Web 开发</span><span>产品体验</span><span>自动化</span></div></div>
+      </section>
+    </main>
   );
 }

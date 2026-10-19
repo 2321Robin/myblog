@@ -3,7 +3,6 @@
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useSyncExternalStore } from "react";
-import { cn } from "@/lib/utils";
 
 function subscribeToMount(onStoreChange: () => void) {
   queueMicrotask(onStoreChange);
@@ -31,20 +30,15 @@ export function ThemeToggle() {
   return (
     <button
       type="button"
-      aria-label="切换主题"
+      aria-label={mounted ? (isDark ? "切换到浅色主题" : "切换到深色主题") : "切换主题"}
       onClick={() => setTheme(isDark ? "light" : "dark")}
-      className={cn(
-        "inline-flex h-9 items-center gap-2 rounded-full border border-border px-3 text-sm font-medium",
-        "bg-surface/70 text-foreground shadow-sm backdrop-blur-sm transition",
-        "hover:border-brand hover:text-foreground"
-      )}
+      className="theme-toggle"
     >
       {mounted ? (
-        isDark ? <Moon size={16} /> : <Sun size={16} />
+        isDark ? <Moon size={16} aria-hidden="true" /> : <Sun size={16} aria-hidden="true" />
       ) : (
-        <span className="inline-block h-4 w-4" />
+        <span className="inline-block size-4" aria-hidden="true" />
       )}
-      <span className="hidden sm:inline">{mounted ? (isDark ? "深色" : "浅色") : "主题"}</span>
     </button>
   );
 }

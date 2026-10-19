@@ -1,85 +1,40 @@
 import Link from "next/link";
-import type { ComponentType } from "react";
-import { TableOfContents } from "./table-of-contents";
+import { ArrowLeft, ArrowRight } from "lucide-react";
+import type { ComponentProps } from "react";
+import GithubSlugger from "github-slugger";
 import { ShareBar } from "./share-bar";
-import type { Heading, PostMeta } from "@/lib/posts";
+import { TableOfContents } from "./table-of-contents";
+import type { Heading, PostMeta, PostModule } from "@/lib/posts";
+import { formatDate } from "@/lib/utils";
 
 export type Neighbor = PostMeta | null;
-
-type Props = {
-  Content: ComponentType;
-  metadata: PostMeta;
-  slug: string;
-  prev: Neighbor;
-  next: Neighbor;
-  headings: Heading[];
-};
+type Props = { Content: PostModule["default"]; metadata: PostMeta; slug: string; prev: Neighbor; next: Neighbor; headings: Heading[] };
 
 export function PostContent({ Content, metadata, slug, prev, next, headings }: Props) {
+  const titleId = new GithubSlugger().slug(metadata.title);
+  function BodyHeading({ children, ...props }: ComponentProps<"h1">) {
+    return children === metadata.title && props.id === titleId ? null : <h2 {...props}>{children}</h2>;
+  }
+
   return (
-    <div className="mx-auto flex min-h-screen max-w-5xl flex-col gap-10 px-6 py-12">
-      <div className="flex items-center gap-3 text-sm text-muted-foreground">
-        <Link href="/blog" className="rounded-full border border-border px-3 py-1 transition hover:border-brand hover:text-brand">
-          ← 返回博客列表
-        </Link>
-        <span className="text-muted">/</span>
-        <span className="text-foreground">{metadata.title}</span>
+    <main id="main-content" className="site-width content-main">
+      <nav className="breadcrumb" aria-label="面包屑"><Link href="/blog"><ArrowLeft size={14} aria-hidden="true" />&nbsp; 返回文章列表</Link><span aria-hidden="true">/</span><span aria-current="page">{metadata.title}</span></nav>
+      <header className="post-heading">
+        <p className="eyebrow">FROM ROBIN’S NOTEBOOK</p><h1>{metadata.title}</h1>
+        {metadata.summary && <p>{metadata.summary}</p>}
+        <div className="post-meta"><time dateTime={metadata.date}>{formatDate(metadata.date)}</time><span>{metadata.readingTimeMinutes ?? 1} 分钟阅读</span></div>
+        <div className="tag-list">{metadata.tags?.map((tag) => <Link key={tag} href={`/blog?tag=${encodeURIComponent(tag)}`} className="tag">#{tag}</Link>)}</div>
+      </header>
+      <div className="post-layout">
+        <article className="article-prose" data-mdx><Content components={{ h1: BodyHeading }} /></article>
+        {headings.length > 0 && <div className="post-sidebar"><TableOfContents headings={headings} /></div>}
       </div>
-
-      <div className="space-y-3">
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand">Article</p>
-        <h1 className="text-3xl font-bold leading-tight sm:text-4xl">{metadata.title}</h1>
-        <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-          <span>{new Date(metadata.date).toLocaleDateString()}</span>
-          {metadata.readingTimeMinutes ? <span>· {metadata.readingTimeMinutes} 分钟阅读</span> : null}
-          {metadata.tags?.map((tag) => (
-            <span key={tag} className="rounded-full bg-surface-muted px-2 py-0.5 text-xs font-medium text-brand">
-              {tag}
-            </span>
-          ))}
-        </div>
-        {metadata.summary ? <p className="text-muted-foreground">{metadata.summary}</p> : null}
-      </div>
-
-      <div className="grid gap-8 lg:grid-cols-[minmax(0,3fr)_minmax(220px,1fr)] lg:items-start">
-        <article className="prose prose-zinc max-w-none dark:prose-invert" data-mdx>
-          <Content />
-        </article>
-
-        <div className="lg:sticky lg:top-24">
-          <TableOfContents headings={headings} />
-        </div>
-      </div>
-
-      <ShareBar title={metadata.title} url={`/blog/${slug}`} />
-
-      {(prev || next) && (
-        <div className="grid gap-4 border-t border-border pt-6 md:grid-cols-2">
-          {prev ? (
-            <Link
-              href={`/blog/${prev.slug}`}
-              className="group block rounded-xl border border-border bg-surface p-4 transition hover:-translate-y-0.5 hover:border-brand"
-            >
-              <p className="text-xs uppercase tracking-[0.14em] text-muted">上一篇</p>
-              <p className="mt-1 text-base font-semibold text-foreground group-hover:text-brand">{prev.title}</p>
-            </Link>
-          ) : (
-            <div className="rounded-xl border border-dashed border-border p-4 text-sm text-muted-foreground">没有更早的文章</div>
-          )}
-
-          {next ? (
-            <Link
-              href={`/blog/${next.slug}`}
-              className="group block rounded-xl border border-border bg-surface p-4 transition hover:-translate-y-0.5 hover:border-brand"
-            >
-              <p className="text-xs uppercase tracking-[0.14em] text-muted">下一篇</p>
-              <p className="mt-1 text-base font-semibold text-foreground group-hover:text-brand">{next.title}</p>
-            </Link>
-          ) : (
-            <div className="rounded-xl border border-dashed border-border p-4 text-sm text-muted-foreground">没有更晚的文章</div>
-          )}
-        </div>
-      )}
-    </div>
+      <ShareBar key={slug} title={metadata.title} url={`/blog/${slug}`} />
+      {(prev || next) && <nav className="neighbor-posts" aria-label="相邻文章">
+        {prev ? <Link href={`/blog/${prev.slug}`}><p>← 较新文章</p><p>{prev.title}</p></Link> : <div className="neighbor-empty">已经是最新文章</div>}
+        {next ? <Link href={`/blog/${next.slug}`}><p>较早文章 →</p><p>{next.title}</p></Link> : <div className="neighbor-empty">已经是最早文章</div>}
+      </nav>}
+      <Link href="/blog" className="text-link">查看全部文章 <ArrowRight size={14} aria-hidden="true" /></Link>
+    </main>
   );
 }

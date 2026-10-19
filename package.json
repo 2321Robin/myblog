@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "test": "node --experimental-default-type=module --experimental-strip-types --test tests/*.test.mjs",
     "dev": "cross-env TURBOPACK=0 NEXT_PRIVATE_TURBOPACK=0 NEXT_USE_TURBOPACK=0 next dev",
     "build": "next build",
     "start": "next start",

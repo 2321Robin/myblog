@@ -5,6 +5,6 @@ export function getBaseUrl() {
 }
 
 export const siteMetadata = {
-  title: "MyBlog",
-  description: "记录构建与思考，专注 Web、前端与产品体验。",
+  title: "Robin · 个人站点",
+  description: "Robin 的工具、作品与日常记录。专注 Web 前端与产品体验，把想法做成可用的产品与工具。",
 };

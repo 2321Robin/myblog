@@ -1,154 +1,51 @@
 import Link from "next/link";
+import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
 import { getAllPosts } from "@/lib/posts";
+import { cn, formatDate } from "@/lib/utils";
 
-type Props = {
-  searchParams?: Promise<{ page?: string; tag?: string }>;
-};
-
+type Props = { searchParams?: Promise<{ page?: string | string[]; tag?: string | string[] }> };
 const PAGE_SIZE = 5;
-
-export const metadata = {
-  title: "博客文章",
-  description: "最新文章列表，基于 MDX frontmatter 生成。",
-};
-
-function uniqueTags(posts: { tags?: string[] }[]) {
-  const set = new Set<string>();
-  posts.forEach((p) => p.tags?.forEach((t) => set.add(t)));
-  return Array.from(set).sort();
-}
+export const metadata = { title: "博客文章", description: "关于 Web、产品与日常的构建记录和思考。" };
 
 export default async function BlogPage({ searchParams }: Props) {
   const params = (await searchParams) || {};
-  const page = Math.max(1, Number(params.page) || 1);
-  const tag = params.tag?.toLowerCase();
-
+  const parsedPage = Number(Array.isArray(params.page) ? params.page[0] : params.page);
+  const page = Number.isFinite(parsedPage) ? Math.max(1, Math.floor(parsedPage)) : 1;
+  const tag = (Array.isArray(params.tag) ? params.tag[0] : params.tag)?.toLowerCase();
   const posts = await getAllPosts();
-  const filtered = tag
-    ? posts.filter((p) => p.tags?.some((t) => t.toLowerCase() === tag))
-    : posts;
-
+  const filtered = tag ? posts.filter((post) => post.tags?.some((item) => item.toLowerCase() === tag)) : posts;
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const currentPage = Math.min(page, totalPages);
-  const start = (currentPage - 1) * PAGE_SIZE;
-  const pageItems = filtered.slice(start, start + PAGE_SIZE);
-  const tags = uniqueTags(posts);
+  const pageItems = filtered.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+  const tags = Array.from(new Set(posts.flatMap((post) => post.tags ?? []))).sort();
 
   return (
-    <div className="mx-auto flex min-h-screen max-w-4xl flex-col gap-8 px-6 py-12">
-      <div className="flex items-center gap-3 text-sm text-muted-foreground">
-        <Link href="/" className="rounded-full border border-border px-3 py-1 transition hover:border-brand hover:text-brand">
-          ← 返回主页
-        </Link>
-        <span className="text-muted">/</span>
-        <span className="text-foreground">博客</span>
-        <Link
-          href="/blog/tags"
-          className="ml-auto inline-flex items-center gap-1 rounded-full border border-border px-3 py-1 text-xs transition hover:border-brand hover:text-brand"
-        >
-          查看标签
-        </Link>
-      </div>
-
-      <div className="space-y-2">
-        <p className="text-sm font-semibold uppercase tracking-[0.2em] text-brand">Blog</p>
-        <h1 className="text-3xl font-bold">最新文章</h1>
-        <p className="text-muted-foreground">基于仓库内 MDX frontmatter 的列表，支持按标签过滤。</p>
-      </div>
-
-      {tags.length > 0 && (
-        <div className="flex flex-wrap gap-2 text-sm">
-          <Link
-            href="/blog"
-            className={`rounded-full border px-3 py-1 transition ${!tag ? "border-brand text-brand" : "border-border text-muted-foreground hover:border-brand hover:text-brand"}`}
-          >
-            全部
-          </Link>
-          {tags.map((t) => (
-            <Link
-              key={t}
-              href={`/blog?tag=${encodeURIComponent(t)}`}
-              className={`rounded-full border px-3 py-1 transition ${tag === t.toLowerCase() ? "border-brand text-brand" : "border-border text-muted-foreground hover:border-brand hover:text-brand"}`}
-            >
-              {t}
-            </Link>
-          ))}
-        </div>
-      )}
-
-      <div className="grid gap-4">
-        {pageItems.map((post) => (
-          <article
-            key={post.slug}
-            className="rounded-2xl border border-border bg-surface p-5 shadow-sm backdrop-blur-sm transition hover:-translate-y-0.5 hover:shadow-md"
-          >
-            <div className="grid gap-4 md:grid-cols-[180px,1fr] md:items-center">
-              <div className="relative overflow-hidden rounded-xl border border-border bg-surface-muted md:h-full">
-                {post.cover ? (
-                  <div
-                    className="absolute inset-0 bg-cover bg-center"
-                    style={{ backgroundImage: `url(${post.cover})` }}
-                    aria-hidden
-                  />
-                ) : (
-                  <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-brand/10 via-surface-muted to-brand/5 text-lg font-semibold text-brand">
-                    {post.title.slice(0, 2)}
-                  </div>
-                )}
-                <span className="sr-only">{post.title} 封面</span>
-                <div className="aspect-[4/3]" />
-              </div>
-
-              <div className="space-y-2">
-                <div className="flex flex-wrap items-center gap-2 text-xs uppercase tracking-[0.16em] text-muted">
-                  <span>{new Date(post.date).toLocaleDateString()}</span>
-                  {post.readingTimeMinutes ? <span>· {post.readingTimeMinutes} 分钟</span> : null}
-                  {post.tags?.map((tagItem) => (
-                    <span
-                      key={tagItem}
-                      className="rounded-full bg-surface-muted px-2 py-0.5 text-[11px] font-medium text-brand"
-                    >
-                      {tagItem}
-                    </span>
-                  ))}
-                </div>
-                <h2 className="text-xl font-semibold text-foreground">
-                  <Link href={`/blog/${post.slug}`} className="hover:text-brand">
-                    {post.title}
-                  </Link>
-                </h2>
-                {post.summary ? <p className="text-sm text-muted-foreground">{post.summary}</p> : null}
-              </div>
+    <main id="main-content" className="site-width content-main">
+      <nav className="breadcrumb" aria-label="面包屑"><Link href="/"><ArrowLeft size={14} aria-hidden="true" />&nbsp; 返回主页</Link><span aria-hidden="true">/</span><span aria-current="page">文章</span></nav>
+      <header className="page-heading">
+        <p className="eyebrow">NOTES & THOUGHTS</p>
+        <div className="archive-heading"><h1>写下来，慢慢想。</h1><span className="archive-count">{filtered.length} 篇{tag ? ` · #${tag}` : "文章"}</span></div>
+        <p>关于 Web、产品与日常的构建记录和思考。</p>
+      </header>
+      <nav className="archive-filters" aria-label="标签筛选">
+        <Link href="/blog" aria-current={!tag ? "page" : undefined} className={cn("tag", !tag && "tag-active")}>全部文章</Link>
+        {tags.map((item) => <Link key={item} href={`/blog?tag=${encodeURIComponent(item)}`} aria-current={tag === item.toLowerCase() ? "page" : undefined} className={cn("tag", tag === item.toLowerCase() && "tag-active")}>#{item}</Link>)}
+        <Link className="text-link" href="/blog/tags">标签一览 <ArrowUpRight size={14} aria-hidden="true" /></Link>
+      </nav>
+      <section aria-label="文章列表">
+        {pageItems.length === 0 ? <div className="empty-state"><p>这个标签下还没有文章。</p><Link href="/blog" className="text-link">查看全部文章 <ArrowRight size={14} aria-hidden="true" /></Link></div> : pageItems.map((post) => (
+          <article className="archive-post" key={post.slug}>
+            <div className="archive-cover" aria-hidden="true">{post.cover ? <div className="archive-cover-image" style={{ backgroundImage: `url(${post.cover})` }} /> : <span>{post.title.slice(0, 2)}</span>}</div>
+            <div className="min-w-0">
+              <div className="post-meta"><time dateTime={post.date}>{formatDate(post.date)}</time><span>{post.readingTimeMinutes ?? 1} 分钟阅读</span></div>
+              <h2><Link href={`/blog/${post.slug}`}>{post.title}</Link></h2>
+              {post.summary && <p className="archive-summary">{post.summary}</p>}
+              <div className="tag-list">{post.tags?.map((item) => <Link key={item} className="tag" href={`/blog?tag=${encodeURIComponent(item)}`}>#{item}</Link>)}</div>
             </div>
           </article>
         ))}
-      </div>
-
-      {totalPages > 1 && (
-        <div className="flex items-center justify-between text-sm text-muted-foreground">
-          <span>
-            第 {currentPage} / {totalPages} 页（共 {filtered.length} 篇）
-          </span>
-          <div className="flex items-center gap-2">
-            {currentPage > 1 && (
-              <Link
-                href={`/blog?page=${currentPage - 1}${tag ? `&tag=${encodeURIComponent(tag)}` : ""}`}
-                className="rounded-full border border-border px-3 py-1 hover:border-brand hover:text-brand"
-              >
-                上一页
-              </Link>
-            )}
-            {currentPage < totalPages && (
-              <Link
-                href={`/blog?page=${currentPage + 1}${tag ? `&tag=${encodeURIComponent(tag)}` : ""}`}
-                className="rounded-full border border-border px-3 py-1 hover:border-brand hover:text-brand"
-              >
-                下一页
-              </Link>
-            )}
-          </div>
-        </div>
-      )}
-    </div>
+      </section>
+      {totalPages > 1 && <nav className="archive-pagination" aria-label="分页"><span>第 {currentPage} / {totalPages} 页 · 共 {filtered.length} 篇</span><div>{currentPage > 1 && <Link className="button" href={`/blog?page=${currentPage - 1}${tag ? `&tag=${encodeURIComponent(tag)}` : ""}`}><ArrowLeft size={14} aria-hidden="true" />上一页</Link>}{currentPage < totalPages && <Link className="button" href={`/blog?page=${currentPage + 1}${tag ? `&tag=${encodeURIComponent(tag)}` : ""}`}>下一页<ArrowRight size={14} aria-hidden="true" /></Link>}</div></nav>}
+    </main>
   );
 }

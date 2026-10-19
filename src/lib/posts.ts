@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import GithubSlugger from "github-slugger";
-import type { ComponentType } from "react";
+import type { ComponentProps, ComponentType } from "react";
 
 const POSTS_DIR = path.join(process.cwd(), "src", "content", "posts");
 const postSourceCache = new Map<string, Promise<string>>();
@@ -24,7 +24,7 @@ export type Heading = {
 };
 
 export type PostModule = {
-  default: ComponentType;
+  default: ComponentType<{ components?: { h1?: ComponentType<ComponentProps<"h1">> } }>;
   metadata: PostMeta;
 };
 
