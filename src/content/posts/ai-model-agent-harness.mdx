@@ -59,11 +59,15 @@ export const metadata = {
 
 那模型的本体到底是什么?一句话:**一大团参数构成的函数,文本进,文本出。** 它读遍了整个互联网,聊天、写代码、做翻译样样精通——但它没有手。你问它"现在几点",它只能连蒙带猜;让它看看你桌面上那份报告,它连你的桌面在哪儿都够不着。
 
+<img src="/images/posts/ai-model-agent-harness/deepseek-reach.png" alt="DeepSeek 拟人形象:拼命伸手去够一张悬浮的文档,却怎么也够不着" className="article-mascot" />
+
 聪明,但没有手。这个伏笔,下一节收。
 
 ## Agent:为什么你家音箱不是 Agent?
 
 做个小实验:对着小爱同学、天猫精灵或者任何一个智能音箱说——"帮我把这个月的账单整理成表格,发给老婆。"它大概率会答非所问,或者给你放一首《老婆最大》。
+
+<img src="/images/posts/ai-model-agent-harness/deepseek-speaker.png" alt="DeepSeek 拟人形象:盯着智能音箱满脸问号" className="article-mascot" />
 
 智能音箱能"听懂指令"和"执行技能",但它不会把一个大任务拆成小步骤、自己决定先干什么后干什么、干错了换个法子再来。它没有循环,没有自主决策。所以它不是 Agent,顶多算一个语音遥控器。
 
@@ -75,6 +79,8 @@ Agent 这个词,其实比大模型老得多。它来自拉丁语 *agere*,"去做
 - 2023 年 2 月,[Toolformer](https://arxiv.org/abs/2302.04761) 展示模型能在训练中学会自己插 API 调用;
 - 2023 年 6 月,OpenAI 把 function calling 做成 API 标准能力,从此"模型报工具名和参数,程序负责执行"成了通用模式;
 - 2023 年春天,AutoGPT 火遍全网——普通人第一次看见"模型自己拆任务、自己找工具、自己迭代",也第一次看见它翻车:给它定个"赚钱"目标,它真能自己写邮件、自己建项目,一晚上烧掉可观的 API 费,最后一事无成。热闹散场后,所有人记住了同一件事:**光有模型和工具还不够,缺的是工程。**
+
+<img src="/images/posts/ai-model-agent-harness/deepseek-burning-bill.png" alt="DeepSeek 拟人形象:抱着一张烧焦冒烟的超长 API 账单,脚下散落更多冒烟账单" className="article-mascot-wide" />
 
 这个循环写出来就这么几行:
 
@@ -104,6 +110,8 @@ R1 是开源模型,谁都能下载。于是同一只模型,活在了好几套完
 - 在**官网或 App** 里聊:背后是深度求索官方做的对话系统;
 - 用 **Ollama** 把它拉到本地,再套个 **Open WebUI**:这套界面、参数和配置,就是你亲手搭的;
 - 把它的 API 接进 **Cline、Cursor** 这类编码工具:它又成了别人家 agent 里的引擎。
+
+<img src="/images/posts/ai-model-agent-harness/deepseek-outfits.png" alt="同一只 DeepSeek 拟人形象的三套装扮:官网聊天、本地部署、编码 Agent" className="article-mascot-wide" />
 
 模型是同一只,体验天差地别。差别不在模型,全在外围那层东西给了它什么提示词、什么工具、什么权限。这层东西,就是 Harness(马具)。**Harness 不是 DeepSeek 的一部分,而是包在 DeepSeek 外面的那一部分。**
 
@@ -173,3 +181,5 @@ R1 是开源模型,谁都能下载。于是同一只模型,活在了好几套完
 下一篇顺着 Harness 往下挖:Skills、MCP、hooks、插件、子智能体、指令……这些名词分别对应 harness 里的哪一层,以及怎么用起来。
 
 最后照例说句题外话:这篇从大纲、配图到成文,是一个人、一个模型和一套 harness 协作的产物——写它的 agent,也没能逃出本文的任何一条定义。
+
+<img src="/images/posts/ai-model-agent-harness/deepseek-farewell.png" alt="DeepSeek 拟人形象:合上印有小蓝鲸标志的笔记本电脑,对镜头竖起大拇指" className="article-mascot-wide" />
