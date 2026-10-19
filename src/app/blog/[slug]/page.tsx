@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
+import { ArticleEditor } from "@/components/article-editor";
 import { PostContent } from "@/components/post-content";
-import { getAllPosts, getPostBySlug, getPostHeadings } from "@/lib/posts";
+import { getAllPosts, getPostBySlug, getPostHeadings, getPostSource } from "@/lib/posts";
 
 // In Next.js 16 app router, dynamic route params arrive as a Promise; unwrap before use
 type PageParams = { params: Promise<{ slug: string }> };
@@ -37,13 +38,18 @@ export default async function PostPage({ params }: PageParams) {
   const next = currentIndex >= 0 && currentIndex < posts.length - 1 ? posts[currentIndex + 1] : null;
 
   return (
-    <PostContent
-      Content={MDXContent}
-      metadata={metadata}
-      slug={slug}
-      prev={prev}
-      next={next}
-      headings={headings}
-    />
+    <>
+      <PostContent
+        Content={MDXContent}
+        metadata={metadata}
+        slug={slug}
+        prev={prev}
+        next={next}
+        headings={headings}
+      />
+      {process.env.NODE_ENV === "development" && (
+        <ArticleEditor slug={slug} initialSource={await getPostSource(slug)} />
+      )}
+    </>
   );
 }

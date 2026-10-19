@@ -127,6 +127,10 @@ function readPostSource(slug: string) {
   return sourcePromise;
 }
 
+export async function getPostSource(slug: string): Promise<string> {
+  return readPostSource(slug);
+}
+
 export async function getPostSlugs(): Promise<string[]> {
   const entries = await fs.readdir(POSTS_DIR, { withFileTypes: true });
   return entries
