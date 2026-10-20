@@ -48,16 +48,20 @@
 
 ## 状态
 
-- [x] 选题 1:二稿完成(`ai-model-agent-harness.mdx`),按反馈调整语气/配图/例子,待再审
-- [x] 选题 2:初稿完成(`agent-usage-ecosystem.mdx`,2026-10-20),已过外审并修订,待作者审
+- [x] 选题 1:二稿完成(`ai-model-agent-harness.mdx`),已发布,配图与封面已生成并接入
+- [x] 选题 2:初稿完成(`agent-usage-ecosystem.mdx`,2026-10-20),已过外审并修订;**配图已全部到手并插入正文(3 张信息图 + 封面,metadata.cover 已补)**,待作者终审后发布
 - [ ] 选题 3:未动笔——**需要作者提供**:真实使用经历、踩过的坑、人机协作的思考素材
-- [x] 选题 4:初稿完成(`agent-getting-started.mdx`,2026-10-20),已过外审并修订,待作者审
-- [x] 选题 5:初稿完成(`model-landscape-2026.mdx`,2026-10-20),已过外审并修订,待作者审(时效性强,信息截至 2026-10-20)
-- [x] 选题 6:初稿完成(`harness-comparison.mdx`,2026-10-20),已过外审并修订,待作者审
+- [x] 选题 4:初稿完成(`agent-getting-started.mdx`,2026-10-20),已过两轮外审并修订(第二轮见 `docs/reviews/three-articles-review-2026-10-20.md`),待作者审
+- [x] 选题 5:初稿完成(`model-landscape-2026.mdx`,2026-10-20),已过两轮外审并修订(第二轮见 `docs/reviews/three-articles-review-2026-10-20.md`),待作者审(时效性强,信息截至 2026-10-20)
+- [x] 选题 6:初稿完成(`harness-comparison.mdx`,2026-10-20),已过两轮外审并修订(第二轮见 `docs/reviews/three-articles-review-2026-10-20.md`),待作者审
 - [ ] 选题 7:未动笔——**需要作者提供**:日常在用的 AI 工具清单及留下的理由
 
 ## 初稿配套资料(2026-10-20)
 
 - 调研与写作计划:`docs/research/<slug>-research.md`(事实与来源)、`docs/research/<slug>-plan.md`(大纲、配图清单与提示词要点)
 - 审查与处置记录:`docs/reviews/four-drafts-review-2026-10-20.md`
-- 四篇配图均未生成:正文以 `{/* 配图n(待生成) */}` 占位,封面未出(metadata 未写 cover);生成与插入流程见 writing-guide 第四节
+- 三篇复审记录:`docs/reviews/three-articles-review-2026-10-20.md`(26 项 P1 + 5 项 P2,已于 2026-10-20 全部按意见修订正文;配图仍未生成,发布前需落实)
+- 各篇配图状态(**实时更新**:图片到手即插入正文并在此同步,规则见 `docs/writing-guide.md` 第四节):
+  - 生态篇 `agent-usage-ecosystem`:3 张信息图 + 封面均已插入正文,`metadata.cover` 已补,PNG 已压缩为 WebP,待终审后发布;
+  - 入门篇 `agent-getting-started`、harness 篇 `harness-comparison`、模型篇 `model-landscape-2026`:第二轮外审的正文意见已全部修订;**配图仍未生成**——图像生成接口 2026-10-20 返回 429(账号组耗尽),重试仍失败,待接口恢复后按 `docs/research/*-plan.md` 的配图清单生成,正文保留 `{/* 配图n(待生成) */}` 占位,封面未出(metadata 未写 cover);
+  - 概念篇 `ai-model-agent-harness`:已发布,配图与封面齐备。
