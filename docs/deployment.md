@@ -12,6 +12,7 @@
 - 专项确认：新文章 `/blog/ai-model-agent-harness` 公网可访问且 RSS 已收录；`/blog/hello-world`、`/blog/next-roadmap` 公网返回 404；WebP 图片（`image/webp`）公网正常。
 - 注意：`scripts/check-site.mjs` 的路由清单已随文章上下线更新，后续发布新增/下线文章时同样需要维护该清单。
 - 同日追加（17:33 UTC）：发布文章专用封面图（`cover.webp`，67KB），`metadata.cover` 由概念图改为专用封面。发布目录 `20261019T173036Z`，源码包 SHA-256 `eb9e688f62c34154752b4ab07c0ae7d193886f98f84bc3631e9662dc0315c6cc`；lock 未变故复用上一发布目录的 `node_modules` 后重新构建，3011 预览与公网检查通过。上一发布目录 `20261019T165921Z` 保留回退。
+- 同日追加（00:40 UTC+8 次日）：概念篇全文直引号改为全角弯引号（86 处）并清理残留半角标点。发布目录 `20261020T004055Z`，源码包 SHA-256 `54acf5af00432dcc005525c73799b2bb8f4bd3487afbb1a55c3136f0e8de2530`，复用 `node_modules` 重新构建，3011 预览与公网检查通过。**本次打包显式排除了 `docs/research` 之外仍在评审中的四篇草稿**（agent-getting-started / agent-usage-ecosystem / harness-comparison / model-landscape-2026），其路由公网 404；草稿文件已随引号修复提交进入 main 仓库（未上线），发布前需从工作区或按本包的 exclude 方式排除。上一发布目录 `20261019T173036Z` 保留回退。
 
 ## 运行方式
 
