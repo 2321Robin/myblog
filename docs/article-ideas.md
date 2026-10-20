@@ -1,6 +1,6 @@
 # 文章选题备忘
 
-> 写作分支:`writing/articles`。这里只记录选题,不动笔;成文后放 `src/content/posts/*.mdx`(metadata 格式参考 `next-roadmap.mdx`)。
+> 写作分支:`writing/articles`。这里只记录选题,不动笔;成文后放 `src/content/posts/*.mdx`(metadata 格式参考 `ai-model-agent-harness.mdx`)。
 
 ## 选题清单
 
@@ -49,6 +49,15 @@
 ## 状态
 
 - [x] 选题 1:二稿完成(`ai-model-agent-harness.mdx`),按反馈调整语气/配图/例子,待再审
-- [ ] 选题 2:未动笔
-- [ ] 选题 3:未动笔
-- [ ] 选题 4~7:已记录(2026-10-20),未动笔
+- [x] 选题 2:初稿完成(`agent-usage-ecosystem.mdx`,2026-10-20),已过外审并修订,待作者审
+- [ ] 选题 3:未动笔——**需要作者提供**:真实使用经历、踩过的坑、人机协作的思考素材
+- [x] 选题 4:初稿完成(`agent-getting-started.mdx`,2026-10-20),已过外审并修订,待作者审
+- [x] 选题 5:初稿完成(`model-landscape-2026.mdx`,2026-10-20),已过外审并修订,待作者审(时效性强,信息截至 2026-10-20)
+- [x] 选题 6:初稿完成(`harness-comparison.mdx`,2026-10-20),已过外审并修订,待作者审
+- [ ] 选题 7:未动笔——**需要作者提供**:日常在用的 AI 工具清单及留下的理由
+
+## 初稿配套资料(2026-10-20)
+
+- 调研与写作计划:`docs/research/<slug>-research.md`(事实与来源)、`docs/research/<slug>-plan.md`(大纲、配图清单与提示词要点)
+- 审查与处置记录:`docs/reviews/four-drafts-review-2026-10-20.md`
+- 四篇配图均未生成:正文以 `{/* 配图n(待生成) */}` 占位,封面未出(metadata 未写 cover);生成与插入流程见 writing-guide 第四节
