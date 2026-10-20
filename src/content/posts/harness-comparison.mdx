@@ -13,7 +13,7 @@ export const metadata = {
 
 　　如果你在 2026 年用过 AI 编码工具，那你对“该用哪只外壳”的印象，大概在几个月里被刷新了三次。
 
-　　5 月 19 日，Google 宣布：从 6 月 18 日起，Gemini CLI 的免费层与 Google One 用户整体移交给新的 Antigravity CLI，官方给的理由是 Gemini CLI“未针对最新模型优化”——一只老牌外壳，就这么交了棒。6 月 2 日，Cognition 推送一次 OTA 更新：风头正劲的 Windsurf 正式换牌为 Devin Desktop，订阅套餐与配置原样保留，旧引擎 Cascade 则在 7 月 1 日正式停止服务，位置由 Devin 的本地版与云版接替。8 月 14 日，Cursor 在官方账号上官宣被 SpaceX 收购——交易细节双方都没有展开细说，但“外壳也会易主”这件事，算是彻底摆上了台面。
+　　5 月 19 日，Google 宣布：从 6 月 18 日起，Gemini CLI 不再为个人免费层及 Google AI Pro、Ultra 用户处理请求，这些用户需转向新的 Antigravity CLI——一只老牌外壳，就这么交了棒。官方将调整解释为集中建设面向多 agent 工作流的统一平台；企业许可证与付费 API key 访问继续保留。6 月 2 日，Cognition 推送一次 OTA 更新：风头正劲的 Windsurf 正式换牌为 Devin Desktop，订阅套餐与配置原样保留，旧引擎 Cascade 则在 7 月 1 日正式停止服务，位置由 Devin 的本地版与云版接替。8 月 14 日，Cursor 在官方账号上官宣被 SpaceX 收购——交易细节双方都没有展开细说，但“外壳也会易主”这件事，算是彻底摆上了台面。
 
 　　三件事，三种命运：有交棒的，有换牌的，有换东家的。模型还在按部就班地发新版本，包在模型外面的外壳，却比想象中不稳定得多——光是 2026 年，就三连变。
 
@@ -46,13 +46,13 @@ export const metadata = {
 
 　　名气最大的是 Anthropic 的 **Claude Code**（以成文时的 v2.1.303 为准）。它的活动范围早已不限于终端：终端 CLI、IDE 扩展、网页版（[claude.ai/code](https://claude.ai/code)）与移动端入口，同一套能力分布在多种形态里。它默认绑定 Claude 系模型，但门没锁死：可以接 Amazon Bedrock、Google Cloud 的 Agent Platform（原 Vertex）、Microsoft Foundry，也可以改一个环境变量指向自建网关。权限上默认交互式审批（改前先问、只出计划、全自动几档自选），另备一套可选的操作系统级沙箱（macOS 的 Seatbelt、Linux 的 bubblewrap，外加网络代理白名单），默认关闭，想加固再开。价格随 Claude 订阅走：Pro 档每月 20 美元（年付折合每月 17 美元）即可使用，更高一档的 Max 从每月 100 美元起。
 
-　　OpenAI 的 **Codex CLI**（成文时 v0.163.0）走了开源路线（Apache-2.0 许可）。README 自我定位是“轻量的本地 agent”，小而快，绑定 GPT 系模型，配置文件可以指向任意兼容的服务商。权限上它是另一路数：沙箱默认只读，agent 看得动不得；要解锁写权限，得按操作系统机制审批（macOS 的 Seatbelt、Linux 的 Landlock）；此外还有更放手的自动模式，和一柄彻底跳过沙箱的开关。计费走 ChatGPT 订阅或 API key——订阅现价成文时未能核实，以官网为准。
+　　OpenAI 的 **Codex CLI**（成文时 v0.163.0）走了开源路线（Apache-2.0 许可）。README 自我定位是“轻量的本地 agent”，小而快，绑定 GPT 系模型，配置文件可以指向任意兼容的服务商。权限上它把沙箱范围与审批策略分开配置：交互模式在版本控制目录通常推荐 Auto，允许在工作区内读写和运行命令；未信任目录可能从只读开始，非交互的 codex exec 默认只读。越过权限边界的操作可能需要审批。隔离由操作系统实施——macOS 用 Seatbelt，Linux 默认用 bubblewrap 加 seccomp；此外还有更放手的自动模式，和一柄彻底跳过沙箱的开关。计费走 ChatGPT 订阅或 API key——订阅现价成文时未能核实，以官网为准。
 
 　　阿里 Qwen 团队的 **Qwen Code**，出身是 Gemini CLI 的衍生项目，但从 v0.1 起走向独立，变成一套多协议 agent 框架：Qwen、OpenAI、Anthropic、Gemini 兼容端点都能接，本地的 Ollama 与 vLLM 也支持。形态覆盖相当齐全——终端、桌面端、编辑器插件（VS Code、Zed、JetBrains）、网页，连微信、飞书、钉钉、Telegram 这些即时通信入口都有——还带一个“Agent Teams”机制，把大任务拆给一群小 agent 分头去干。提醒一句：早先的 Qwen OAuth 免费档已于 2026 年 4 月 15 日停止，现在要走 QwenCloud Token、百炼 Coding Plan 这类付费方案。
 
-　　还有两员开源老将：**opencode**（SST 时期的项目，现归 Anomaly，成文时 v2.0.32）讲究 provider 无关，任何一家的 API key 塞进来就能跑，MCP、插件、ACP、自定义工具一应俱全；Charmbracelet 的 **crush** 同样免费开放源码（FSL-1.1-MIT 许可），原生支持 Moonshot、Z.ai 等服务商，Skills 机制直接兼容 .claude/skills 目录——Claude Code 的老用户搬家，技能可以原样带走。
+　　还有两款源码可见的工具：**opencode**（SST 时期的项目，现归 Anomaly，成文时 v2.0.32）讲究 provider 无关，任何一家的 API key 塞进来就能跑，MCP、插件、ACP、自定义工具一应俱全；Charmbracelet 的 **crush** 免费使用并公开源码，采用 FSL-1.1-MIT 许可——Fair Source 类型，现阶段限制竞争性用途，各版本发布两年后才转为 MIT。它原生支持 Moonshot、Z.ai 等服务商，Skills 机制直接兼容 .claude/skills 目录——Claude Code 的老用户搬家，技能可以原样带走。
 
-　　顺带交代开场事件的后续：Gemini CLI 的免费层在 6 月 18 日正式转出，付费 API key 用户不受影响；仓库本身也没停更，stable、preview 两条发布线仍在周更，nightly 更是逐日构建。承接免费用户的 Antigravity CLI 用 Go 重写，保留了 Skills、Hooks、子代理与扩展机制，主打异步多 agent 工作流，并与 Antigravity 桌面 App 组成“统一 harness”。
+　　顺带交代开场事件的后续：Gemini CLI 的免费层在 6 月 18 日正式转出，个人免费层与 Google AI Pro、Ultra 用户转向 Antigravity CLI，付费 API key 用户不受影响；仓库本身也没停更，stable、preview 两条发布线仍在周更，nightly 更是逐日构建。承接免费用户的 Antigravity CLI 用 Go 重写，保留了 Skills、Hooks、子代理与扩展机制，主打异步多 agent 工作流，并与 Antigravity 桌面 App 组成“统一 harness”。
 
 　　终端这一拨里，其实藏着两种活法。Claude Code、Codex CLI 是“原厂套装”：外壳与自家引擎配套设计、配套调优，胜在省心——当然，前文说过，两家的门都没有锁死，都可以改接别家端点。opencode、crush、Qwen Code 则是“自选动力”：外壳不站队，引擎随你换。两条路没有对错，对应的是第二把尺子——模型绑定。你在意开箱即用，选前者；想保留换引擎的自由，选后者。
 
@@ -62,15 +62,15 @@ export const metadata = {
 
 　　如果说终端属于愿意“住”在命令行里的人，IDE 外壳服务的，是盯着代码干活的大多数。
 
-　　**Cursor** 今年的经历跌宕：8 月换了东家（如开场所说），产品上则是一贯的路线——自研 Composer 系模型，聚合 Claude、GPT、Grok、Gemini 等第三方模型，外加先规划后动手的 Plan Mode。价格公开（以官方定价页为准）：免费档之外，Plus 8 美元、Premium 30 美元、Super 100 美元、Ultra 200 美元；官方口径是：用量池与 Grok 共享、每周刷新。
+　　**Cursor** 今年的经历跌宕：8 月换了东家（如开场所说），产品上则是一贯的路线——自研 Composer 系模型，聚合 Claude、GPT、Grok、Gemini 等第三方模型，外加先规划后动手的 Plan Mode。价格公开（以官方定价页为准）：免费档之外，Plus 8 美元、Premium 30 美元、Super 100 美元、Ultra 200 美元；官方口径是：Plus 仅提供 Grok 模型，Premium 及以上可用第三方模型但须按 API 标价另行付费，套餐内用量池与 Grok 共享、每周刷新。
 
-　　**GitHub Copilot** 背靠 GitHub 本尊：VS Code 与 JetBrains 都有 agent 模式，VS Code 还加了先规划后动手的 Plan Mode，另有独立的 Copilot CLI 与 github.com 站上的云端 agent。免费档之外，Pro 10 美元、Pro+ 39 美元，按 AI Credits 额度计量。它过去一年的大动作，是 2025 年 10 月 28 日公告的 Agent HQ：把 Claude Code、Codex 这些第三方 agent 收编到统一指挥下，官方口径是付费 Copilot 订阅即可使用、不另加收。
+　　**GitHub Copilot** 背靠 GitHub 本尊：VS Code 与 JetBrains 都有 agent 模式，VS Code 还加了先规划后动手的 Plan Mode，另有独立的 Copilot CLI 与 github.com 站上的云端 agent。免费档之外，Pro 10 美元、Pro+ 39 美元，按 AI Credits 额度计量。它过去一年的大动作，是 2025 年 10 月 28 日公告的 Agent HQ：把 Claude Code、Codex 这些第三方 agent 收编到统一指挥下。GitHub 接入的 Claude 与 Codex agent 可用 Copilot 订阅结算，无须另买相应厂商订阅；运行仍消耗 AI Credits 与 GitHub Actions 分钟，在包含额度内才无额外费用，超出可能另计费，各入口的开放条件也有区别。
 
-　　**Zed** 走“开放舞台”路线：编辑器本体免费，外部 agent 通过 Agent Client Protocol（ACP，一套类比 LSP 的通用接口协议）接入——Claude、Codex、Gemini CLI 等进了 Zed，自带模型与计费，Zed 不当二道贩子；官方 Registry 里点一下就能装好常用 agent，旧外壳里的会话历史也能导进来接着用，你在 Zed 里配好的 MCP，还能经 ACP 转发给外部 agent。
+　　**Zed** 走“开放舞台”路线：编辑器本体免费，外部 agent 通过 Agent Client Protocol（ACP，一套类比 LSP 的通用接口协议）接入——Claude、Codex、Gemini CLI 等进了 Zed，在外部 agent 这条路线里自带模型与计费，Zed 不当二道贩子；官方 Registry 里点一下就能装好常用 agent，旧外壳里的会话历史也能导进来接着用，你在 Zed 里配好的 MCP，还能经 ACP 转发给外部 agent。AI 服务本身的费用另算，以官方定价页为准。
 
 　　AWS 的 **Kiro** 主打规格驱动：需求先写成 Specs，agent 照规格实现，另有 Steering 机制沉淀长期约定。形态从 IDE（基于 Code OSS）铺到 CLI、网页与移动端，另有开源的 Kiro Crew 工作区。计费按信用点，免费档含 50 点，付费档 Pro 起 20 美元；用 Kimi、DeepSeek、GLM、Qwen 这些开源权重模型时费用明显更低，免费档也能用开源权重模型。
 
-　　算一笔钱就能看出 IDE 阵营的两种账法：Copilot 的 AI Credits、Kiro 的信用点，是把模型用量打进自家订阅里统一结算；Zed 则反过来，把计费原样还给 agent 本尊，编辑器自己分文不取。哪种更划算，取决于你的用量落在哪一档——这也是第五把尺子，价格，最值得动手算一算的地方。
+　　算一笔钱就能看出 IDE 阵营的两种账法：Copilot 的 AI Credits、Kiro 的信用点，是把模型用量打进自家订阅里统一结算；Zed 在外部 agent 这条路线上则反过来，把计费原样还给 agent 本尊，编辑器自己分文不取。哪种更划算，取决于你的用量落在哪一档——这也是第五把尺子，价格，最值得动手算一算的地方。
 
 　　国内厂商是另一条产品线：字节跳动的 **TRAE**（IDE，带 SOLO 模式，另有开源的 trae-agent）、阿里系的 **Qoder**（IDE、CLI、移动端等形态）、腾讯的 **CodeBuddy**（IDE 加 CodeBuddy Code CLI）。3 月 18 日，JetBrains 的中文公告还把 Qoder、TRAE、CodeBuddy 等一并接入了插件市场。这三家的模型清单与价格未见官方页面全面核实，本文不列具体数字，以官网为准。
 
@@ -104,7 +104,7 @@ export const metadata = {
 | opencode | 有 | 有 | —（以插件代之） | AGENTS.md |
 | crush | 有 | 有（兼容 .claude/skills） | 有 | CRUSH.md、AGENTS.md |
 | Cursor | 有 | 有 | 有（hooks.json） | rules |
-| GitHub Copilot | 有 | 有 | — | AGENTS.md |
+| GitHub Copilot | 有 | 有 | 有（CLI、云端；其它入口另查） | AGENTS.md 等 |
 | Kiro | 有 | 有 | 有 | AGENTS.md、Skills.md、Steering |
 
 　　注：表中”—“（含括号内补充说明），指调研时官方页面未见对应条目或以其它机制代替，不等于一定不支持；各家的功能演进都很快，请以官方文档为准。
@@ -121,7 +121,7 @@ export const metadata = {
 
 　　agent 越自主，外壳越得回答一个问题：出事了算谁的？眼下的外壳，思路大致分三派。
 
-　　**默认上锁派**：Codex CLI 的沙箱默认只读，agent 看得见动不了，要解锁写权限必须按操作系统机制审批，批了才有动文件的通行证。**默认先问派**：Claude Code 默认是交互式权限模式，改文件先征求同意，也可以只让它出计划，或者放手全自动；想再进一步，它还备了操作系统级沙箱（macOS 的 Seatbelt、Linux 的 bubblewrap，配网络代理白名单），默认关闭，属于给想加固的人准备的纵深防御。**隔离环境派**：Claude Code 网页会话、Devin、Kiro 网页版这类云端外壳，干脆把任务整个扔进隔离虚拟机——agent 真闯了祸，炸的也是一间干净房间。
+　　**默认上锁派**：Codex CLI 的权限按沙箱范围与审批策略分开配置，交互模式在版本控制目录通常推荐 Auto（工作区内读写和运行命令），未信任目录可能从只读开始，非交互的 codex exec 默认只读；越过权限边界的操作可能需要审批，隔离由操作系统实施。**默认先问派**：Claude Code 默认是交互式权限模式，改文件先征求同意，也可以只让它出计划，或者放手全自动；想再进一步，它还备了操作系统级沙箱（macOS 的 Seatbelt、Linux 的 bubblewrap 加 seccomp，配网络代理白名单），默认关闭，属于给想加固的人准备的纵深防御。**隔离环境派**：Claude Code 网页会话、Devin、Kiro 网页版这类云端外壳，干脆把任务整个扔进隔离虚拟机——它把执行环境与本机分开，降低误操作直接伤到本机的风险；但 agent 拿到的仓库权限、外部连接和数据访问能力仍然有效，墙内的操作也可能影响远端系统。
 
 　　三派没有绝对高下，区别是默认姿势：有的把选择权留给你，有的先把门锁上，有的干脆连门都不让你操心。上一篇拆 harness 解剖图时，“权限与沙箱”就是其中一格；到了真实产品里，这一格的做法开始直接决定你敢把多大的事交给它。个人如此，团队更是：真要整队上，还得加问一句权限能不能统一管——Agent HQ、Kiro 与 Claude 的企业档，在这上面都有专门的动作。外壳越自主，你越应该问清三件事：默认能做什么，哪些要先经我同意，边界墙砌在哪里。
 
@@ -135,11 +135,11 @@ export const metadata = {
 
 　　**路线二：通用外壳，接国产模型。**不少外壳并不锁引擎：GLM 官方提供了把 Claude Code 接到 GLM 模型的指南；DeepSeek 更进一步，直接给出官方 Anthropic 兼容端点（[接入文档看这里](https://api-docs.deepseek.com/guides/anthropic_api)），把 Claude 的 opus 档映射到自家的 deepseek-v4-pro、haiku 与 sonnet 档映射到 deepseek-flash，另有面向 Codex 的官方接入指南。crush 原生支持 Moonshot 与 Z.ai，opencode 与 Codex CLI 也能指向任意兼容端点。外壳照常用，引擎换成国产的。
 
-　　两条路怎么挑？图省事、想一步到位的，路线一的国产外壳把付费与模型都打包好了；已经在外壳生态里扎了营、攒了一堆配置的，路线二让你只换引擎、不搬家，代价是多一道接线的手续。各有取舍，但共同点是：都不必再靠运气，官方文档写得明明白白。
+　　两条路怎么挑？图省事、想一步到位的，路线一的国产外壳把付费与模型都打包好了；已经在外壳生态里扎了营、攒了一堆配置的，路线二让你只换引擎、不搬家，代价是多一道接线的手续。各有取舍，但共同点是：两条路线都有模型服务商或外壳厂商提供的资料。还要分清谁负责支持——DeepSeek、GLM 的兼容指南证明接线方式有据可查，但这与 Anthropic 的支持承诺不是一回事：当前 Anthropic 文档明确不支持经网关把 Claude Code 路由到非 Claude 模型，升级后的兼容性仍需按服务商指南核对。
 
 　　两句提醒：其一，Qwen Code 的 Qwen OAuth 免费档已于 2026 年 4 月 15 日停止，免费午餐在退潮；其二，TRAE、Qoder、CodeBuddy 的模型与价格本文不背书，一切以官网为准。
 
-　　**外壳和引擎可以分开选：国产外壳配国产引擎，通用外壳配国产引擎，两条路都有官方指南，不用猜。**
+　　**外壳和引擎可以分开选：国产外壳配国产引擎，通用外壳配国产引擎，两条路都有据可查，但要分清资料是谁家的。**
 
 ## 怎么选：三个问题
 
@@ -157,7 +157,7 @@ export const metadata = {
 | IDE 与编辑器 | Cursor、GitHub Copilot、Zed、Kiro | 看着代码干活的重度 IDE 用户 |
 | 网页与云端 | claude.ai/code、chatgpt.com/codex、Devin、Agent HQ | 派活不盯活、要并行托管的人 |
 
-　　三个问题问完，候选基本收敛到两三只，挨个装上试一周即可——试用的门槛大多不高：Copilot、Kiro、Cursor 都有免费档，opencode、crush 本身免费开源，Claude Code 与 Codex 则随各家订阅奉送。外壳的安装成本不高，真正的成本在你搬进去之后，这也是为什么前一章的“搬家清单”值得先想后搬。
+　　三个问题问完，候选基本收敛到两三只，挨个装上试一周即可——试用的门槛大多不高：Copilot、Kiro、Cursor 都有免费档，opencode 免费开源，crush 免费使用并公开源码，Claude Code 与 Codex 则随各家订阅奉送。外壳的安装成本不高，真正的成本在你搬进去之后，这也是为什么前一章的“搬家清单”值得先想后搬。
 
 　　**记住这一句：选外壳就是选工作方式——终端管深度，云端管并行，扩展生态决定你换壳的代价。**
 
@@ -177,9 +177,9 @@ export const metadata = {
 | 2026-03-18 | JetBrains 插件市场接入 Qoder、TRAE、CodeBuddy 等 | 国产外壳进入主流编辑器 |
 | 2026-04-15 | Qwen Code 的 Qwen OAuth 免费档停止 | 免费午餐开始退潮 |
 | 2026-04-27 | Cognition 发布 Devin CLI | “本地起步，移交云端” |
-| 2026-05-19 | Google 宣布 Gemini CLI 免费层移交 Antigravity CLI | 老牌外壳交棒，6 月 18 日生效 |
+| 2026-05-19 | Google 宣布 Gemini CLI 个人免费层及 Google AI Pro、Ultra 用户移交 Antigravity CLI | 老牌外壳交棒，6 月 18 日生效 |
 | 2026-06-02 | Windsurf 经 Cognition 的 OTA 更新换牌为 Devin Desktop | 换牌不换套餐 |
-| 2026-06-18 | Gemini CLI 免费层与 Google One 用户正式转出 | 免费用户集体搬家 |
+| 2026-06-18 | Gemini CLI 个人免费层与 Google AI Pro、Ultra 用户正式转出 | 免费用户集体搬家 |
 | 2026-07-01 | Windsurf 的 Cascade 正式停止服务 | 旧引擎谢幕 |
 | 2026-08-14 | Cursor 官宣被 SpaceX 收购 | 当红外壳易主 |
 | 2026-09-29 | OpenAI DevDay 2026：Codex 迎来一批更新，发布 GPT-6.1 Sol | 外壳与引擎一起上新品 |
@@ -194,6 +194,8 @@ export const metadata = {
 - Claude 定价页：[claude.com/pricing](https://claude.com/pricing)
 - Codex CLI 仓库：[github.com/openai/codex](https://github.com/openai/codex)
 - Codex 沙箱文档：[developers.openai.com/codex/sandbox](https://developers.openai.com/codex/sandbox)
+- Codex 权限与安全（审批与沙箱策略）：[learn.chatgpt.com/docs/agent-approvals-security](https://learn.chatgpt.com/docs/agent-approvals-security)
+- Codex 非交互模式（codex exec 默认只读）：[learn.chatgpt.com/docs/non-interactive-mode](https://learn.chatgpt.com/docs/non-interactive-mode)
 - Gemini CLI 移交 Antigravity CLI 官方公告：[developers.googleblog.com](https://developers.googleblog.com/en/an-important-update-transitioning-gemini-cli-to-antigravity-cli/)
 - Gemini CLI 仓库：[github.com/google-gemini/gemini-cli](https://github.com/google-gemini/gemini-cli)
 - Qwen Code 仓库：[github.com/QwenLM/qwen-code](https://github.com/QwenLM/qwen-code)
@@ -201,15 +203,21 @@ export const metadata = {
 - opencode 文档：[opencode.ai/docs](https://opencode.ai/docs/)
 - opencode 2.0 说明：[anoma.ly/notes/opencode-2-0](https://anoma.ly/notes/opencode-2-0)
 - crush 仓库：[github.com/charmbracelet/crush](https://github.com/charmbracelet/crush)
+- crush 实际许可证（FSL-1.1-MIT）：[github.com/charmbracelet/crush/blob/main/LICENSE.md](https://github.com/charmbracelet/crush/blob/main/LICENSE.md)
+- Fair Source 许可（FSL）官方说明：[fsl.software](https://fsl.software/)
 - Cursor 文档与定价：[cursor.com/docs](https://cursor.com/docs)、[cursor.com/pricing](https://cursor.com/pricing)
 - Cognition 博客（Devin Desktop、Devin CLI 等公告）：[cognition.com/blog](https://cognition.com/blog)
 - GitHub Agent HQ 公告：[github.blog](https://github.blog/news-insights/company-news/welcome-home-agents)
 - Copilot 计划文档：[docs.github.com](https://docs.github.com/en/copilot/get-started/plans)
+- GitHub Hooks 官方说明：[docs.github.com/en/copilot/concepts/agents/hooks](https://docs.github.com/en/copilot/concepts/agents/hooks)
+- GitHub 第三方编码 agent 的费用规则：[docs.github.com/en/copilot/concepts/agent-capabilities/about-agents/about-third-party-coding-agents](https://docs.github.com/en/copilot/concepts/agent-capabilities/about-agents/about-third-party-coding-agents)
 - Zed 外部 agent 文档：[zed.dev/docs/ai/external-agents](https://zed.dev/docs/ai/external-agents)
+- Zed 定价：[zed.dev/pricing](https://zed.dev/pricing)
 - Agent Client Protocol（ACP）：[agentclientprotocol.com](https://agentclientprotocol.com/)
 - Agent Skills 标准与支持客户端名录：[agentskills.io](https://agentskills.io/)
 - Kiro 官网与定价：[kiro.dev](https://kiro.dev/)、[kiro.dev/pricing](https://kiro.dev/pricing)
 - GLM 接入 Claude Code 指南：[docs.z.ai/devpack/tool/claude](https://docs.z.ai/devpack/tool/claude)
-- DeepSeek Anthropic 兼容端点文档：[api-docs.deepseek.com/guides/anthropic_api](https://api-docs.deepseek.com/guides/anthropic_api)
+- Claude Code 网关支持边界：[code.claude.com/docs/en/llm-gateway](https://code.claude.com/docs/en/llm-gateway)
+- Claude Code 云端认证、安全与隔离说明：[code.claude.com/docs/en/claude-code-on-the-web](https://code.claude.com/docs/en/claude-code-on-the-web)
 - JetBrains 中文博客 AI China 公告：[blog.jetbrains.com/zh-hans](https://blog.jetbrains.com/zh-hans/blog/2026/03/18/ai-china)
 - OpenAI DevDay 2026 回顾：[openai.com/index/devday-2026-recap](https://openai.com/index/devday-2026-recap)

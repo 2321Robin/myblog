@@ -25,7 +25,7 @@ export const metadata = {
 - 第四步，把需求说清楚：这是从“能聊”到“能交付”的关键一跃；
 - 第五步，立好安全与费用的预期：权限、隐私、钱，先说好再放手。
 
-{/* 配图1（待生成）：入门路线图，五步纵向流程，第一步分出网页 Agent 与本地 CLI 两条支路，终点汇合于“说清需求与交付” */}
+{/* 配图1（待生成）：入门路线图，五步纵向流程，第一阶段按“任务在哪里执行”分出云端处理资料与授权处理本地文件两条支路，终点汇合于“说清需求与交付” */}
 
 　　**五步而已。今天走完前三步，这周就能交出第一单。**
 
@@ -33,14 +33,14 @@ export const metadata = {
 
 　　很多人的第一反应是打开应用商店搜“Agent”，然后被一排同名产品当场劝退。先别急着挑产品，回答一个更基本的问题：你想让它干嘛？
 
-　　用上一篇的结论，一句话就够：聊天是“你问它答”，每一步都由你发起；Agent 是“下一步由它自己决定”——你给目标，它自己拆任务、调工具、看结果、接着干，直到交付。这个区别直接决定你的入手路径。对新手来说，真正的第一站只有两条：
+　　用上一篇的结论，一句话就够：聊天是“你问它答”，每一步都由你发起；Agent 是“下一步由它自己决定”——你给目标，它自己拆任务、调工具、看结果、接着干，直到交付。这个区别直接决定你的入手路径。对新手来说，可以按任务在哪里执行来分：一类主要在云端处理你上传或连接的资料；另一类获得授权后，直接处理本地文件。界面和它在哪儿干活是两条轴，别混在一起看。
 
-- **网页对话里的 Agent 能力**：ChatGPT 的 Agent 模式、Claude 网页版的多步任务，以及 DeepSeek、Kimi、豆包、元宝这些国内产品的网页端——各家能做到哪一步深浅不一，纯对话则早就都有。零安装，注册就能用，免费档大多够练手。拿 Agent 模式来说，官方的描述是给了模型一台“虚拟电脑”，它能自主浏览、替你操作——但够不着你眼前这台电脑：文件要你亲手传，结果要你亲手搬。
-- **本地 CLI Agent**：Claude Code、Codex、Qwen Code、Kimi Code 这类跑在终端里的工具。它们能直接读写你电脑上的文件、执行命令、跑测试——这些是网页端做不到的事，代价是你得愿意面对一个黑黢黢的终端窗口。
+- **云端处理上传或连接的资料**：ChatGPT 的 Agent 模式、Claude 网页版的多步任务，以及 DeepSeek、Kimi、豆包、元宝这些国内产品的网页端——各家能做到哪一步深浅不一，纯对话则早就都有。零安装，注册就能用，免费档大多够练手。拿 Agent 模式来说，官方的描述是给了模型一台“虚拟电脑”，它能自主浏览、替你操作——但够不着你眼前这台电脑：文件要你亲手传，结果要你亲手搬。
+- **授权后处理本地文件**：Claude Code、Codex、Qwen Code、Kimi Code 这类跑在终端里的工具，它们能直接读写你电脑上的文件、执行命令、跑测试。走这条路的既有终端工具，也有桌面界面；代价是你得愿意授予它碰本地文件的权限，用终端还得面对一个黑黢黢的窗口。
 
-　　怎么选？我的建议：完全不写代码，先走网页路径，把“说清需求”这门基本功练起来；想让它直接在你的项目里干活，再开终端不迟。举个例子（我的用法）：把上传的一份表格整理成图、把一篇长文拆成摘要，这种几步的小活，网页 Agent 就接得住；要在几十个文件里翻代码、改代码，网页端就费劲了，该 CLI 上场。两条路也不是二选一——我自己就是网页端查资料、跑独立小任务，终端里改代码，身边用顺手的人，最后基本都落在两个都用。
+　　怎么选？我的建议：完全不写代码，先走云端路径，把“说清需求”这门基本功练起来；想让它直接在你的项目里干活，再开终端不迟。举个例子（我的用法）：把上传的一份表格整理成图、把一篇长文拆成摘要，这种几步的小活，云端 Agent 就接得住；要在几十个文件里翻代码、改代码，光靠上传下载就费劲了，该本地 Agent 上场。两条路也不是二选一——我自己就是云端查资料、跑独立小任务，本地改代码，身边用顺手的人，最后基本都落在两个都用。
 
-　　**记住这一句：网页与终端不是高低之分，是“让它碰不碰你电脑”之分。**
+　　**记住这一句：云端还是本地，区别是它在哪儿干活；喜欢网页、桌面还是终端，是另一层选择。**
 
 ## 第二步：选第一站
 
@@ -50,16 +50,16 @@ export const metadata = {
 
 | 产品 | 形态 | 价格 | 国内可用性 |
 | --- | --- | --- | --- |
-| Claude（网页版、Claude Code） | 网页对话与多步任务；终端 Agent | Pro 每月 $17（年付 $200 一次付清）或每月 $20，均含 Claude Code | 大陆无法直接访问与付费，需国际支付方式 |
-| ChatGPT（网页、App、Codex） | 网页对话加 Agent 模式；Codex CLI | 免费档可对话；付费档位以官网为准 | 大陆无法直接访问与付费，需国际支付方式 |
-| Gemini（网页、App、Antigravity CLI） | 网页对话；终端 Agent | 网页与 App 有免费档，限速使用；订阅档位以官网为准 | 大陆无法直接访问与付费，需国际支付方式 |
+| Claude（网页版、Claude Code） | 网页对话与多步任务；终端 Agent | Pro 每月 $17（年付 $200 一次付清）或每月 $20，均含 Claude Code；也可用 Console/API 按量付费 | 大陆不在官方支持地区清单内，需国际支付方式 |
+| ChatGPT（网页、App、Codex） | 网页对话加 Agent 模式；Codex CLI | 免费档可对话；付费档位以官网为准 | 大陆不在官方支持地区清单内，需国际支付方式 |
+| Gemini（网页、App、Antigravity CLI） | 网页对话；终端 Agent | 网页与 App 有免费档，限速使用；订阅档位以官网为准 | 大陆不在官方支持地区清单内，需国际支付方式 |
 | DeepSeek（网页、App、API） | 网页与 App 对话；API 按量 | 聊天免费；API 按 token 计量，错峰时段半价 | 大陆可直接访问 |
 | Qwen 通义（网页、Qwen Code） | 网页对话；终端 Agent | 网页端免费可用；订阅与按量价格以官网为准 | 大陆可直接访问，人民币支付 |
 | 智谱 GLM（网页、GLM Coding Plan） | 网页对话；编码套餐配 CLI | 海外版 Lite 每月 $18 起；国内价格以购买页为准 | 大陆可直接访问，人民币支付 |
 | Kimi（网页、App、Kimi Code） | 网页与 App 对话；Kimi Code 随会员提供 | Plus 每月 ¥99 起（连续包月或年付折合每月 ¥79），含 Kimi Code | 大陆可直接访问，人民币支付 |
 | 豆包、扣子、腾讯元宝 | App 对话；扣子可低代码搭 Bot | 免费起步，细则以官网为准 | 大陆可直接访问 |
 
-　　补几句表格外的话。Claude 的免费档可以在网页聊天，但不含 Claude Code，想用终端 Agent 得从 Pro 档起步（官方定价页口径）；ChatGPT 的免费档能对话，但 Agent 模式这类自动执行的功能，即便订阅了限额也收得相当紧，具体以官网为准；Gemini 的终端 CLI 免费层，从 2026 年 6 月 18 日起由 Antigravity CLI 接替（官方 README 口径）。表里“无法直接访问与付费”是社区共识口径——官方从未正面说明大陆区政策，实际以你的网络与支付环境为准。
+　　补几句表格外的话。Claude 的免费档可以在网页聊天，但不包含 Claude Code。想用订阅额度运行 Claude Code，个人用户可从 Pro 起步（官方定价页口径）；也可以使用 Console/API 按量付费，费用与网页订阅分别计算——终端 Agent 不是只有 Pro 这一道门。ChatGPT 的免费档能对话，但 Agent 模式这类自动执行的功能，即便订阅了限额也收得相当紧，具体以官网为准；Gemini 的终端 CLI 免费层，从 2026 年 6 月 18 日起由 Antigravity CLI 接替（官方 README 口径）。表里“无法直接访问与付费”之外还有一重地区资格：Claude 官方公布了[支持地区清单](https://support.claude.com/en/articles/8461763-where-can-i-access-claude)，目前未包含中国大陆；ChatGPT、Gemini 也应分别核对对应产品的地区与付款要求。有国际支付方式，并不自动代表符合产品的使用资格。
 
 　　然后是三条人群推荐。声明在先：这是我的建议，不是官方结论——
 
@@ -85,7 +85,7 @@ winget install Anthropic.ClaudeCode
 
 　　npm 也能装，但官方文档特别叮嘱了两句：需要 Node 22 以上，以及不要用 sudo 装，细节见文末[官方安装文档](https://code.claude.com/docs/en/setup)。装完之后，在你的项目目录里输入 `claude` 启动，第一件事是按提示登录账号。
 
-　　接着你会遇见整个安装流程里最有教育意义的画面：权限询问。默认模式下，凡是“动真格”的动作——改文件、跑命令、发联网请求——它都会先停下来征求你的同意；只读不写的，比如读文件本身，不用问。别嫌它烦，多看两眼这个动作：第五步要讲的整套安全体系，就建立在这句“先问过你”上。
+　　接着你会遇见整个安装流程里最有教育意义的画面：权限询问。默认的手动模式会在需要授权时询问，但不是每改一个文件、每发一次请求都重新问——你此前批准的范围、保存的权限规则和沙箱设置都会影响后续动作，提示里也要读清它批准的是一次动作，还是一类动作。只读不写的，比如读文件本身，通常不用问。别嫌它烦，多看两眼这个动作：第五步要讲的整套安全体系，就建立在这句“先问过你”上。
 
 　　**记住这一句：安装是一次性的，五分钟；权限询问才是第一课——从装上那刻起，就习惯“它在干什么，我先知道”。**
 
@@ -101,9 +101,11 @@ winget install Anthropic.ClaudeCode
 　　光说不练假把式，来一组对照示例（我编的，换成你自己的话就行）：
 
 - 差需求：“帮我把这个页面优化一下。”——“优化”是加载速度、视觉效果还是代码质量？它只能猜，猜错全是返工。
-- 好需求：“这个页面首屏要 4 秒才出来。先看看哪张图没做懒加载、哪些样式可以合并，列个清单给我确认，然后动手改，改完跑一遍构建，确认没有报错。”——有现状、有范围、有流程、有验收，四个要素一个不缺。
+- 好需求：“这个页面首屏要 4 秒才出来。先记录页面地址和测试条件，测一下 LCP，找出最主要的加载瓶颈，列出方案让我确认后再改。改完在相同条件下复测，交出前后数据，再跑构建并检查页面功能。”——有现状、有范围、有流程，也有对应目标的验收。
 - 差需求：“这个报错帮我修一下。”——它连报错从哪儿来的都还没搞清，只能全网瞎撞。
 - 好需求：“跑 `npm test` 报了下面这段错（把报错原文贴给它）。先读相关的代码，把可能的原因列出来给我确认，再动手改，改完重跑一遍测试。”——现状、范围、流程、验收，一样不缺。
+
+　　顺带提醒一句上一组示例里的门道：验收要贴着优化目标写。“首屏快”的验收是同一条件下的 LCP 数据，不是“构建有没有报错”——构建通过只能证明能构建。同理，优化首屏关键图片时得当心：官方明确提醒别对 LCP 图片做懒加载，那会拖慢它自己。
 
 　　**记住这一句：你省掉的每一条信息，它都会用一次返工还给你——把话说清楚，是新手唯一的“高级技巧”。**
 
@@ -111,15 +113,15 @@ winget install Anthropic.ClaudeCode
 
 　　最后一步，也是新手最容易跳过的一步。Agent 和聊天机器人最大的不同，是它真的会动手：动你的文件、跑你的命令、花你的钱。放它出来干活之前，三件事先立好规矩。
 
-　　**先说权限。** 以 Claude Code 为例，官方文档列了六种权限模式，新手记住三种就够：默认模式下，凡是动真格的操作——改文件、跑命令、发联网请求——都会先征求你同意，只读不写的不用问；plan 模式只读不改，让它先摸清现状、出方案时最安心；至于 `bypassPermissions`——全部放开、什么都不问——官方文档的警告是 “Only use this mode in isolated environments like containers or VMs”，只应在容器或虚拟机这类隔离环境里用，翻译成人话：日常工作的电脑上，别开。剩下三种模式（自动接受编辑、免常规询问、一律拒绝询问）各有适用场景，等你用出感觉了再研究不迟。
+　　**先说权限。** 以 Claude Code 为例，官方文档列了六种权限模式，新手记住三种就够：默认的手动模式会在需要授权时询问，但不是每改一个文件、每发一次请求都重新问——此前批准的范围和保存的规则会影响后续操作，第一次见某类工具时会问，之后看你的批准范围；plan 模式只读不改，让它先摸清现状、出方案时最安心；至于 `bypassPermissions`——全部放开、什么都不问——官方文档的警告是 “Only use this mode in isolated environments like containers or VMs”，只应在容器或虚拟机这类隔离环境里用，翻译成人话：日常工作的电脑上，别开。剩下三种模式（自动接受编辑、免常规询问、一律拒绝询问）各有适用场景，等你用出感觉了再研究不迟。想快速看清自己放了多少权限，先用 `/permissions` 查一遍。
 
-　　还有一份“默认要你点头”的清单值得看一眼：在需要逐项批准的手动模式下，所有 shell 命令（ls、cat、grep 这类只读命令除外）、每一次文件修改和联网请求，都要你批准。Claude Code 还内置沙箱，在操作系统层面限制命令能碰到的文件系统和网络；官方建议权限搭配沙箱一起用，理由是纵深防御——就算某条恶意指令骗过了模型的判断，沙箱的限制仍然生效。
+　　还有一份“默认要你点头”的清单值得看一眼：在需要逐项批准的手动模式下，所有 shell 命令（ls、cat、grep 这类只读命令除外）、文件修改和联网请求都在授权范围内——注意这是“这类动作”而不是“每一次都重新问一次”。Claude Code 还提供需要主动启用的 shell 沙箱，支持 macOS、Linux 和 WSL2，原生 Windows 暂不支持；它约束的是命令及其子进程，文件工具、MCP 和 hooks 并非全部运行在这套沙箱内，仍需各自的权限控制。官方建议权限搭配沙箱一起用，理由是纵深防御——就算某条恶意指令骗过了模型的判断，沙箱的限制仍然生效。权限和沙箱要配合使用，不能把“装好了”理解成“已经隔离好了”。
 
-{/* 配图2（待生成）：权限示意，同一个 Agent，左边默认询问模式每一步先举手请示，右边隔离环境的免询问模式一路绿灯但站在沙箱围栏里 */}
+{/* 配图2（待生成）：权限与沙箱示意，左边默认询问模式遇到需要授权的动作先举手请示，右边隔离环境的免询问模式一路绿灯但站在沙箱围栏里；沙箱仅覆盖命令及子进程 */}
 
 　　**再说隐私。** 很多人不知道，消费级 AI 产品的对话可能默认被用来训练模型。[Anthropic 的消费者条款](https://www.anthropic.com/legal/consumer-terms)写得很清楚：你的对话默认可能用于训练其模型，但可以在账号设置里退出；不过点过赞或点过踩的对话、被安全系统标记的对话，即使退出了仍可能用于训练。OpenAI 的公开口径类似：消费版对话默认可用于训练、可在数据控制里关闭，API 的数据默认不用于训练——这一条我没能直接核对原文，均以官方页为准。我的建议只有一句：注册完任何一个 AI 产品，先去设置里把数据相关的开关过一遍；把身份证件、密码密钥、客户数据这些敏感东西喂给它之前，多想三秒。
 
-　　**最后说钱。** 花钱之前分清两套体系：订阅，是固定月费换额度——各家细节不一，普遍按“5 小时用量窗口”给量，不少还叠加每周额度，用完等重置，别指望包月包干；API，是按 token 计量、用多少付多少，token 可以粗糙理解成模型切文本的最小计费单位。单次任务到底花多少钱？Kimi 官方文档给过一组直观示例：一次简单请求约 0.03 元，一次复杂的多步任务约 1.6 元——注意，这是官方页给的示例（出自 Kimi Code 会员文档），不是我拍的脑袋。DeepSeek 的 API 还有错峰时段半价的机制。按我的粗略估算（非官方数据），轻中度使用 API 一个月也就几元到几十元。我的建议顺序是先用订阅找感觉，等用量稳定、算得清单次成本了，再考虑切到按量的 API。另外提醒一句：订阅不是无限量，ChatGPT 那种 Agent 模式即使订阅了限额也收得很紧——具体数字各家均以官网为准。
+　　**最后说钱。** 花钱之前分清两套体系：订阅，是固定月费换额度——但刷新周期各不相同，有的按滚动窗口限流，有的还设周额度或月度共享额度，同一产品的不同套餐也可能不同（OpenAI 当前说明 Pro 没有五小时限制；Kimi 网页会员与 Kimi Code 的月度、滚动窗口规则也不一样），购买前看清哪些功能共用额度、何时恢复、超额后是暂停还是另行收费；API，是按 token 计量、用多少付多少，token 可以粗糙理解成模型切文本的最小计费单位。单次任务到底花多少钱？Kimi 官方文档给过一组直观示例：一次简单请求约 0.03 元，一次复杂的多步任务约 1.6 元——这是 Kimi Code 加油包的计费示例，不代表各家 API 的实际费用。DeepSeek 的 API 还有错峰时段半价的机制。按我的粗略估算（非官方数据），轻中度使用 API 一个月也就几元到几十元。我的建议顺序是先用订阅找感觉，等用量稳定、算得清单次成本了，再考虑切到按量的 API。另外提醒一句：订阅不是无限量，ChatGPT 那种 Agent 模式即使订阅了限额也收得很紧——具体数字各家均以官网为准。
 
 　　最后把新手最常见的坑汇总成一张表，每条都标了出处，官方建议和我的建议分开算：
 
@@ -130,13 +132,15 @@ winget install Anthropic.ClaudeCode
 | 把对话窗口当数据库 | 重要约定全靠“我刚才好像说过” | 跨会话的约定写进项目里的说明文件；不相关任务之间清空上下文（官方习惯） |
 | 重要环境乱开免询问 | 图省事，把各种确认一口气全关了 | 官方文档警告：免询问模式仅应在容器、虚拟机这类隔离环境使用 |
 | 没备份就让它改文件 | 项目还没进 git，改坏了追悔莫及 | 作者建议：先提交、先备份，再放开编辑权限 |
-| 以为订阅就是无限量 | 可着劲儿用一整天 | 订阅买的是限时限量的额度（5 小时窗口，部分外加周额度），不是包月包干（各家官方口径，细节以官网为准） |
+| 以为订阅就是无限量 | 可着劲儿用一整天 | 订阅买的是限时限量的额度：刷新周期各家不同（滚动窗口、周额度或月度共享额度，同一产品不同套餐也可能不同），不是包月包干（各家官方口径，细节以官网为准） |
 
 　　**记住这一句：先立规矩，再放它干活——权限模式、训练开关、费用预期，三件事加起来花不了五分钟。**
 
 ## 写在最后
 
-　　路线讲完了，收个尾。如果只带走一样东西，就带走这条练手路径（我的建议）：第一周，用网页端免费档把“说清需求”练熟，每天让它干一件有明确产出的小事；第二周，装一个终端 Agent，让它读你的代码、回答问题，再让它改一个小函数、自己跑测试。跑通这个闭环，“收藏了等于学会了”这件事，就跟你没关系了。别等“准备好了”再开始——Agent 是用会的，不是学会的。
+　　路线讲完了，先交一份十分钟能验收的小成果。不写代码的：上传一份脱敏表格，让它按月份汇总金额，交出汇总表和一张图；验收时核对原表总额与汇总总额是否一致，再抽查两个月。写代码的：先备份或提交当前改动，再在练习项目里让它修一个能复现的小问题，交出修改说明和测试结果。两条路都是同一个闭环——给输入、拿成果、自己核对。
+
+　　再往后走（我的建议）：第一周，用云端免费档把“说清需求”练熟，每天让它干一件有明确产出的小事；第二周，装一个终端 Agent，让它读你的代码、回答问题，再让它改一个小函数、自己跑测试。跑通这个闭环，“收藏了等于学会了”这件事，就跟你没关系了。别等“准备好了”再开始——Agent 是用会的，不是学会的。
 
 　　下一篇，工具上手了，该聊模型了：2026 年的秋天，各家模型都卷成了什么样，不同预算分别怎么挑，我们做一次横评。
 
@@ -148,18 +152,22 @@ winget install Anthropic.ClaudeCode
 
 - Claude Code 安装与运行要求：[code.claude.com/docs/en/setup](https://code.claude.com/docs/en/setup)
 - Claude Code 权限模式与批准机制：[code.claude.com/docs/en/permissions](https://code.claude.com/docs/en/permissions)
+- Claude Code shell 沙箱的范围与平台限制：[code.claude.com/docs/en/sandboxing](https://code.claude.com/docs/en/sandboxing)
 - Claude Code 官方最佳实践：[code.claude.com/docs/en/best-practices](https://code.claude.com/docs/en/best-practices)
 - Claude 订阅定价页：[claude.com/pricing](https://claude.com/pricing)
+- Claude Code 认证与账号要求（Console/API 计费另计）：[code.claude.com/docs/en/setup#authenticate](https://code.claude.com/docs/en/setup#authenticate)
+- Claude 官方可用地区清单：[support.claude.com/en/articles/8461763-where-can-i-access-claude](https://support.claude.com/en/articles/8461763-where-can-i-access-claude)
 - Anthropic 消费者条款（训练与退出规则）：[anthropic.com/legal/consumer-terms](https://www.anthropic.com/legal/consumer-terms)
 - Anthropic，《Building effective agents》：[anthropic.com/engineering/building-effective-agents](https://www.anthropic.com/engineering/building-effective-agents)
 - Codex CLI 开源仓库：[github.com/openai/codex](https://github.com/openai/codex)
 - ChatGPT 定价页：[chatgpt.com/pricing](https://chatgpt.com/pricing)
+- OpenAI 套餐与额度说明：[learn.chatgpt.com/docs/pricing](https://learn.chatgpt.com/docs/pricing)
 - Gemini CLI 官方仓库（含 Antigravity 接替说明）：[github.com/google-gemini/gemini-cli](https://github.com/google-gemini/gemini-cli)
-- Google AI 订阅方案：[one.google.com/about/google-ai-plans](https://one.google.com/about/google-ai-plans)
+- Google：优化 LCP，明确提醒勿懒加载 LCP 图片：[web.dev/articles/optimize-lcp](https://web.dev/articles/optimize-lcp)
 - DeepSeek API 定价：[api-docs.deepseek.com/quick_start/pricing](https://api-docs.deepseek.com/quick_start/pricing)
 - Qwen Code（阿里云百炼文档）：[help.aliyun.com/zh/model-studio/qwen-code](https://help.aliyun.com/zh/model-studio/qwen-code)
 - 智谱 GLM Coding 国内文档：[docs.bigmodel.cn/cn/coding-plan/overview](https://docs.bigmodel.cn/cn/coding-plan/overview)
 - Kimi 会员价格：[kimi.com/help/membership/membership-pricing](https://www.kimi.com/help/membership/membership-pricing)
-- Kimi Code 会员权益（单次成本示例出处）：[kimi.com/code/docs/kimi-code/membership](https://www.kimi.com/code/docs/kimi-code/membership.html)
+- Kimi Code 加油包计费示例（单次成本示例出处）：[kimi.com/code/docs/kimi-code/membership](https://www.kimi.com/code/docs/kimi-code/membership.html)
 - Kimi API 定价：[platform.kimi.com/docs/pricing/chat](https://platform.kimi.com/docs/pricing/chat)
 - 扣子：[coze.cn](https://www.coze.cn)；腾讯元宝：[yuanbao.tencent.com](https://yuanbao.tencent.com)

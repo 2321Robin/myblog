@@ -9,15 +9,15 @@ export const metadata = {
 
 # 模型横评：2026 年秋天，不同模型都擅长什么
 
-## 三十天里，主流玩家每人交了一次作业
+## 你只是想修个 bug，菜单却比外卖还长
 
-　　9 月 22 日，Anthropic 发布 Claude Opus 5.5；同一天，OpenAI 把 GPT-6 Sol 和 GPT-6 Luna 推进了 API 与 Codex——前者服务付费档，后者是免费日常档。9 月 28 日，Claude Sonnet 5.5；9 月 29 日，GPT-6.1 Sol；10 月 7 日，Claude Haiku 5.5；10 月 13 日，9 月底就开放早享的 Gemini 4 Argon 正式转正；10 月 19 日，MiniMax M3.1 Flash——赶在本文动笔前一天。这个发布潮其实从月中就开始了：9 月 3 日，GPT-6 Astra 官宣；9 月 21 日，xAI 的 Grok 4.7 也已就位。再把镜头往前挪几周，8 月 14 日 GLM-5.3、8 月 26 日 GLM-5.3-Flash，智谱的开放权重旗舰也刚完成一轮换代。
+　　你只是想修一个 bug，模型菜单却比外卖菜单还长：便宜的怕做不好，贵的又舍不得一直开。更麻烦的是，同一个模型换一只外壳，成绩和账单还会变。这篇先回答一个实用问题：你手里的这件活，该派谁去？
 
-　　粗算下来，从 9 月 21 日到 10 月 19 日，不到三十天，五家公司先后交出了新一代主力模型。这还只算旗舰和主力档，没算各家悄悄更新的小版本。模型换代周期被压到周级，最直接的体感是：你上个月刚摸清一个模型的脾气，这个月它可能就多了两位“同门”。就算你不直接调用 API，也在被影响——你用的编程助手、写作工具、搜索摘要，底层多半就是上面这些名字。选型焦虑就是这么来的：模型这么多，到底该用谁？
+　　事情被一个月前的发布潮拱得更难选了：从 9 月 21 日到 10 月 19 日，不到三十天，五家公司先后交出了新一代主力模型——Opus 5.5、GPT-6.1 Sol、Gemini 4 Argon、MiniMax M3.1 Flash 接连落地，往前再挪几周，GLM-5.3 和 GLM-5.3-Flash 刚完成换代。这还只算旗舰和主力档，没算各家悄悄更新的小版本。模型换代周期被压到周级，最直接的体感是：你上个月刚摸清一个模型的脾气，这个月它可能就多了两位“同门”。就算你不直接调用 API，也在被影响——你用的编程助手、写作工具、搜索摘要，底层多半就是上面这些名字。
 
 　　先给全文的核心判断：**这个市场没有全能冠军。选模型是按任务匹配，不是追榜单第一；看任何“最强”的说法，都要带上三要素——版本、harness、日期。**
 
-　　丑话说在前面：本文信息截至 2026 年 10 月 20 日。这个行当的迭代以周计，等你读到这篇文章，格局可能又变了一轮；文中所有价格、上下文长度、榜单成绩的具体数字，动手选型前请以官方页面为准。
+　　丑话说在前面：本文信息截至 2026 年 10 月 20 日。这个行当的迭代以周计，等你读到这篇文章，格局可能又变了一轮；文中所有价格、上下文长度、榜单成绩的具体数字，动手选型前请以官方页面为准。完整发布时间线放在文末资料区，按日期排好，方便对表。
 
 {/* 配图1（待生成）：2026 年 9 月至 10 月模型发布潮时间线，按日期排布各家发布节点 */}
 
@@ -45,19 +45,19 @@ export const metadata = {
 
 | 家族 | 当前旗舰（全称） | 最近动作 | 开放权重 | 一句话定位 |
 | --- | --- | --- | --- | --- |
-| OpenAI | GPT-6 Astra（同门有 GPT-6.1 Sol） | Astra 2026-09-03 官宣；Sol 2026-09-29 | 否 | Astra 是最强旗舰：计算机操作、编程、专业工作；Sol 官方称“接近 Astra 的智能、五分之一的价格” |
+| OpenAI | GPT-6 Astra（同门有 GPT-6.1 Sol） | Astra 2026-09-03 官宣；Sol 2026-09-29 | 否 | Astra 是最强旗舰：计算机操作、编程、专业工作；Sol 官方称“接近 Astra 的智能、五分之一的价格”；GPT-6 Luna 在 API 中收费，免费日常用法指产品套餐中的可用档位 |
 | Anthropic | Claude Opus 5.5（Sonnet 5.5、Haiku 5.5 同季补齐） | Opus 2026-09-22 | 否 | 旗舰主力；更高档的 Fable 线（2026-06-09 发布）主打大型编程项目与多日自主任务 |
-| Google | Gemini 4 Argon | 2026-10-13 GA（9 月底起早享，体验计划口径） | 否 | 新旗舰；1M 输入、最高 1M 输出 |
+| Google | Gemini 4 Argon | 2026-10-13 GA（9 月底起早享，体验计划口径） | 否 | 新旗舰；1M 统一上下文窗口，默认同步输出上限 65,536 |
 | DeepSeek | DeepSeek-V4.1-Flash-1017 | V4.1-Flash 2026-09-10 首发，1017 为 2026-10-17 更新 | 是（MIT） | 552B MoE；1M 上下文、384K 输出；默认思考、原生视觉 |
-| 阿里 Qwen | Qwen3.8-Max | 2026 年 8 月 | 开源线活跃（Qwen3.5-397B-A17B、Qwen3.8-27B 等） | 闭源旗舰与大规模开源线双线作战 |
-| 智谱 GLM | GLM-5.3（另有 GLM-5.3-Flash） | 2026-08-14；Flash 2026-08-26 | 是（MIT） | 开放权重编程旗舰；Flash 档是系列首个原生多模态 |
-| 月之暗面 Kimi | Kimi K3 | 2026-07-16 发布、07-27 开放权重 | 是 | 2.8T 参数的开放权重推理模型；1M 上下文 |
+| 阿里 Qwen | Qwen3.8-2.4T-A95B（开放权重）；托管版 Qwen3.8-Max | 权重 2026 年 8 月开放；托管版功能另行扩展 | 是（开源线活跃：Qwen3.5-397B-A17B、Qwen3.8-27B 等） | Max 级权重首次开放；托管版基于它另提供视觉输入、非思考模式与内置工具 |
+| 智谱 GLM | GLM-5.3（另有 GLM-5.3-Flash） | 2026-08-14；Flash 2026-08-26 | 是（GLM-5.3 License；Flash 为 MIT） | 开放权重编程旗舰；Flash 档是系列首个原生多模态 |
+| 月之暗面 Kimi | Kimi K3 | 2026-07-16 发布、07-27 开放权重 | 是（Kimi K3 License） | 2.8T 参数的开放权重推理模型；1M 上下文 |
 
 　　特别标注一下 DeepSeek 那一行：V4.1-Flash 的首发是 2026 年 9 月 10 日（[官方发布文](https://api-docs.deepseek.com/zh-cn/news/news260910)），10 月 17 日的 1017 是在此基础上的版本更新——首发和更新是两件事，型号写全才不会张冠李戴。
 
 　　第一梯队之外，还有几家动作也快：xAI 的 Grok 4.7（9 月 21 日）主打编程与知识工作，带 Expert 模式，Grok 5 尚未发布；Mistral Large 4（10 月 6 日预览）是欧洲选手的旗舰，权重计划 10 月底开放（官方口径“月底”，另有二手报道称 10 月 27 日）——注意还是“计划”；MiniMax 的 M3.1 Flash 10 月 19 日刚落地，走日常高效路线；字节豆包 2.0 今年 2 月发布，定位生产级通用 Agent 模型，还配了专用的编程模型，6 月又更新了 Seed 2.1；Meta 的 Muse Spark 线闭源驱动着 WhatsApp、Instagram 里的 Meta AI，开放权重的细节以官方页为准，本文不展开。
 
-　　这张表里还藏着一个容易被忽略的信息：**开放权重的分布**。OpenAI、Anthropic、Google 的旗舰全部闭源；DeepSeek、智谱、Kimi 把当家模型开放了权重（MIT 许可），Qwen 的开源线也一直活跃。想本地部署、想拿权重微调、想在预算上抠到极致，选项主要集中在这边。
+　　这张表里还藏着一个容易被忽略的信息：**开放权重的分布**。OpenAI、Anthropic、Google 的旗舰全部闭源；DeepSeek、智谱、Kimi 都开放了权重，但许可各有不同——GLM-5.3 用 GLM-5.3 License，GLM-5.3-Flash 是 MIT，Kimi K3 用 Kimi K3 License。Qwen 这边，Max 级权重已以 Qwen3.8-2.4T-A95B 开放，托管版 Qwen3.8-Max 基于它另提供视觉输入、非思考模式与内置工具。想本地部署、拿权重微调、把预算抠到极致，选项主要集中在这几家——但能否商用、再分发或拿去做模型服务，要分别核对具体型号的 LICENSE，不能把“开放权重”统称为 MIT。
 
 　　**记住这一句：牌桌上没有一家通吃——闭源阵营往上卷智能，开放阵营往下卷价格和自由度。**
 
@@ -72,7 +72,7 @@ export const metadata = {
 　　逐家过一遍，口径各不相同：
 
 - **OpenAI**：GPT-6.1 Sol 的[官方定位](https://openai.com/index/introducing-gpt-6-1-sol)直接写着 agentic 编程与计算机操作；另有第三方评测（[SonarSource](https://www.sonarsource.com/blog/openai-gpt-6-1-sol-evaluation)，2026 年 10 月）称它比 GPT-6 Sol 多写约 39% 的代码、通过率更高——第三方口径，听个参考。
-- **Anthropic**：Opus 5.5 是旗舰主力；更高档的 Fable 线（[官方发布文](https://www.anthropic.com/news/claude-fable-5-mythos-5)）主打大型编程项目与长时程自主任务——官方举的例子里，一份 5000 万行代码库的全库迁移被压缩到一天完成。
+- **Anthropic**：Opus 5.5 是旗舰主力；更高档的 Fable 线（[官方发布文](https://www.anthropic.com/news/claude-fable-5-mythos-5)）主打大型编程项目与长时程自主任务——官方举的例子里，一份 5000 万行代码库的全库迁移被压缩到一天完成，早期测试对象包括 Stripe 的 Ruby 代码库。这是官方给出的单一案例，不是对每个项目都适用的承诺。
 - **Google**：Gemini 4 Argon 在 Vals Index 与 DeepSWE v1.1 两个编程评测上领跑（评测方口径）。
 - **智谱**：GLM-5 系列的副标题就叫 “From Vibe Coding to Agentic Engineering”；[GLM-5.3](https://z.ai/blog/glm-5.3) 官方称是开放权重中最强编程（官方口径，出自自家基准）。
 - **DeepSeek**：V4.1-Flash-1017 官方称推理、编程、Agent、视觉全面升级，且已官方适配 Codex——后面讲混用时展开。
@@ -86,9 +86,9 @@ export const metadata = {
 
 　　拿最常用的 SWE-bench Verified 举例。它的[官方页面](https://www.swebench.com)写得很清楚：500 条人工过滤的任务子集，默认只给 bash、用 mini-SWE-agent 这个极简 harness 来跑；[Epoch AI 的基准页](https://epoch.ai/benchmarks/swe-bench-verified)也注明，除非另有说明，scaffold 就是简单的循环。换句话说，**这份官方榜单上的分数从来不是模型一个人的成绩，而是“模型加 harness”的组合成绩**——上一篇讲过的道理，官方榜单自己先做了示范。
 
-　　换 harness 影响有多大？有第三方研究系统分析过：同一个模型，换一套 scaffold，分数能差出 10% 以上（[arXiv 2506.17208](https://arxiv.org/html/2506.17208v2)）。也就是说，你在不同文章里看到的同一模型分数差，未必是模型进步了，可能只是脚手架换了。
+　　换 harness 影响有多大？有第三方研究系统整理过 80 种方案：[这份分析](https://arxiv.org/html/2506.17208v2)汇总的是各方案的榜单提交、模型组合与采用的架构（[摘要页](https://arxiv.org/abs/2506.17208)），跨系统的差异不能全部归到模型本身——你看到的两份成绩差，差的可能是工具、流程和模型组合。比较两份成绩时，先确认模型版本、任务集、尝试次数和 harness 是否一致；变量没对齐，就不要把分差当作模型进步。
 
-　　LMArena（[榜单页](https://arena.ai/leaderboard)）更典型。2026 年 10 月的一份快照（来自聚合站，随时在变）里并存着两套口径：arena.ai 自己按胜率排，Claude Opus 5.5 与 GPT-6 Astra 的 Max 档排在前面；另一套 BenchLM 按 Elo 排，Gemini 4 Argon 居首。同一个月、同一批模型，换个口径，第一名就换人。还有一个细节：排名里不少模型名后面跟着 Max、High 这样的档位后缀，表示参赛的是思考档位——引用时必须写全。
+　　LMArena（[榜单页](https://arena.ai/leaderboard)）这类聚合站更得小心。2026 年 10 月的一份快照（来自聚合站，随时在变）里，arena.ai 自己是按 Bradley–Terry 等成对偏好模型估计评分排序的（官方[方法说明](https://arena.ai/blog/arena-rank)），Claude Opus 5.5 与 GPT-6 Astra 的 Max 档排在前面；另一套 BenchLM 的榜上 Gemini 4 Argon 居首。同一个月份出现不同第一名，先别把差异归结为计分方式——要核对两边是否用了同一天的数据、同一类题目和同一组模型档位。这些前提本文没有逐项对齐，因此不据此说“换口径就换冠军”。还有一个细节：排名里不少模型名后面跟着 Max、High 这样的档位后缀，表示参赛的是思考档位——引用时必须写全。
 
 　　上一篇留过“看榜四问”：哪个模型版本、哪份任务子集、哪套 harness、给几次尝试机会。这一节再补一条引用纪律：任何分数都要带三要素——版本、harness、日期。缺一项，分数的参考价值就要打折扣。
 
@@ -96,25 +96,25 @@ export const metadata = {
 
 ### 长文本：窗口大不等于输出长
 
-　　“长文本”其实是两个指标：输入窗口，一次能读进多少；输出上限，一次能写出多少。读长文档看前者，写长文档看后者，是两回事。
+　　“长文本”其实是三个指标：输入窗口，一次能读进多少；单次输出上限，一次能写出多少；以及接口支不支持分段续接。读长文档看窗口，写长文档看输出上限，能不能写超长还要看续接，是几回事。
 
-　　输入窗口这一项，已核实口径里 Gemini 4 Argon 是 1M，DeepSeek V4.1-Flash 是 1M，Kimi K3 是 1M（官方文档写的是 1,048,576），Claude Opus 5.5 在 API 上是 1M、应用内 200K。单看这几家，1M 已经是旗舰档的常见配置。
+　　输入窗口这一项，已核实口径里 Gemini 4 Argon 是 1M，DeepSeek V4.1-Flash 是 1M，Kimi K3 是 1M（官方文档写的是 1,048,576），Claude Opus 5.5 在 API 上是 1M、应用内 200K。单看这几家，1M 已经是旗舰档的常见配置。注意 1,048,576 是输入、思考和输出共同占用的窗口，不是可以同时塞满 1M 输入再吐出 1M 输出。
 
-　　输出上限的差异就大了：Gemini 4 Argon 官方口径最高 1M 输出，从上一代的 64K 档一步抬了上来，长文档产出口径最激进；DeepSeek V4.1-Flash 是 384K；Opus 5.5 约 128K。同样是“把这份两百页的报告压缩成五万字”，有的模型一口气写完，有的得分好几轮。
+　　单次输出上限的差异就大了：Gemini 4 Argon 的默认同步输出上限是 65,536，从上一代的 64K 档小步抬了一档；需要更长结果时可用 long decode，通过后台执行或客户端续接分段推进，上限还要扣除输入等已占用的窗口。DeepSeek V4.1-Flash 是 384K；Opus 5.5 约 128K。同样是“把这份两百页的报告压缩成五万字”，有的模型一口气写完，有的得分好几轮、中间自己接上。
 
-　　还有一笔账容易漏：窗口和输出是要花钱的。Gemini 4 Argon 对超过 200K 的输入另设了单独计价档（官方口径 $4 / $18）；GPT-6 Astra 的长上下文档有加价的说法（第三方转述，官方页未单独核实）。所以“能把整本书塞进去”和“值得把整本书塞进去”是两回事——读长文档之前，先想想这一窗口值多少钱。
+　　还有一笔账容易漏：窗口和输出是要花钱的。截至 2026 年 10 月 20 日，Gemini 4 Argon 的标准促销价是每百万输入／输出 $2／$10，持续到 11 月 30 日，12 月 1 日起恢复 $4／$20。OpenAI 这边，GPT-6 Astra 与 GPT-6.1 Sol 在输入超过 272K tokens 时，对整次请求的输入及缓存费率乘 2、输出费率乘 1.5。所以“能把整本书塞进去”和“值得把整本书塞进去”是两回事——读长文档之前，先想想这一窗口值多少钱，顺手查一下型号和长度落在哪个计费档。
 
-　　**记住这一句：读长文档看输入窗口，写长文档看输出上限——窗口大不等于输出长。**
+　　**记住这一句：读长文档看输入窗口，写长文档看单次输出上限——窗口大不等于写得长，长文本还得问一句接不接得上。**
 
-### 写作与中文创作：没有跑分，只有定位和口碑
+### 写作与中文创作：榜单只能参考，真稿还得自己试
 
-　　写作这一类得老实说：各家发布会都把“专业写作”“设计判断”挂在嘴边（这是 GPT-6 Astra 官方页的口径），但中文写作没有可核实的专项跑分口径，本文不打算编一个。
+　　写作这一类得老实说：各家发布会都把“专业写作”“设计判断”挂在嘴边（这是 GPT-6 Astra 官方页的口径），但中文写作的公开评测各有题型、语言范围和评审方法，未必覆盖本文这些新型号，本文不据此排统一名次。
 
-　　能给你的只有两条。其一，社区口碑：Reddit 上有用户觉得 Qwen 系的对话“更像人”——一家之言，听个参考；知乎 2026 年 7 月的图像工具横评夸过即梦的中文文字渲染，但那是“往图里写字”，不是写作。其二，也是更实用的一条：没有权威横评，就拿你自己的真实任务当基准——一篇公众号稿、一份技术方案、一封难回的邮件，让候选模型各写一版，两三个回合就有体感。
+　　能给你的只有两条。其一，社区口碑：Reddit 上有用户觉得 Qwen 系的对话“更像人”——一家之言，听个参考；知乎 2026 年 7 月的图像工具横评夸过即梦的中文文字渲染，但那是“往图里写字”，不是写作。其二，也是更实用的一条：榜单只能帮你缩小候选，真正落到纸面上的，是拿你自己的真实稿件做基准——一篇公众号稿、一份技术方案、一封难回的邮件，让候选模型各写一版，两三个回合就有体感。
 
 　　再送一套土办法，三步：第一，固定任务，别今天写散文、明天写公文，变量都没了对不上；第二，盲评，把几个模型的输出混在一起，隔天再看，别让品牌印象替你打分；第三，多轮，写一次好不算好，至少来三个回合。这套办法不科学，但比看广告靠谱。
 
-　　**记住这一句：写作没有跑分可抄，你自己的任务就是最好的基准测试。**
+　　**记住这一句：写作榜单帮你缩小候选，你自己的稿件才决定谁合适。**
 
 ### 思考档：什么时候开“深度思考”
 
@@ -122,20 +122,20 @@ export const metadata = {
 
 　　思考档的代价藏在账单和等待里：多想的那部分同样是实打实的 token，输出更长、时延更久。这也是为什么榜单里带档位后缀的成绩，不能直接和无档成绩比——变量没对齐。
 
-　　使用策略一句话：难任务开，简单任务关。架构设计、疑难 bug、长链条推理，值得让它多想一会儿；改错别字、调整格式这类活儿，开思考档纯属费钱又费时。
+　　使用策略一句话：难任务提高思考强度，简单任务先调低；只有支持非思考模式的模型，才谈得上完全关闭——GPT-6.1 Sol 最低只到 low，Gemini 4 Argon 也是 low、medium、high 三档，“关”不是这些型号的通用选项。另外，多想耗掉的 token 不必然表现为更长的可见回答，判断成本要分别观察回答质量、等待时间和实际用量。架构设计、疑难 bug、长链条推理，值得让它多想一会儿；改错别字、调整格式这类活儿，把档位降下来就够。
 
-　　**记住这一句：思考档是涡轮，超车的时候再踩。**
+　　**记住这一句：思考档是涡轮，难活才踩到底，简单活先降档。**
 
 ## 画图：另一族模型
 
 　　回到前面分出的另一族。2026 年 10 月，图像生成的主力阵容是这几位：
 
-- **Google Nano Banana 2.1**：10 月 6 日上线，官方称基于 Gemini 3.6 Flash；[第三方报道](https://the-decoder.com/googles-new-image-model-nano-banana-2-1-generates-better-images-for-less-money)（The Decoder）称部分基准超过上代 Pro、价格更低。
+- **Google Nano Banana 2.1**：10 月 6 日上线，是 Nano Banana 2 的更新版，官方强调视觉质量、文字渲染与多轮一致性；[第三方报道](https://the-decoder.com/googles-new-image-model-nano-banana-2-1-generates-better-images-for-less-money)（The Decoder）称部分基准超过上代 Pro、价格更低。
 - **OpenAI GPT Images 2.5**：9 月 8 日进入 API 与 ChatGPT。
-- **字节 Seedream 4.0**：即梦的底座，主打中文文字渲染——第三方横评称即梦把图内中文的准确率做到了 92% 以上。要在海报、封面图里写汉字，这是它的主场。
-- **Midjourney V8 线**：3 月出 alpha，4 月更到 V8.1，年中的 V8.2 是社区口径。风格化创作社区仍是它的基本盘。
+- **字节 Seedream 5.0 Pro**：7 月 8 日发布，官方强调高密度信息图、文字渲染、多语言生成和局部精修——要在海报、封面图里写汉字，它可以进候选名单。它也是即梦可选的底座之一，使用即梦时还要确认当前选的是哪个模型，图里的中文仍需逐字核对。
+- **Midjourney V8 线**：V8.1 于 4 月进入 alpha、6 月成为默认生成模型；9 月官方确认 V8.2 编辑模型进入 alpha 测试。风格化创作社区仍是它的基本盘。
 
-　　格局大致是：Google 与 OpenAI 双头部，国产的即梦靠中文文字与性价比立足，Midjourney 守着风格化社区。顺带一提，本文信息图初稿也是这类模型的活儿——按统一风格生成几版，挑最好的一张，再把图里的中文逐字核对。
+　　格局大致是：Google 与 OpenAI 双头部，国产的即梦靠中文文字与性价比立足，Midjourney 守着风格化社区。顺带一提，本文信息图也是这类模型的活儿：按统一风格生成几版，挑最好的一张，再把图里的中文逐字核对。
 
 　　**记住这一句：画图是另一族模型，别拿对话模型的榜单去挑画图工具。**
 
@@ -145,36 +145,42 @@ export const metadata = {
 
 | 模型 | 输入/输出（每百万 token） | 币种 | 口径与来源性质 |
 | --- | --- | --- | --- |
-| GPT-6.1 Sol | $2 / $10（缓存输入 $0.10） | 美元 | OpenAI 官方发布文 |
+| GPT-6.1 Sol | $2 / $10（缓存输入 $0.10） | 美元 | OpenAI 官方发布文；Standard 档、输入不超过 272K，长上下文与加速档另计 |
 | Claude Opus 5.5 | $4 / $20 | 美元 | Anthropic 官方页；官方称较上代 Opus 5 降约两成 |
-| Gemini 4 Argon | 促销期 $2 / $10（至 2026-11-30），之后 $4 / $20 | 美元 | 官方促销口径（转述） |
+| Gemini 4 Argon | 促销期 $2 / $10（至 2026-11-30），之后 $4 / $20 | 美元 | 官方定价页 |
 | Kimi K3 | $3 / $15（缓存命中 $0.30 起） | 美元 | Moonshot 平台页 |
 | DeepSeek V4.1-Flash | 高峰 ¥2 / ¥8，闲时半价（¥1 / ¥4），缓存命中 ¥0.02 到 ¥0.04 | 人民币 | DeepSeek 官方定价页 |
 | DeepSeek V4-Pro | 高峰 ¥9 / ¥27，闲时半价 | 人民币 | DeepSeek 官方定价页 |
 | Qwen3.8-Max | ¥12 / ¥36（缓存命中 ¥1.5） | 人民币 | 阿里云百炼官方文档 |
 
-　　读表的方法比背数字重要，量级结论有三条：旗舰档的输出价大致落在 $10 到 $50 一档，促销期更低；国产开放线和轻量档把输出价拉低到几美元甚至更低；把 DeepSeek 的缓存命中和闲时折扣叠满，输入侧能压到几分到几毛人民币——和旗舰差出几十倍。
+　　读表的方法比背数字重要，量级结论有三条：旗舰档的输出价大致落在 $10 到 $50 一档，促销期更低；国产开放线和轻量档把输出价拉低到几美元甚至更低；把 DeepSeek 的缓存命中和闲时折扣叠满，输入侧能压到几分到几毛人民币——单价和旗舰差出几十倍。
 
-　　表里两个词顺带解释一下。缓存命中：同一段反复出现的前文（比如那份写了几百行的系统提示词），再次计费时按缓存价算，DeepSeek 的缓存价每百万只要几分钱人民币；闲时半价：错开高峰时段使用，价格减半，具体时段以官方定价页为准。两招叠满，就是“几毛人民币”的来历。
+　　表里两个词顺带解释一下。缓存命中：同一段反复出现的前文（比如那份写了几百行的系统提示词），再次计费时按缓存价算，DeepSeek 的缓存价每百万只要几分钱人民币；闲时半价：错开高峰时段使用，价格减半，具体时段以官方定价页为准。两招叠满，就是“几毛人民币”的来历——但它指的是每百万 token 的单价，不是你单次任务的账单。
 
 　　顺带说订阅制，那是另一套账：Google AI Pro 每月 $19.99、Ultra $99.99 起（2026 年 10 月的查询口径，订阅档位常调整，以官方页为准）；GLM Coding Plan 官方起步价每月 $18。包月适合每天用量稳定的人，按 token 计费适合用量波动大的。
 
-　　**记住这一句：同一个任务交给不同档位，成本能差几十倍——先问这活儿值多少钱，再决定派谁上。**
+　　**记住这一句：不同档位的 token 单价能差几十倍，但单次任务花多少钱还看上下文、输出量、缓存命中和重试——先拿真实任务试跑一次、记下总费用，再决定长期派谁上。**
 
-## 怎么选：四象限与混用
+## 怎么选：按任务、预算和部署方式筛选
 
-　　能力横比和价格竖选交叉起来，就得到一张粗略的选型地图。先声明：以下是我个人的建议，一家之言，供对照——
+　　能力横比和价格竖选交叉起来，筛选顺序是这样的：先用任务难度和预算缩小范围，再单独看一眼要不要本地部署——部署方式不是第四个象限，它和预算、难度是两个独立的问题，本地部署也可能极贵、也可能要承担攻坚任务。
 
-- **预算极低**：DeepSeek 的闲时加缓存、GLM-5.3-Flash，把单次成本压到几毛人民币的档位；
-- **均衡日常**：Claude Sonnet 5.5、GPT-6.1 Sol 这一档，能力和价格的中间点；
-- **旗舰攻坚**：Opus 5.5、GPT-6 Astra、Gemini 4 Argon、Kimi K3，难任务、大项目再请出来；
-- **本地与开源自部署**：DeepSeek 权重、GLM、Qwen 开源线，数据不出门、要微调、要批量跑的选这边。
+　　先按任务和预算分三档（以下是我个人的建议，一家之言，供对照）：
 
-{/* 配图2（待生成）：选型四象限，预算与任务难度两轴，四个区块各列代表模型 */}
+- **日常轻活**：格式整理、错别字、问答、简单改写——预算敏感就先试 DeepSeek、GLM 的低价档，用自己的任务核对总费用；
+- **均衡主力**：多数工作场景的中间档，能力和价格的平衡点——Claude Sonnet 5.5、GPT-6.1 Sol 这一档；
+- **旗舰攻坚**：架构设计、疑难 bug、长链条推理、大型项目——Opus 5.5、GPT-6 Astra、Gemini 4 Argon、Kimi K3，再请出来。
+
+　　再决定部署方式，这是另一道选择题：
+
+- **托管 API**：省去硬件和运维，按 token 或订阅结算，多数人的默认选项；
+- **本地与开源自部署**：数据不出门、要微调、要批量跑的选这边——DeepSeek 权重、GLM、Qwen 开源线；除模型单价外，还要另算硬件、运维和许可成本。
+
+{/* 配图2（待生成）：两阶段选型决策树，第一阶段按任务难度与预算分三档并列出代表模型，第二阶段分出托管 API 与本地部署两条支路，本地支路标注需另算硬件、运维与许可成本 */}
 
 　　比选定一个模型更进一步的玩法，是多模型混用——它已经不是极客的 DIY，而是被各家做成了官方功能：
 
-- **Claude Code**：官方支持的只有 Anthropic 系模型（直连，外加 Bedrock、Vertex 两条云上通道），想接 DeepSeek 这类第三方模型得靠社区工具。但它有个官方功能叫 opusplan：规划阶段用 Opus，方案批准后自动切到 Sonnet 执行——“贵的想、便宜的做”被做成了一个开关。
+- **Claude Code**：原厂支持围绕 Claude 系模型（直连，外加 Bedrock、Vertex 两条云上通道）。DeepSeek 等服务商也提供官方兼容接口和配置指南，可以通过环境变量接入，无须另装社区切换工具；但这不等于 Anthropic 为这些非 Claude 模型提供支持。Claude 系内部还有个官方功能叫 opusplan：规划阶段用 Opus，方案批准后自动切到 Sonnet 执行——“贵的想、便宜的做”被做成了一个开关。
 - **Codex**：OpenAI 走开放路线，Codex CLI 官方支持接入第三方模型。DeepSeek 从 2026 年 8 月 13 日起[官方适配 Codex](https://api-docs.deepseek.com/zh-cn/news/news260813)，一键配置，提供 deepseek-flash 与 deepseek-v4-pro 两个模型名——前者背后就是 V4.1-Flash-1017。
 - **GLM Coding Plan**：智谱的订阅走“借壳”路线：官方订阅页写明，可在 Claude Code、Codex、Cline、OpenCode 这些工具里使用 GLM 模型。
 - **Cursor**：原生聚合 OpenAI、Anthropic、Google、xAI 的前沿模型；也支持自带 API key，但 Tab 补全这类功能不开放 BYOK（官方帮助文档）。
@@ -203,32 +209,72 @@ export const metadata = {
 
 　　最后照例说句题外话：写这篇最大的体感不是“谁更强”，而是查价格查到眼花——表里每个数字都得回到官方页重核一遍。收尾这天，又一家发了新模型。这个行当，是真不给人喘气的时间。
 
+## 附录：本文涉及的主要发布时间线
+
+　　开头说过，这个秋天发布密度极高。把本文点到的事件按日期排开如下（已核实口径，与正文“首发／更新”的区分一致）：
+
+| 日期 | 事件 |
+| --- | --- |
+| 2026-07-08 | 字节发布 Seedream 5.0 Pro |
+| 2026-07-16 | 月之暗面发布 Kimi K3（07-27 开放权重） |
+| 2026-08-13 | DeepSeek 官方适配 Codex，提供两个模型名 |
+| 2026-08-14 | 智谱发布 GLM-5.3 |
+| 2026-08-26 | 智谱发布 GLM-5.3-Flash |
+| 2026-09-03 | OpenAI 官宣 GPT-6 Astra |
+| 2026-09-08 | OpenAI GPT Images 2.5 进入 API 与 ChatGPT |
+| 2026-09-10 | DeepSeek-V4.1-Flash 首发 |
+| 2026-09-21 | xAI Grok 4.7 就位 |
+| 2026-09-22 | Anthropic 发布 Claude Opus 5.5；同一天 OpenAI 将 GPT-6 Sol、GPT-6 Luna 推进 API 与 Codex |
+| 2026-09-28 | Anthropic 发布 Claude Sonnet 5.5 |
+| 2026-09-29 | OpenAI 发布 GPT-6.1 Sol |
+| 2026-10-06 | Google Nano Banana 2.1 上线；Mistral Large 4 预览 |
+| 2026-10-07 | Anthropic 发布 Claude Haiku 5.5 |
+| 2026-10-13 | Gemini 4 Argon 正式 GA |
+| 2026-10-17 | DeepSeek-V4.1-Flash-1017 版本更新 |
+| 2026-10-19 | MiniMax 发布 M3.1 Flash |
+
 ## 延伸阅读
 
 　　以下列出本文关键信息的出处，官方发布页优先，方便继续阅读与核查：
 
 - OpenAI，GPT-6 Astra 发布页：[openai.com/index/gpt-6-astra](https://openai.com/index/gpt-6-astra)
+- OpenAI，GPT-6 Astra 型号与定价（272K 长上下文档规则）：[developers.openai.com/api/docs/models/gpt-6-astra](https://developers.openai.com/api/docs/models/gpt-6-astra)
+- OpenAI，GPT-6.1 Sol 型号与定价（最低 low 思考档）：[developers.openai.com/api/docs/models/gpt-6.1-sol](https://developers.openai.com/api/docs/models/gpt-6.1-sol)
 - OpenAI，GPT-6.1 Sol 发布文：[openai.com/index/introducing-gpt-6-1-sol](https://openai.com/index/introducing-gpt-6-1-sol)
 - OpenAI，GPT Images 2.5 发布公告：[community.openai.com](https://community.openai.com/t/introducing-gpt-images-2-5-in-the-api-and-chatgpt/1395897)
 - Anthropic，Claude Opus 5.5：[anthropic.com/claude-opus-5-5](https://www.anthropic.com/claude-opus-5-5)
 - Anthropic，Claude Haiku 5.5：[anthropic.com/claude-haiku-5-5](https://www.anthropic.com/claude-haiku-5-5)
 - Anthropic，Claude Fable 5 与 Mythos 5：[anthropic.com/news/claude-fable-5-mythos-5](https://www.anthropic.com/news/claude-fable-5-mythos-5)
 - Google，Gemini API 更新日志（Gemini 4 Argon GA）：[ai.google.dev/gemini-api/docs/changelog](https://ai.google.dev/gemini-api/docs/changelog)
+- Google，Gemini 4 Argon 型号文档（统一窗口与同步输出上限）：[ai.google.dev/gemini-api/docs/models/gemini-4-argon](https://ai.google.dev/gemini-api/docs/models/gemini-4-argon)
+- Google，long decode 使用条件：[ai.google.dev/gemini-api/docs/long-decode](https://ai.google.dev/gemini-api/docs/long-decode)
+- Google，Gemini API 官方定价：[ai.google.dev/gemini-api/docs/pricing](https://ai.google.dev/gemini-api/docs/pricing)
 - The Decoder，Nano Banana 2.1 报道：[the-decoder.com](https://the-decoder.com/googles-new-image-model-nano-banana-2-1-generates-better-images-for-less-money)
+- Google，Nano Banana 2.1 官方型号页：[ai.google.dev/gemini-api/docs/models/gemini-nano-banana-2.1](https://ai.google.dev/gemini-api/docs/models/gemini-nano-banana-2.1)
 - SonarSource，GPT-6.1 Sol 编程评测：[sonarsource.com/blog/openai-gpt-6-1-sol-evaluation](https://www.sonarsource.com/blog/openai-gpt-6-1-sol-evaluation)
 - xAI，官方新闻页：[x.ai/news](https://x.ai/news)
 - Mistral，Large 4 发布页：[mistral.ai/news/mistral-large-4](https://mistral.ai/news/mistral-large-4)
+- ByteDance Seedream 5.0 Pro 官方发布文：[seed.bytedance.com/en/blog/beyond-generation-it-understands-design-introducing-seedream-5-0-pro](https://seed.bytedance.com/en/blog/beyond-generation-it-understands-design-introducing-seedream-5-0-pro)
 - DeepSeek，V4.1-Flash 发布（2026-09-10）：[api-docs.deepseek.com/zh-cn/news/news260910](https://api-docs.deepseek.com/zh-cn/news/news260910)
 - DeepSeek，V4-Pro 与 Codex 适配（2026-08-13）：[api-docs.deepseek.com/zh-cn/news/news260813](https://api-docs.deepseek.com/zh-cn/news/news260813)
 - DeepSeek，官方定价页：[api-docs.deepseek.com/zh-cn/quick_start/pricing](https://api-docs.deepseek.com/zh-cn/quick_start/pricing)
+- DeepSeek，Claude Code 接入指南：[api-docs.deepseek.com/quick_start/agent_integrations/claude_code](https://api-docs.deepseek.com/quick_start/agent_integrations/claude_code/)
 - DeepSeek-V4.1-Flash-1017，权重页：[huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash-1017](https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash-1017)
 - 阿里云百炼，Qwen3.8-Max 模型文档：[help.aliyun.com/zh/model-studio/qwen3-8-max](https://help.aliyun.com/zh/model-studio/qwen3-8-max)
 - 智谱，GLM-5.3 发布文：[z.ai/blog/glm-5.3](https://z.ai/blog/glm-5.3)
+- GLM-5.3 许可证：[huggingface.co/zai-org/GLM-5.3/raw/main/LICENSE](https://huggingface.co/zai-org/GLM-5.3/raw/main/LICENSE)
 - 智谱，GLM-5.3-Flash 发布文：[z.ai/blog/glm-5.3-flash](https://z.ai/blog/glm-5.3-flash)
+- GLM-5.3-Flash 许可证（MIT）：[huggingface.co/zai-org/GLM-5.3-Flash/raw/main/LICENSE](https://huggingface.co/zai-org/GLM-5.3-Flash/raw/main/LICENSE)
 - SCMP，Kimi K3 上线 Amazon Bedrock 报道：[scmp.com](https://www.scmp.com/tech/tech-trends/article/3368274/moonshots-kimi-k3-lands-amazon-key-test-chinese-open-source-ai-revenue)
+- Kimi K3 模型卡与许可证：[huggingface.co/moonshotai/Kimi-K3](https://huggingface.co/moonshotai/Kimi-K3)
 - MiniMax，模型发布动态：[platform.minimax.cn/docs/release-notes/models](https://platform.minimax.cn/docs/release-notes/models)
 - 财新，豆包大模型 2.0 报道：[m.caixin.com](https://m.caixin.com/m/2026-02-14/102414794.html)
 - SWE-bench 官方：[swebench.com](https://www.swebench.com)
 - scaffold 对分数影响的系统分析：[arxiv.org/html/2506.17208v2](https://arxiv.org/html/2506.17208v2)
-- LMArena 榜单：[arena.ai/leaderboard](https://arena.ai/leaderboard)
 - Cursor，BYOK 帮助文档：[cursor.com/help/models-and-usage/api-keys](https://cursor.com/help/models-and-usage/api-keys)
+- LMArena 官方评分方法说明：[arena.ai/blog/arena-rank](https://arena.ai/blog/arena-rank)
+- Midjourney，V8.1 默认模型公告：[updates.midjourney.com/v8-1-is-now-the-default-model](https://updates.midjourney.com/v8-1-is-now-the-default-model/)
+- Midjourney，V8.2 编辑模型 alpha 更新日志：[updates.midjourney.com/alpha-changelog-9-2-26](https://updates.midjourney.com/alpha-changelog-9-2-26/)
+- LMArena 官方评分方法说明：[arena.ai/blog/arena-rank](https://arena.ai/blog/arena-rank)
+- WritingBench 原始项目：[github.com/X-PLUG/WritingBench](https://github.com/X-PLUG/WritingBench)
+- Chinese-Writing-Bench 原始项目：[github.com/zake7749/Chinese-Writing-Bench](https://github.com/zake7749/Chinese-Writing-Bench)
