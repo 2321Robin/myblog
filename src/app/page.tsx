@@ -41,7 +41,8 @@ export default async function Home() {
             {posts.length ? posts.slice(0, 4).map((post) => (
               <article key={post.slug} className="recent-post">
                 <time dateTime={post.date}>{formatDate(post.date)}</time>
-                <div><h3><Link href={`/blog/${post.slug}`}>{post.title}<ArrowUpRight size={18} aria-hidden="true" /></Link></h3>{post.summary && <p>{post.summary}</p>}</div>
+                {post.cover && <div className="recent-cover"><div className="recent-cover-image" role="img" aria-label={`${post.title} 封面图`} style={{ backgroundImage: `url(${post.cover})` }} /></div>}
+                <div className="recent-body"><h3><Link href={`/blog/${post.slug}`}>{post.title}<ArrowUpRight size={18} aria-hidden="true" /></Link></h3>{post.summary && <p>{post.summary}</p>}</div>
                 <span className="reading-time">{post.readingTimeMinutes ?? 1} 分钟阅读</span>
               </article>
             )) : <p className="empty-state">还没有文章，过段时间再来看看。</p>}
