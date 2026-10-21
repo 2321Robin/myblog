@@ -14,13 +14,24 @@
 - 同日追加（17:33 UTC）：发布文章专用封面图（`cover.webp`，67KB），`metadata.cover` 由概念图改为专用封面。发布目录 `20261019T173036Z`，源码包 SHA-256 `eb9e688f62c34154752b4ab07c0ae7d193886f98f84bc3631e9662dc0315c6cc`；lock 未变故复用上一发布目录的 `node_modules` 后重新构建，3011 预览与公网检查通过。上一发布目录 `20261019T165921Z` 保留回退。
 - 同日追加（00:40 UTC+8 次日）：概念篇全文直引号改为全角弯引号（86 处）并清理残留半角标点。发布目录 `20261020T004055Z`，源码包 SHA-256 `54acf5af00432dcc005525c73799b2bb8f4bd3487afbb1a55c3136f0e8de2530`，复用 `node_modules` 重新构建，3011 预览与公网检查通过。**本次打包显式排除了 `docs/research` 之外仍在评审中的四篇草稿**（agent-getting-started / agent-usage-ecosystem / harness-comparison / model-landscape-2026），其路由公网 404；草稿文件已随引号修复提交进入 main 仓库（未上线），发布前需从工作区或按本包的 exclude 方式排除。上一发布目录 `20261019T173036Z` 保留回退。
 
+## 2026-10-21 第二篇文章发布（《给 Agent 配装备》）
+
+- 发布目录：`/www/wwwroot/w2321.top-releases/20261021T054949Z`（systemd `20-release.conf` 已指向此目录，服务 active/enabled）。
+- 上一版本目录：`/www/wwwroot/w2321.top-releases/20261020T004055Z`，保留用于回退；回退方式为把 `20-release.conf` 中的 `WorkingDirectory` 与 `ExecStart` 路径改回该时间戳后 `daemon-reload` 并重启服务。本次切换前的旧配置备份在 `/var/backups/personal-homepage/20261021T054949Z/previous-release.conf`。
+- 源码包：`/root/myblog-deploy/myblog-20261021T054949Z.tar.gz`，SHA-256 `b71e1a60a187690de3a106b86c07e3d835210a7544535b8368482e992c3d1ab9`，本机与服务器核对一致。由 `git archive HEAD` 导出后在本地剔除草稿再打包，`package-lock.json` 与 `package.json` 哈希与上一发布目录一致，故复用其 `node_modules`。
+- 内容变化：发布《给 Agent 配装备：指令、Skills、MCP、Hooks、插件、子智能体》（含封面与 7 张正文配图）；按两轮外部审查修订事实边界（Hooks 失败语义与 `onFailure`、插件权限、子智能体 fork 与文件隔离、MCP 接入与授权之分、指令作用域、事件首发与时间线措辞），`Hooks` 小节标题由“门禁卡”改为“门禁检查”。**agent-getting-started、harness-comparison、model-landscape-2026 三篇仍在评审，继续排除**，路由公网 404。
+- 站点样式：`globals.css` 为表格单元格增加 `white-space: nowrap` 与 `font-variant-numeric: tabular-nums`，长串日期不再逐字折行；大事记分隔行改用 `:-------:` 让时间列按内容撑开。该规则对全站表格生效。
+- `scripts/check-site.mjs` 已把 `/blog/agent-usage-ecosystem` 加入路由清单，并断言其标题锚点存在、旧措辞“门禁卡”不再出现、`/search-index` 收录该篇。
+- 服务器流程按 runbook 执行：解压后复用 `node_modules`、以 `www` 用户 `SITE_URL=https://w2321.top` 生产构建、ESLint / 类型检查 / 6 项测试通过；3011 预览通过 `check-site` 全部路由，三篇草稿 404，9 张图片均为 `image/webp`；切换 `20-release.conf` 重启后，`127.0.0.1:3010` 与公网 `https://w2321.top` 双向通过全部检查（含 gzip/identity 缓存变体）。
+- 专项确认：`/blog/agent-usage-ecosystem` 公网 200 且 RSS、sitemap 已收录；线上 CSS 分块含 `td:not(:has(br))` 与 `tabular-nums`，浏览器实测大事记时间列单行、无横向溢出；临时 3011 预览已停止。
+
 ## 运行方式
 
 - 正式域名：`https://w2321.top`。
 - 服务：`personal-homepage.service`，运行用户和组均为 `www`。
 - Nginx 将主页请求转发到 `127.0.0.1:3010`。
-- 当前版本目录：`/www/wwwroot/w2321.top-releases/20261018T111207Z`。
-- 上一版本目录：`/www/wwwroot/w2321.top-releases/20261018T102844Z`，保留用于回退。
+- 当前版本目录：`/www/wwwroot/w2321.top-releases/20261021T054949Z`。
+- 上一版本目录：`/www/wwwroot/w2321.top-releases/20261020T004055Z`，保留用于回退。
 - 原版本保留在 `/www/wwwroot/w2321.top`。
 - 构建和运行均使用 `SITE_URL=https://w2321.top`。
 
