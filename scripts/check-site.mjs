@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 
 const base = process.argv[2] ?? "http://127.0.0.1:3003";
-const routes = ["/", "/blog", "/blog/tags", "/blog/ai-model-agent-harness", "/blog?tag=ai", "/blog?page=1.5", "/blog?page=Infinity", "/blog?tag=ai&tag=agent", "/blog?page=1&page=2", "/blog?tag=no-such-tag", "/rss.xml", "/sitemap.xml", "/robots.txt", "/search-index", "/og.png", "/icon.svg"];
+const routes = ["/", "/blog", "/blog/tags", "/blog/ai-model-agent-harness", "/blog/agent-usage-ecosystem", "/blog?tag=ai", "/blog?page=1.5", "/blog?page=Infinity", "/blog?tag=ai&tag=agent", "/blog?page=1&page=2", "/blog?tag=no-such-tag", "/rss.xml", "/sitemap.xml", "/robots.txt", "/search-index", "/og.png", "/icon.svg"];
 const bodies = new Map();
 
 for (const route of routes) {
@@ -43,9 +43,12 @@ for (const id of ["blog", "about", "projects", "links"]) assert.ok(home.includes
 assert.ok(home.indexOf('id="projects"') < home.indexOf('id="blog"'), "directory precedes articles");
 assert.ok(bodies.get("/blog/ai-model-agent-harness").includes('id="先从一场股灾说起"'), "MDX heading anchor");
 assert.ok(bodies.get("/blog/ai-model-agent-harness").includes("记住这一句"), "section memory lines present");
+assert.ok(bodies.get("/blog/agent-usage-ecosystem").includes('id="hooks门禁检查"'), "ecosystem article heading anchor");
+assert.ok(bodies.get("/blog/agent-usage-ecosystem").includes("门禁检查"), "ecosystem article revised wording");
+assert.ok(!bodies.get("/blog/agent-usage-ecosystem").includes("门禁卡"), "retired metaphor must not reappear");
 assert.ok(bodies.get("/blog?tag=no-such-tag").includes("这个标签下还没有文章"), "empty filter state");
 const indexed = JSON.parse(bodies.get("/search-index")).posts;
-for (const slug of ["ai-model-agent-harness"]) assert.ok(indexed.some((post) => post.slug === slug), `post ${slug} indexed`);
+for (const slug of ["ai-model-agent-harness", "agent-usage-ecosystem"]) assert.ok(indexed.some((post) => post.slug === slug), `post ${slug} indexed`);
 for (const slug of ["hello-world", "next-roadmap"]) assert.ok(!indexed.some((post) => post.slug === slug), `removed post ${slug} not indexed`);
 const missing = await fetch(`${base}/blog/not-an-existing-post`, { signal: AbortSignal.timeout(15000) });
 assert.equal(missing.status, 404, "unknown post");
