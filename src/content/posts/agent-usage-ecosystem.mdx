@@ -18,15 +18,15 @@ export const metadata = {
 
 　　上一篇[《AI、模型、Agent、Harness》](/blog/ai-model-agent-harness)的结尾埋了个伏笔：要顺着 Harness 往下挖，看看指令、Skills、MCP、Hooks、插件、子智能体这些名词各自是什么。这一篇就来填坑——那篇文章说模型“聪明，但没有手”，这一篇讲的就是这双手怎么装上去，以及怎么让它守规矩。
 
-　　先给一句贯穿全篇的判断：这六个名词不是六个竞品，而是六种不同层的装备，各管一件事——**指令管“记住”，Skills 管“会”，MCP 管“够得着”，Hooks 管“必须”，插件管“打包”，子智能体管“分身”。**后面的讲解会常拿 Claude Code 举例，因为它的文档最成体系；不过六件装备里，MCP 和 Skills 本身是跨产品的开放标准，并不属于哪一家。先上全景图：
+　　先给一句贯穿全篇的判断：这六个名词不是六个竞品，而是六类可以搭配使用的机制，先各抓住一个主要用途——**指令管“记住”，Skills 管“会”，MCP 管“够得着”，Hooks 管“必须”，插件管“打包”，子智能体管“分身”。**后面的讲解会常拿 Claude Code 举例，因为它的文档最成体系；MCP（Model Context Protocol，模型上下文协议）和 Skills 则是跨产品的开放标准和格式，不属于哪一家。先上全景图：
 
 ![六件装备全景图：工程师与 Agent 精灵站在高台上，六件装备环绕飞舞——指令卷轴、Skills 手册、MCP 插头、门禁读卡器、插件箱、子智能体小人，各带“记住／会／够得着／必须／打包／分身”标签](/images/posts/agent-usage-ecosystem/equipment-overview.webp)
 
 ## 指令：说了，但它未必照做
 
-　　六件装备里最朴素的一件是指令：一组常驻上下文的 Markdown 文件，Agent 每次启动都会自动读进来。以 Claude Code 为例，项目里最常见的是 `CLAUDE.md`；Claude Code 的记忆体系分四层：组织统一分发的策略文件、用户主目录下的 `~/.claude/CLAUDE.md`、项目根目录的 `./CLAUDE.md`，以及个人专用的 `CLAUDE.local.md`。加载时不互相覆盖，而是从项目根一路拼接到当前目录；还可以用 `@路径` 导入其它文件，最深 4 跳。
+　　六件装备里最朴素的一件是指令：把项目背景和协作规则写成文件，Agent 启动时读进来当上下文。以 Claude Code 为例，项目里最常见的是 `CLAUDE.md`；这类手写指令分四种作用域：组织统一分发的策略文件、用户主目录下的 `~/.claude/CLAUDE.md`、项目根目录的 `./CLAUDE.md`，以及个人专用的 `CLAUDE.local.md`。它们不互相覆盖，而是从文件系统根一路合并到工作目录，子目录里的指令在访问相关文件时按需加载；还可以用 `@路径` 导入其它文件，最深 4 跳。除此之外，Claude Code 还有自动记忆机制。
 
-　　这类文件近几年几乎成了编码 Agent 的标配，而且正在从各家自定走向互相认账。2025 年 8 月上线的 AGENTS.md 主打纯 Markdown，官方站的定位很直白——给编码代理看的 README，自报口径是已有超过 6 万个开源项目在用；它的来历，官方说法是 OpenAI Codex、Amp、Jules、Cursor、Factory 等多方协作的产物，如今与 MCP 同属 Linux 基金会旗下 AAIF 托管。各家也留了兼容的路：Claude Code 默认在没有 CLAUDE.md 时才读 AGENTS.md，你也可以在 CLAUDE.md 里写一行 `@AGENTS.md`，两份文件共用同一份内容。Cursor 则从早期的单一全局配置 `.cursorrules`，2025 年起逐步转向 `.cursor/rules` 目录：规则拆成多个 `.mdc` 文件，可以常驻，可以按文件模式触发，也可以让 Agent 需要时自己来取。格式五花八门，思路是同一个：把项目背景和规矩写成文本，喂给模型。
+　　这类文件近几年几乎成了编码 Agent 的标配，而且正在从各家自定走向互相认账。2025 年 8 月上线的 AGENTS.md 主打纯 Markdown，官方站的定位很直白——给编码代理看的 README，自报口径是已有超过 6 万个开源项目在用；它的来历，官方说法是 OpenAI Codex、Amp、Jules、Cursor、Factory 等多方协作的产物，如今与 MCP 同属 Linux 基金会旗下 AAIF 托管。各家也留了兼容的路：Claude Code（v2.1.277 起）默认在当前目录及祖先目录都没有 `CLAUDE.md`、`.claude/CLAUDE.md` 或 `CLAUDE.local.md` 时，改读 `AGENTS.md`；也可以在 `CLAUDE.md` 里写一行 `@AGENTS.md`，共用同一份内容。Cursor 则从早期项目根目录里的单文件 `.cursorrules`，2025 年起逐步转向 `.cursor/rules` 目录：规则拆成多个 `.mdc` 文件，可以常驻，可以按文件模式触发，也可以让 Agent 需要时自己来取。格式五花八门，思路是同一个：把项目背景和规矩写成文本，喂给模型。
 
 <img src="/images/posts/agent-usage-ecosystem/mascot-rules-dazed.webp" alt="橘白小猫趴在桌前，抱着拖到地上的一长卷说明书，护目镜滑到鼻尖，皱着眉挂着一滴汗" className="article-mascot-left" />
 
@@ -34,103 +34,103 @@ export const metadata = {
 
 　　所以指令该怎么写？Cursor 的官方最佳实践给了三条：规则控制在 500 行以内，引用别的文件而不是把内容整段粘贴进来，从最简单的方案起步。这是一家之言，但方向大概率没错——指令是写给模型看的备忘录，不是写给人看的规章制度，堆百科不如写要害。
 
-　　指令这东西，影响判断，不提供保证。
+　　**指令影响判断，不提供执行保证。**
 
 ## Skills：用到才翻的岗位手册
 
-　　指令有个天生的毛病：常驻。CLAUDE.md 每次会话都全文占着上下文，可项目里那些内容——发布流程、部署手册、某个子系统的门道——并不是每天都用得上。上下文预算就那么大，常驻的东西越多，留给真正干活的空隙就越小。
+　　指令的毛病在于容易越写越厚：把所有流程都塞进启动时加载的 CLAUDE.md，会持续占用上下文——发布流程、部署手册、某个子系统的门道，并不是每天都用得上。上下文预算就那么大，常驻的东西越多，留给真正干活的空隙就越小。
 
 　　Skills 就是冲这个毛病来的。Anthropic 在 2025 年 10 月 16 日发布 Agent Skills，本体简单到不像一项技术：一个文件夹，加一份 `SKILL.md`——frontmatter 里必填 `name` 和 `description`，正文写具体指令；旁边还可以捆绑 `scripts`、`references`、`assets` 等文件和脚本，脚本可以让模型当作工具直接运行，不必先读进上下文。
 
 　　真正的妙处在加载方式上，官方叫渐进式加载，一共三级：启动时只读入每个技能的名称和描述；模型判断当前任务相关，才去读正文全文；要用到捆绑的脚本或资料，再按需取用。常驻的只有薄薄一层索引，重的部分全部按需——省下来的就是上下文预算。
 
-　　2025 年 12 月，Anthropic 又把这套格式作为开放标准发布，也就是 agentskills.io：格式与运行时分离，同一份技能可以跨产品复用。截至 2026 年 10 月，官方站的客户端列表已经列了 40 多个名字，从 Gemini CLI、Cursor、GitHub Copilot、VS Code 到 ChatGPT 与 Codex，还包括字节跳动的 TRAE。
+　　2025 年 12 月，Anthropic 又把这套格式作为开放标准发布，也就是 agentskills.io：格式与运行时分离，同一份技能可以在支持该格式的产品间复用；涉及专用工具、脚本依赖或权限时，还得适配目标环境。截至 2026 年 10 月，官方站的客户端列表已经列了 40 多个名字，从 Gemini CLI、Cursor、GitHub Copilot、VS Code 到 ChatGPT 与 Codex，还包括字节跳动的 TRAE。
 
 　　那 Skills 和下一节的 MCP 是什么关系？Anthropic 的口径是分工而非竞争：Skills 教 Agent“怎么用”——流程和领域知识；MCP 负责“连上”——把外部系统接到 Agent 手边。一个管知识，一个管连接，官方还表示会继续探索两者的互补。
 
 ![常驻与按需对比图：左边工程师被文件山压垮、Agent 精灵抱不住飞舞的纸张，预算条几乎填满；右边工程师靠在书架上轻松取书，预算条只填一小截](/images/posts/agent-usage-ecosystem/resident-vs-ondemand.webp)
 
-　　一个天天翻，一个用到才翻——这就是指令与 Skills 的分工。
+　　**基本规矩放进项目指令，专门流程做成按需取用的 Skills——一个天天翻，一个用到才翻。**
 
 ## MCP：内部系统的工牌
 
-　　第二类缺口是够不着。开场那位新同事说“我连不上你们的工单系统”，不是它不想连，而是根本没人给它发工牌：工单系统长什么样、接口在哪儿，它一概不知。在 MCP 出现之前，每给 Agent 接一个外部系统，基本都要手写一段胶水代码——各家接口标准不同，接一个写一个，换个工具又得重来一遍。
+　　第二类缺口是够不着。开场那位新同事说“我连不上你们的工单系统”，不是它不想连，而是根本没人给它发工牌：工单系统长什么样、接口在哪儿，它一概不知。在 MCP 出现之前，每给 Agent 接一个外部系统，基本都要手写一段胶水代码——各家接口标准不同，接一个写一个，换个工具又得重来一遍。这里的“工牌”只是比喻：MCP 统一的是连接、能力发现和调用方式，真正能访问什么，仍由目标系统的凭据、授权和宿主应用的权限控制决定。
 
 <img src="/images/posts/agent-usage-ecosystem/mascot-badge.webp" alt="橘白小猫双手高举一张发光工卡，卡面画着数据库图标，瞪大眼睛、嘴里欢呼、头顶冒星" className="article-mascot" />
-　　机制三句话能说完。第一，架构是客户端加服务器：AI 应用作为 Host，为每一个 MCP 服务器专门建一个客户端连接。第二，数据层走 JSON-RPC 2.0，本地进程间走标准输入输出，远程走 Streamable HTTP。第三，服务器对外提供三类原语：tools（可执行的函数）、resources（上下文数据）、prompts（交互模板）；客户端这边则有 elicitation，用来在需要时向用户追问确认。
+　　MCP（Model Context Protocol，模型上下文协议）约定了 Agent 应用与外部服务怎么交换能力和数据。比如工单服务把“查询缺陷”开放成工具，支持 MCP 的应用就可以按同一套协议发现并调用它；内部系统如何实现，仍由服务端处理。放到开头的工单系统里，tools 可以是“查询本周缺陷”的函数，resources 可以是供读取的工单资料，prompts 则可以是整理周报的交互模板。技术上，它采用客户端与服务器架构：AI 应用作为 Host，为每一个 MCP 服务器专门建一个客户端连接；数据层走 JSON-RPC 2.0，本地进程间走标准输入输出，远程走 Streamable HTTP；服务器还可以通过支持 elicitation 的客户端，向用户索取补充信息或请求确认。
 
-　　顺带排个雷：不少旧资料把 sampling、logging 列为 MCP 的客户端能力，但 2026 年 7 月的现行规范已经把两者标记弃用。MCP 的版本号是日期字符串，只有出现不兼容变更才会升版本，现行版就叫 2026-07-28——查资料时先认准版本，再对内容。
+　　顺带排个雷：旧资料里常见的 sampling（客户端代调模型）和 logging（服务器向客户端发送日志），在 2026-07-28 版规范中都已标记弃用；弃用意味着建议迁移，并不等于已经删除。MCP 的版本号是日期字符串，只有出现不兼容变更才会升版本，现行版就叫 2026-07-28——查资料时先认准版本，再对内容。
 
-　　MCP 管的是另一回事：不是聪不聪明，是够得着够不着。
+　　**MCP 管的是另一回事：不是聪不聪明，是够得着够不着。**
 
-## Hooks：门禁卡
+## Hooks：门禁检查
 
 　　第三类缺口最难缠：不保证。开场那位新同事，入职须知它读了，还点了头，危险命令照样跑。这不奇怪——回到指令一节那句官方原话，指令是上下文，模型“选择听话”和“必须听话”之间，隔着一整个工程问题。
 
-　　Hooks 补的就是这一层。它是用户定义的操作，挂在 Agent 生命周期的固定点上自动执行：可以是一条 shell 命令、一个 HTTP 端点、一次 MCP 工具调用、一轮模型判断，甚至派一个子代理去核查。配置是三级结构：先选事件，再用匹配器筛出关心的工具或场景，最后挂上要执行的操作。配置本身也分层：用户级和项目级的 settings.json 各写各的，加载时合并，团队规矩与个人习惯互不打架。Claude Code 在 2025 年 6 月底首次带上 hooks 时只有 4 个事件：`PreToolUse`、`PostToolUse`、`Stop`、`SessionEnd`——工具调用前后，加上停止与会话结束；此后快速增多，如今官方文档的事件表已经列到 30 多个，从用户提交提示词、上下文开始压缩，到子智能体启动与结束，几乎每个关键节点都能挂上检查。
-　　关键语义就一条：要拦，就在 `PreToolUse` 这类事件上让操作以 `exit 2` 退出，这次工具调用会被直接阻断；以 `exit 0` 退出并输出一段 JSON，则可以放行、改写参数、改写结果，甚至往上下文里注入信息。官方文档的提醒相当直白：“If your hook is meant to enforce a policy, use exit 2”——如果你的 hook 是为了执行某条规矩，就用 exit 2。
+　　Hooks 补的就是这一层。它是用户定义的操作，挂在 Agent 生命周期的固定点上自动执行——比如发布前自动跑一遍检查、危险命令执行前先拦一道：可以是一条 shell 命令、一个 HTTP 端点、一次 MCP 工具调用、一轮模型判断，甚至派一个子代理去核查。配置是三级结构：先选事件，再用匹配器筛出关心的工具或场景，最后挂上要执行的操作。配置本身也分层：用户级和项目级的 settings.json 各写各的，加载时合并，团队规矩与个人习惯互不打架。Claude Code 在 2025 年 6 月底发布 hooks，此后事件不断增加；如今官方文档已列出 30 多个，覆盖工具调用、用户提交提示词、上下文压缩和子智能体启停等节点。
+
+　　以命令 hook 为例，在工具调用前的 `PreToolUse` 事件上返回 `exit 2`，可以阻断这次调用；返回 `exit 0` 并输出符合事件格式的 JSON，可以控制是否放行、改写参数或补充上下文。要改写模型看到的工具结果，则使用调用后的 `PostToolUse`；HTTP hook 通过响应状态和 JSON 传回决定。改写结果只影响模型看到的内容，不会撤回已经发生的文件写入或命令执行。官方文档也直言：“If your hook is meant to enforce a policy, use exit 2”——hook 若为了执行某条规矩，就用 exit 2。不过检查失败或超时，在多数事件上默认仍会放行；要把它当作策略门禁，还得验证检查范围和失败时的行为。新版本的命令与 HTTP hook 可以配置 `onFailure` 为 `block`（要求 Claude Code v2.1.295 或更新版本）。
 
 　　还记得指令一节那句 “context, not enforced configuration” 吗？它的后半句是 “To block an action regardless of what Claude decides, use a PreToolUse hook instead”——不管模型自己怎么决定，都要把动作拦下来，靠的是这句。同一份官方文档，一句讲指令，一句讲 hooks，恰好画出这两件装备的分界线：指令靠自觉，Hooks 靠机制。
 
 ![守则与门禁对比图：左边工程师大笑着穿过敞开的门、墙上守则形同虚设；右边被横杆拦在门外、Agent 精灵举着卡片刷卡](/images/posts/agent-usage-ecosystem/policy-vs-gate.webp)
 
-　　要“必须”，就得用门禁，不能靠墙上贴的守则。
+　　**要“必须”，就得用门禁，不能靠墙上贴的守则。**
 
 ## 插件：把装备打包成安装包
 
 　　装备一件件多起来，新问题跟着来：换台机器、来位新同事，难道要逐件重配？2025 年 10 月 9 日，Claude Code 以公开测试的形式发布了插件机制，官方给的定位是“今后打包分享 Claude Code 定制的标准方式”。
 
-　　插件的本体是一个目录：一份清单文件 `.claude-plugin/plugin.json`，加上 skills、agents、hooks、`.mcp.json` 等内容——你会发现，里面装的正是前几节讲过的那几样，连 slash commands 也能一并打包。安装走 `/plugin` 交互菜单。顺带澄清一个常见误解：社区里常说的 marketplace 不是应用商店，官方文档的定义很朴素——一份带 `.claude-plugin/marketplace.json` 的仓库或本地目录，作用只是把一批插件列在一起。
+　　在 Claude Code 里，插件是按约定组织的目录，通常带有 `.claude-plugin/plugin.json` 清单，加上 skills、agents、hooks、`.mcp.json` 等内容——你会发现，里面装的正是前几节讲过的那几样，连 slash commands 也能一并打包。安装走 `/plugin` 交互菜单。顺带澄清一个常见误解：社区里常说的 marketplace 不是应用商店，官方文档的定义很朴素——一份带 `.claude-plugin/marketplace.json` 的仓库或本地目录，作用只是把一批插件列在一起。
 
-　　要紧的是安全这一条。官方提醒的原话是“plugins run as you”——插件以你的身份运行：你授给 Agent 的文件、终端和权限，它一样不少地继承。所以装第三方插件之前，先过一眼它带了什么，尤其是里面配的 hooks——门禁卡发错了人，比不发更糟。
+　　要紧的是安全这一条。插件里不仅有给模型读的文字，也可能有直接运行的代码：官方提醒，命令 hooks 和一些服务进程会以你的用户权限、在 Claude Code 的沙箱外运行。因此装第三方插件之前，尤其要检查它附带的 hooks、脚本和服务——这些自动执行的代码，也可能直接执行危险操作。
 
-　　插件不是新能力，只是把前几样装备打包装进一个快递箱。
+　　**插件不是新能力，只是把前几样装备打包装进一个快递箱。**
 
 ## 子智能体：另开一间办公室
 
 <img src="/images/posts/agent-usage-ecosystem/mascot-subagents.webp" alt="橘白小猫挥手派活，三只同款小猫抱着文件、键盘和齿轮排队出发，脚下留一串爪印" className="article-mascot" />
 
-　　最后一件装备，解决的是一个人忙不过来的问题。子智能体（Claude Code 里叫 subagents）是拥有独立上下文窗口的 Agent：有自己的系统提示词、自己的工具白名单，与主对话互不共享。主对话通过 Agent 工具（原名 Task）把任务委派出去，可以并行跑几个，还可以嵌套——官方文档的口径是最多三层。配置一样轻：在 `.claude/agents/` 目录下放一个 Markdown 文件，必填 `name` 和 `description`，就定义了一位新“员工”。这项能力在 2025 年 7 月前后开放自定义。
+　　最后一件装备，解决的是一个人忙不过来的问题。子智能体（Claude Code 里叫 subagents）拥有独立的上下文窗口，可以配置专门的提示词和可用工具。普通委派主要接收任务说明，fork 型则继承父对话历史。主对话通过 Agent 工具（原名 Task）把任务交出去，也可以并行运行；当前默认可向下嵌套三层，上限可配置。上下文独立不代表文件互不影响，需要隔离代码修改时，还要使用独立工作树等机制。配置一样轻：在 `.claude/agents/` 目录下放一个 Markdown 文件，必填 `name` 和 `description`，就定义了一位新“员工”。这项能力在 2025 年 7 月前后开放自定义。
 
 　　什么时候值得另开一间办公室？三种典型场景。一是大任务隔离：让子智能体去翻几十个文件、查一圈资料，只有最终结论回传主对话，搜索过程的一地鸡毛不会污染主上下文。二是并行：几件互不依赖的事，派几个子智能体同时开工。三是专业分工：把“代码审查员”“测试编写员”做成固定角色，各自配好系统提示词与工具白名单，随叫随到。
 
-　　子智能体就是另开一间办公室：信息隔离，各干各的，汇报走正式渠道。
+　　**子智能体像另开一间办公室：对话可以分开，文件与任务仍要协调。**
 
 ## 六件装备怎么配合
 
-　　单看每件装备都朴素，合起来才是一套完整的入职方案。设想给团队项目配齐：CLAUDE.md 立下项目背景与基本规矩；发布流程写成 Skill，用到才翻；工单系统通过 MCP 接进来；一条 Hook 卡死危险的清理命令；整套东西打成插件，新同事一条命令全部装齐；批量审查代码这类脏活，丢给几个子智能体并行去跑。一张表收拢：
+　　单看每件装备都朴素，合起来才是一套完整的入职方案。设想给团队项目配齐：CLAUDE.md 立下项目背景与基本规矩，随项目仓库分发；发布流程写成 Skill，用到才翻；工单系统通过 MCP 接进来；用经过验证的 PreToolUse 检查拦截危险的清理命令；Skills、MCP 配置、Hooks 和子智能体打成插件，让新同事一次安装，再按需完成外部系统授权；批量审查代码这类脏活，丢给几个子智能体并行去跑。一张表收拢：
 
 | 装备 | 管什么 | 一眼认出它 |
 | --- | --- | --- |
 | 指令 | 记住：项目背景与规矩，影响判断 | 仓库里的 CLAUDE.md、AGENTS.md、.cursor/rules |
 | Skills | 会：按需加载的流程与领域知识 | 文件夹里的 SKILL.md |
 | MCP | 够得着：把外部系统接到 Agent 手边 | 配置里的 MCP 服务器（如 .mcp.json） |
-| Hooks | 必须：生命周期固定点的强制检查 | 挂在事件上的命令、端点或子智能体 |
-| 插件 | 打包：把以上装备装进一个安装包 | .claude-plugin/plugin.json |
+| Hooks | 必须：在指定事件上自动执行检查，可按规则阻断动作 | 挂在事件上的命令、端点或子智能体 |
+| 插件 | 打包：集中分发 Skills、Hooks、MCP、子智能体等组件 | 常见清单为 .claude-plugin/plugin.json |
 | 子智能体 | 分身：独立上下文里并行干活 | .claude/agents/ 目录下的 Markdown 文件 |
 
-　　还记得上一篇那张 harness 解剖图吗？系统提示词、工具层、上下文工程、权限与沙箱、子 Agent 编排——本篇的六件装备正好能逐一对号入座：指令与记忆对应上下文层，Skills 对应知识与流程层，MCP 对应工具连接层，Hooks 连同权限机制对应控制层，插件对应分发层，子智能体对应编排隔离层。这个分法也不是我硬凑的：Claude Agent SDK 的官方能力表列出的能力里，就有内置工具、hooks、subagents、MCP、permissions、skills、plugins，官方称它“提供驱动 Claude Code 的同一套工具、agent 循环与上下文管理”。
+　　还记得上一篇那张 harness 解剖图吗？系统提示词、工具层、上下文工程、权限与沙箱、子 Agent 编排——为了方便理解，可以把六件装备分别联系到这些层：指令与记忆对应上下文层，Skills 对应知识与流程层，MCP 对应工具连接层，Hooks 连同权限机制对应控制层，插件对应分发层，子智能体对应编排隔离层。这是本文按用途整理的讲解方式，各层之间会有交叉。Claude Agent SDK 的官方能力表也把内置工具、hooks、subagents、MCP、permissions、skills、plugins 列为可组合的能力，官方称它“提供驱动 Claude Code 的同一套工具、agent 循环与上下文管理”。
 
-　　把视线挪到国内，会发现同一套逻辑在同样运转：DeepSeek 的官方文档直接给出接入 Claude Code 的配置——它提供 Anthropic 兼容端点，把发往 claude-opus 的请求映射到 deepseek-v4-pro，把 haiku、sonnet 档映射到 deepseek-flash；Qwen Code 从 Gemini CLI 改造而来，官方 README 宣称 MCP、子智能体、Skills 等能力零配置内置；智谱的 GLM Coding Plan 文档列出 20 多个兼容工具，同样提供 Anthropic 协议端点。模型各有各的，装备却是通用协议——模型可插拔，装备不挑模型。
+　　把视线挪到国内，会发现同一套逻辑在同样运转：DeepSeek 的官方文档直接给出接入 Claude Code 的配置——它提供 Anthropic 兼容端点，把发往 claude-opus 的请求映射到 deepseek-v4-pro，把 haiku、sonnet 档映射到 deepseek-flash；Qwen Code 从 Gemini CLI 改造而来，官方 README 宣称 MCP、子智能体、Skills 等能力零配置内置；智谱的 GLM Coding Plan 文档列出多种官方支持工具，同样提供 Anthropic 协议端点。这些例子说明，模型和 Harness 可以在兼容接口允许的范围内重新组合。MCP 和 Skills 提高了连接与知识的可复用性；Hooks、插件和子智能体的具体配置，仍要看各家实现。
 
 ## 写在最后
 
 　　把六件装备放回开场的三次闭门羹，病和药就一一对应了：不会，用指令和 Skills 补；够不着，用 MCP 补；不保证，用 Hooks 补；要分发给整个团队，交给插件；忙不过来，派子智能体。装备配齐，那位聪明的新同事才算真正上了岗——你会发现，配装备这件事，重点不在换更聪明的模型，而在做你作为雇主的那份工程活。
-　　最后照例说句题外话：这篇文章自己就是装备的受益者——我给写作 Agent 配的调研文档是它的岗位手册，写作规范是它的入职须知；唯独没配门禁卡，所以文中每一个日期和数字，都得我自己回头再核一遍。
 
-　　下一篇聊点更实际的：装备的名单开完了，还没上手的读者从哪儿开始？我打算写一条新手入门路线，从第一次启动到配好第一件装备，一步一步来。
+　　下一篇聊点更实际的：第一次启动 Agent，该先配哪件装备？这篇文章本身也是一次练习——调研文档提供资料，写作规范约定做法；至于日期和数字，工具能帮我检查，核实的责任仍在我。
 
 <img src="/images/posts/agent-usage-ecosystem/mascot-parallel-cats.webp" alt="橘白小猫背包提上、笑眯眯竖大拇指、头顶小星星" className="article-mascot-wide" />
 
 ## 两年大事记
 
 | 时间 | 事件 | 为什么重要 |
-| --- | --- | --- |
+| :-------: | :---------------------- | :--- |
 | 2024.11 | Anthropic 发布 MCP | 工具接入有了开放标准 |
 | 2025.3 | OpenAI 宣布采用 MCP | 标准跨出 Anthropic 自家生态 |
-| 2025.4 | Google DeepMind 宣布 Gemini 支持 MCP | 第二家头部模型厂商跟进 |
-| 2025.5 | Microsoft 宣布 Windows 11 原生支持 MCP | 协议进入操作系统层 |
-| 2025.6 | Claude Code 首发 hooks | “门禁卡”登场，固定点强制检查 |
+| 2025.5 | Google 宣布 Gemini API 与 SDK 已兼容 MCP 工具 | MCP 进入 Gemini 开发工具链 |
+| 2025.5 | Microsoft 宣布 Windows 11 原生集成 MCP 的计划 | 操作系统厂商开始建设 MCP 接入基础设施 |
+| 2025.6 | Claude Code 发布 hooks | “门禁检查”登场，固定点自动执行检查 |
 | 2025.7 | 自定义子智能体开放 | Agent 有了独立上下文的分身 |
 | 2025.8 | AGENTS.md 上线 | 规则文件有了跨工具的通用格式 |
 | 2025.10 | plugins 与 Agent Skills 先后发布 | 相隔一周，装备有了打包与按需知识两种形态 |
@@ -142,19 +142,22 @@ export const metadata = {
 　　以下列出文中关键论述的原始出处，方便继续阅读与核查：
 
 - MCP 发布公告（Anthropic，2024 年 11 月）：[anthropic.com/news/model-context-protocol](https://www.anthropic.com/news/model-context-protocol)
-- MCP 架构文档：[modelcontextprotocol.io/docs/learn/architecture](https://modelcontextprotocol.io/docs/learn/architecture)
-- MCP 规范版本说明：[modelcontextprotocol.io/specification/versioning](https://modelcontextprotocol.io/specification/versioning)
-- MCP 捐赠与 AAIF 成立公告（Anthropic，2025 年 12 月）：[anthropic.com/news/donating-the-model-context-protocol-and-establishing-of-the-agentic-ai-foundation](https://www.anthropic.com/news/donating-the-model-context-protocol-and-establishing-of-the-agentic-ai-foundation)
-- Agent Skills 工程博文（Anthropic，2025 年 10 月）：[anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills](https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills)
-- Skills 开放标准官网：[agentskills.io](https://agentskills.io/)
-- Claude Code hooks 文档：[code.claude.com/docs/en/hooks](https://code.claude.com/docs/en/hooks)
-- Claude Code plugins 文档：[code.claude.com/docs/en/plugins](https://code.claude.com/docs/en/plugins)；发布公告：[claude.com/blog/claude-code-plugins](https://claude.com/blog/claude-code-plugins)
-- Claude Code 子智能体文档：[code.claude.com/docs/en/sub-agents](https://code.claude.com/docs/en/sub-agents)
-- Claude Code 记忆与指令文件文档（“指令是上下文、不是强制配置”的出处）：[code.claude.com/docs/en/memory](https://code.claude.com/docs/en/memory)
-- Claude Agent SDK 能力总览：[code.claude.com/docs/en/agent-sdk/overview](https://code.claude.com/docs/en/agent-sdk/overview)
+- MCP 架构说明：[架构说明](https://modelcontextprotocol.io/docs/learn/architecture)
+- MCP 授权规范：[授权规范](https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization)
+- MCP 版本与弃用规则：[版本与弃用规则](https://modelcontextprotocol.io/docs/2026-07-28/learn/versioning)
+- MCP 捐赠与 AAIF 成立公告（Anthropic，2025 年 12 月）：[捐赠与 AAIF 成立公告](https://www.anthropic.com/news/donating-the-model-context-protocol-and-establishing-of-the-agentic-ai-foundation)
+- Google I/O 2025 官方稿（Gemini API 与 SDK 兼容 MCP 工具）：[主题演讲官方稿](https://blog.google/innovation-and-ai/technology/ai/io-2025-keynote/)
+- Windows Build 2025 公告（Windows 11 原生集成 MCP 的计划）：[Windows Build 2025 公告](https://blogs.windows.com/windowsdeveloper/2025/05/19/advancing-windows-for-ai-development-new-platform-capabilities-and-tools-introduced-at-build-2025/)
+- Agent Skills 工程博文（Anthropic，2025 年 10 月）：[工程博文](https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills)
+- Skills 开放标准官网：[agentskills.io](https://agentskills.io/)；格式规范：[规范正文](https://agentskills.io/specification)
+- Claude Code hooks 文档：[hooks 文档](https://code.claude.com/docs/en/hooks)；失败处理与事件语义：[失败处理与事件语义](https://code.claude.com/docs/en/hooks#block-the-action-when-a-hook-fails)
+- Claude Code 插件文档：[plugins 文档](https://code.claude.com/docs/en/plugins)；安全与信任：[权限与沙箱说明](https://code.claude.com/docs/en/plugins/security)；标准目录布局：[插件清单与布局](https://code.claude.com/docs/en/plugins-reference)；发布公告：[发布公告](https://claude.com/resources/articles/claude-code-plugins)
+- Claude Code 子智能体文档：[子智能体文档](https://code.claude.com/docs/en/sub-agents)
+- Claude Code 记忆与指令文件文档（“指令是上下文、不是强制配置”的出处）：[记忆与指令文件文档](https://code.claude.com/docs/en/memory)
+- Claude Agent SDK 能力总览：[能力总览](https://code.claude.com/docs/en/agent-sdk/overview)
 - AGENTS.md 官方站：[agents.md](https://agents.md/)
-- Cursor 规则文档：[cursor.com/docs/context/rules](https://cursor.com/docs/context/rules)
-- OpenAI Agents SDK 的 MCP 支持：[openai.github.io/openai-agents-python/mcp](https://openai.github.io/openai-agents-python/mcp)
-- Qwen3-Coder 发布博文（2025 年 7 月）：[qwenlm.github.io/blog/qwen3-coder](https://qwenlm.github.io/blog/qwen3-coder/)；Qwen Code 仓库：[github.com/QwenLM/qwen-code]
-- DeepSeek 接入 Claude Code 官方指南：[api-docs.deepseek.com/zh-cn/quick_start/agent_integrations/claude_code](https://api-docs.deepseek.com/zh-cn/quick_start/agent_integrations/claude_code)
-- Z.ai GLM Coding Plan 文档：[docs.z.ai/devpack/quick-start](https://docs.z.ai/devpack/quick-start)
+- Cursor 规则文档与 .cursorrules 迁移说明：[规则文档与迁移说明](https://cursor.com/help/customization/rules)
+- OpenAI Agents SDK 的 MCP 支持（现行文档）：[MCP 支持文档](https://openai.github.io/openai-agents-python/mcp)
+- Qwen3-Coder 发布博文（2025 年 7 月）：[Qwen3-Coder：面向编码 Agent 的模型](https://qwenlm.github.io/blog/qwen3-coder/)；[Qwen Code 官方仓库](https://github.com/QwenLM/qwen-code)
+- DeepSeek 接入 Claude Code 官方指南：[接入指南](https://api-docs.deepseek.com/zh-cn/quick_start/agent_integrations/claude_code)
+- 智谱 GLM Coding Plan 文档：[quick-start 文档](https://docs.z.ai/devpack/quick-start)；官方支持工具清单：[支持工具清单](https://docs.z.ai/devpack/tool/others)
