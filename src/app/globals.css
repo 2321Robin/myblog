@@ -268,7 +268,8 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid 
 .article-prose .token.number, .article-prose .token.boolean { color: #e9bf91; }
 .article-prose blockquote { border-left: 3px solid var(--brand); padding-left: 18px; }
 .article-prose table { display: block; overflow-x: auto; max-width: 100%; border-collapse: collapse; font-size: 14px; }
-.article-prose td, .article-prose th { border: 1px solid var(--border); padding: 10px 14px; text-align: left; }
+.article-prose td, .article-prose th { border: 1px solid var(--border); padding: 10px 14px; text-align: left; font-variant-numeric: tabular-nums; }
+.article-prose td:not(:has(br)) { white-space: nowrap; }
 .article-prose img { max-width: 100%; height: auto; border-radius: 10px; }
 .article-prose .article-mascot { float: right; max-width: min(320px, 55%); margin: 0.4rem 0 1.1rem 1.6rem; }
 .article-prose .article-mascot-left { float: left; max-width: min(320px, 55%); margin: 0.4rem 1.6rem 1.1rem 0; }
