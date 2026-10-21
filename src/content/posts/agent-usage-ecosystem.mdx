@@ -18,7 +18,7 @@ export const metadata = {
 
 　　上一篇[《AI、模型、Agent、Harness》](/blog/ai-model-agent-harness)的结尾埋了个伏笔：要顺着 Harness 往下挖，看看指令、Skills、MCP、Hooks、插件、子智能体这些名词各自是什么。这一篇就来填坑——那篇文章说模型“聪明，但没有手”，这一篇讲的就是这双手怎么装上去，以及怎么让它守规矩。
 
-　　先给一句贯穿全篇的判断：这六个名词不是六个竞品，而是六类可以搭配使用的机制，先各抓住一个主要用途——**指令管“记住”，Skills 管“会”，MCP 管“够得着”，Hooks 管“必须”，插件管“打包”，子智能体管“分身”。**后面的讲解会常拿 Claude Code 举例，因为它的文档最成体系；MCP（Model Context Protocol，模型上下文协议）和 Skills 则是跨产品的开放标准和格式，不属于哪一家。先上全景图：
+　　先给一句贯穿全篇的判断：这六个名词不是六个竞品，而是六类可以搭配使用的机制，先各抓住一个主要用途——**指令管“记住”，Skills 管“会”，MCP 管“够得着”，Hooks 管“必须”，插件管“打包”，子智能体管“分身”**。后面的讲解会常拿 Claude Code 举例，因为它的文档最成体系；MCP（Model Context Protocol，模型上下文协议）和 Skills 则是跨产品的开放标准和格式，不属于哪一家。先上全景图：
 
 ![六件装备全景图：工程师与 Agent 精灵站在高台上，六件装备环绕飞舞——指令卷轴、Skills 手册、MCP 插头、门禁读卡器、插件箱、子智能体小人，各带“记住／会／够得着／必须／打包／分身”标签](/images/posts/agent-usage-ecosystem/equipment-overview.webp)
 
