@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import type { KeyboardEvent } from "react";
 
@@ -18,25 +18,29 @@ export function ArticleEditor({ slug, initialSource }: Props) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [source, setSource] = useState(initialSource);
+  const [syncedSource, setSyncedSource] = useState(initialSource);
   const [status, setStatus] = useState<Status>("idle");
   const [message, setMessage] = useState("");
   const [annotations, setAnnotations] = useState(0);
   const [highlighted, setHighlighted] = useState(false);
 
+  // After a save the server sends fresh source; adopt it without an effect.
+  if (syncedSource !== initialSource) {
+    setSyncedSource(initialSource);
+    setSource(initialSource);
+  }
+
   const sourceAnnotations = countAnnotations(initialSource);
   const dirty = source !== initialSource;
 
-  useEffect(() => {
-    setSource(initialSource);
-  }, [initialSource]);
-
   async function save() {
     setStatus("saving");
+    const devToken = document.querySelector<HTMLMetaElement>('meta[name="dev-save-token"]')?.content ?? "";
     setMessage("");
     try {
       const res = await fetch("/api/dev/save-post", {
         method: "POST",
-        headers: { "content-type": "application/json" },
+        headers: { "content-type": "application/json", "x-dev-save-token": devToken },
         body: JSON.stringify({ slug, content: source }),
       });
       if (!res.ok) {

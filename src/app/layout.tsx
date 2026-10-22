@@ -3,6 +3,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { getBaseUrl, siteMetadata } from "@/lib/site";
+import { getDevSaveToken } from "@/lib/dev-save-token";
 import "./globals.css";
 
 
@@ -36,6 +37,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="zh-CN" data-scroll-behavior="smooth" suppressHydrationWarning>
+      <head>
+        {process.env.NODE_ENV === "development" && <meta name="dev-save-token" content={getDevSaveToken()} />}
+      </head>
       <body className="antialiased">
         <a
           href="#main-content"
