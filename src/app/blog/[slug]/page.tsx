@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { ArticleEditor } from "@/components/article-editor";
 import { PostContent } from "@/components/post-content";
-import { getAllPosts, getPostBySlug, getPostHeadings, getPostSource } from "@/lib/posts";
+import { getAllPosts, getPostBySlug, getPostHeadings, getPostSource, getPublishedPostBySlug } from "@/lib/posts";
 
 // In Next.js 16 app router, dynamic route params arrive as a Promise; unwrap before use
 type PageParams = { params: Promise<{ slug: string }> };
@@ -11,9 +11,17 @@ export async function generateStaticParams() {
   return posts.map((post) => ({ slug: post.slug }));
 }
 
+// Drafts stay readable in the local editor; every other environment serves
+// published posts only.
+async function findPost(slug: string) {
+  const published = await getPublishedPostBySlug(slug);
+  if (published) return published;
+  return process.env.NODE_ENV === "development" ? getPostBySlug(slug) : null;
+}
+
 export async function generateMetadata({ params }: PageParams) {
   const { slug } = await params;
-  const mod = await getPostBySlug(slug).catch(() => null);
+  const mod = await findPost(slug);
   if (!mod) return {};
   return {
     title: mod.metadata.title,
@@ -24,7 +32,7 @@ export async function generateMetadata({ params }: PageParams) {
 export default async function PostPage({ params }: PageParams) {
   const { slug } = await params;
   const posts = await getAllPosts();
-  const mod = await getPostBySlug(slug).catch(() => null);
+  const mod = await findPost(slug);
 
   if (!mod) {
     notFound();

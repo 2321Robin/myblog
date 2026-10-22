@@ -15,6 +15,7 @@ export type PostMeta = {
   tags?: string[];
   cover?: string;
   readingTimeMinutes?: number;
+  published: boolean;
 };
 
 export type Heading = {
@@ -91,6 +92,15 @@ function optionalReadingTime(metadata: Record<string, unknown>, slug: string) {
   return value;
 }
 
+function optionalPublished(metadata: Record<string, unknown>, slug: string) {
+  const value = metadata.published;
+  if (value === undefined) return true;
+  if (typeof value !== "boolean") {
+    throw new Error(`Post "${slug}" metadata.published must be a boolean when provided.`);
+  }
+  return value;
+}
+
 function validatePostMetadata(metadata: unknown, slug: string): PostMeta {
   if (!isRecord(metadata)) {
     throw new Error(`Post "${slug}" must export a metadata object.`);
@@ -115,6 +125,7 @@ function validatePostMetadata(metadata: unknown, slug: string): PostMeta {
     tags: optionalTags(metadata, slug),
     cover: optionalString(metadata, "cover", slug),
     readingTimeMinutes: optionalReadingTime(metadata, slug),
+    published: optionalPublished(metadata, slug),
   };
 }
 
@@ -139,18 +150,26 @@ export async function getPostSlugs(): Promise<string[]> {
     .map((entry) => entry.name.replace(/\.mdx$/, ""));
 }
 
-export async function getPostBySlug(slug: string): Promise<PostModule> {
+export async function getPostBySlug(slug: string): Promise<PostModule | null> {
   const cached = postCache.get(slug);
   if (cached) return cached;
+  if (!/^[a-z0-9-]+$/.test(slug)) return null;
+  const exists = await fs.access(path.join(POSTS_DIR, `${slug}.mdx`)).then(() => true, () => false);
+  if (!exists) return null;
+  // Post files are selected by slug at runtime, so a dynamic specifier is required.
   const mod = (await import(`@/content/posts/${slug}.mdx`)) as PostModule;
   const content = await readPostSource(slug);
   const readingTimeMinutes = computeReadingTimeMinutes(content);
-  const post: PostModule = {
-    ...mod,
-    metadata: { ...validatePostMetadata(mod.metadata, slug), readingTimeMinutes },
-  };
+  const metadata = validatePostMetadata(mod.metadata, slug);
+  const post: PostModule = { ...mod, metadata: { ...metadata, readingTimeMinutes } };
   postCache.set(slug, post);
   return post;
+}
+
+// Single gate for every public read: drafts resolve to null outside the dev editor.
+export async function getPublishedPostBySlug(slug: string): Promise<PostModule | null> {
+  const mod = await getPostBySlug(slug);
+  return mod?.metadata.published ? mod : null;
 }
 
 export async function getPostHeadings(slug: string): Promise<Heading[]> {
@@ -160,12 +179,9 @@ export async function getPostHeadings(slug: string): Promise<Heading[]> {
 
 export async function getAllPosts(): Promise<PostMeta[]> {
   const slugs = await getPostSlugs();
-  const posts = await Promise.all(
-    slugs.map(async (slug) => {
-      const mod = await getPostBySlug(slug);
-      return mod.metadata;
-    })
-  );
-
-  return posts.sort((a, b) => (a.date < b.date ? 1 : -1));
+  const modules = await Promise.all(slugs.map((slug) => getPostBySlug(slug)));
+  return modules
+    .filter((mod): mod is PostModule => Boolean(mod?.metadata.published))
+    .map((mod) => mod.metadata)
+    .sort((a, b) => (a.date < b.date ? 1 : -1));
 }
