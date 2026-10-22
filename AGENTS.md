@@ -19,6 +19,7 @@
 - 别人未提交的改动原样留在工作区，不进本次提交，也不还原、不覆盖。
 - 提交信息沿用现有约定：`feat:` / `fix:` / `docs:` / `style:` / `chore:` + 一句话描述，一次提交只装一个逻辑改动。
 - 拿不准某个文件是否属于本任务时，问用户，不猜。
+- **任务完成即提交**：每个任务收尾时立刻把本轮自己的改动提交掉，不留未提交状态过夜或跨会话。工作区里的未提交文件容易被别的会话误还原、误覆盖（`git checkout`、`git stash`、冲突解决都可能波及），提交是最省事的保护。
 
 ## 三、一个对话 = 一篇文章或一项网页改进
 
@@ -38,3 +39,13 @@
 - 作者交图后的处理按第一节「配图到手即插」执行：改名落盘、压缩、写 alt、替换占位注释、补 `metadata.cover`。
 - 已插入正文的图片，调整位置、尺寸、类名或删除前先告知作者（见第一节）。
 - 站点功能图标（lucide 图标、`src/app/icon.svg` 等）不属"绘图"，但新增或更换同样遵循第一节：先问再做。
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+## This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->
