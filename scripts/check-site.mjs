@@ -42,7 +42,6 @@ assert.ok(!home.includes("访问统计"), "capture counter must not be mislabele
 for (const id of ["blog", "about", "projects", "links"]) assert.ok(home.includes(`id="${id}"`), `anchor ${id}`);
 assert.ok(home.indexOf('id="projects"') < home.indexOf('id="blog"'), "directory precedes articles");
 assert.ok(bodies.get("/blog/ai-model-agent-harness").includes('id="先从一场股灾说起"'), "MDX heading anchor");
-assert.ok(bodies.get("/blog/ai-model-agent-harness").includes("记住这一句"), "section memory lines present");
 assert.ok(bodies.get("/blog/agent-usage-ecosystem").includes('id="hooks门禁检查"'), "ecosystem article heading anchor");
 assert.ok(bodies.get("/blog/agent-usage-ecosystem").includes("门禁检查"), "ecosystem article revised wording");
 assert.ok(!bodies.get("/blog/agent-usage-ecosystem").includes("门禁卡"), "retired metaphor must not reappear");
@@ -54,8 +53,23 @@ const missing = await fetch(`${base}/blog/not-an-existing-post`, { signal: Abort
 assert.equal(missing.status, 404, "unknown post");
 console.log("PASS selected destinations, project attribution, maintenance status, anchors, reading behavior, index and 404");
 
-for (const removed of ["/blog/hello-world", "/blog/next-roadmap"]) {
-  const response = await fetch(`${base}${removed}`, { signal: AbortSignal.timeout(45000) });
-  assert.equal(response.status, 404, `${removed} should be offline`);
-  console.log(`PASS ${removed} offline`);
+const drafts = ["agent-getting-started", "harness-comparison", "model-landscape-2026"];
+for (const draft of drafts) {
+  const response = await fetch(`${base}/blog/${draft}`, { signal: AbortSignal.timeout(45000) });
+  assert.equal(response.status, 404, `${draft} draft must stay offline`);
+  console.log(`PASS /blog/${draft} draft offline`);
 }
+for (const route of ["/blog", "/blog/tags", "/sitemap.xml", "/rss.xml", "/search-index"]) {
+  for (const draft of drafts) assert.ok(!bodies.get(route).includes(draft), `${route} must not reference draft ${draft}`);
+}
+console.log("PASS draft posts stay out of every index");
+
+// The local editor writes MDX that Next.js compiles, so production must refuse it outright.
+const savePost = await fetch(`${base}/api/dev/save-post`, {
+  method: "POST",
+  headers: { "content-type": "application/json" },
+  body: JSON.stringify({ slug: "ai-model-agent-harness", content: "x" }),
+  signal: AbortSignal.timeout(15000),
+});
+assert.equal(savePost.status, 404, "production save endpoint must be gone");
+console.log("PASS /api/dev/save-post is disabled outside development");

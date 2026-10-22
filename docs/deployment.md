@@ -2,6 +2,14 @@
 
 日期：2026-10-18。当前状态：新版本已部署至 `https://w2321.top`，正式服务与公网检查通过。
 
+## 2026-10-22 依赖升级与草稿发布隔离（代码侧，未部署）
+
+- 依赖：`next` / `@next/mdx` / `eslint-config-next` 由 16.1.6 升级到 16.4.2，React 保持 19.2.3。npm 的 `latest` 标签在 2026-10-22 指向 16.4.2；未使用 `npm audit fix --force`。
+- 本地保存接口：`npm run dev` 绑定 `127.0.0.1`；`POST /api/dev/save-post` 增加每次启动生成的访问令牌（页面 `<meta name="dev-save-token">` 注入）、Host/Origin 同源校验、`application/json` 与 512 KB 请求体上限。生产环境仍直接 404。
+- 草稿隔离：文章 metadata 新增 `published` 字段，`published: false` 不进入列表、静态参数、RSS、sitemap、搜索索引，直接访问 404。当前 `agent-getting-started`、`harness-comparison`、`model-landscape-2026` 三篇标记为草稿。**发布打包不再需要手工剔除草稿文件**，`git archive` 全量导出即可。
+- 检查脚本 `scripts/check-site.mjs` 新增草稿 404、索引隔离与生产保存接口 404 断言；CI 在构建后启动生产服务跑同一脚本。
+- 本轮只改了代码与文档，未部署到服务器，未修改线上 Nginx。
+
 ## 2026-10-20 首篇正式文章发布（《AI、模型、Agent、Harness》）
 
 - 发布目录：`/www/wwwroot/w2321.top-releases/20261019T165921Z`（systemd `20-release.conf` 已指向此目录，服务 active/enabled）。

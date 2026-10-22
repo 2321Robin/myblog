@@ -34,3 +34,12 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      - name: Smoke test the production build
+        run: |
+          SITE_URL=https://example.test npx next start -H 127.0.0.1 -p 3100 &
+          for i in $(seq 1 60); do
+            if curl -sf http://127.0.0.1:3100/robots.txt > /dev/null; then break; fi
+            sleep 1
+          done
+          node scripts/check-site.mjs http://127.0.0.1:3100
