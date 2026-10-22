@@ -48,3 +48,11 @@
 
 遗留：`node scripts/check-site.mjs` 第 45 行断言 `"记住这一句"` 在本轮之前就已失效——该内容在当前工作区（他人未提交改动）里已被删掉。不属于 P0 范围，未修改断言或他人文章。
 
+## 需服务器侧处理（2026-10-22 审查剩余项，仓库侧已做完）
+
+- [ ] Nginx / 面板把 `/_next/static/**` 的 `Cache-Control` 压成了 `max-age=60`，需定位覆盖规则并改为 `public, max-age=31536000, immutable`（仓库侧 `next.config.ts` 已声明，本地构建实测生效）。
+- [ ] 线上 404 的共享缓存：仓库侧已用 `dynamicParams = false` 让文章 404 走 `private, no-cache`；需在 Nginx 侧确认错误页不被 `proxy_cache` 长期缓存。
+- [ ] HSTS 的 `includeSubDomains` / `preload`：需先核验全部子站都支持 HTTPS。
+- [ ] CSP 强制执行：当前为 `Content-Security-Policy-Report-Only`，观察期后再决定是否收严。
+- [ ] 定期核对依赖安全公告（镜像未实现 npm audit 接口，需另找数据源）。
+

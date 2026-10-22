@@ -8,6 +8,12 @@
 - 本地保存接口：`npm run dev` 绑定 `127.0.0.1`；`POST /api/dev/save-post` 增加每次启动生成的访问令牌（页面 `<meta name="dev-save-token">` 注入）、Host/Origin 同源校验、`application/json` 与 512 KB 请求体上限。生产环境仍直接 404。
 - 草稿隔离：文章 metadata 新增 `published` 字段，`published: false` 不进入列表、静态参数、RSS、sitemap、搜索索引，直接访问 404。当前 `agent-getting-started`、`harness-comparison`、`model-landscape-2026` 三篇标记为草稿。**发布打包不再需要手工剔除草稿文件**，`git archive` 全量导出即可。
 - 检查脚本 `scripts/check-site.mjs` 新增草稿 404、索引隔离与生产保存接口 404 断言；CI 在构建后启动生产服务跑同一脚本。
+- 响应头与缓存：`next.config.ts` 增加 HSTS（`max-age=31536000`，不含 `includeSubDomains`）、`nosniff`、`SAMEORIGIN`、`strict-origin-when-cross-origin`、`Permissions-Policy`、CSP Report-Only，并关闭 `X-Powered-By`；`/_next/static/**` 显式声明 `public, max-age=31536000, immutable`。**线上实测 `/_next/static/**` 仍为 `max-age=60`，说明 Nginx 或面板规则覆盖了仓库设置，部署时需一并核对。**
+- 文章 404：`/blog/[slug]` 设 `dynamicParams = false`，未在 `generateStaticParams` 中的 slug 直接 404，不再产生带 `s-maxage=31536000` 的缓存 404。
+- SEO：首页、`/blog`、`/blog/tags`、每篇文章补 canonical；`/blog?page=` 越界返回 404、非法值归一到第 1 页；sitemap 补 `/blog` 与 `/blog/tags`，列表条目不再写 `lastmod`。
+- 分享信息：每篇文章输出自身的 `og:title`/`og:url`/`og:type=article`/`og:image`（有封面用封面）与 `twitter:*`。
+- 站点地址：生产构建缺 `SITE_URL`、非 `https` 或非法 URL 时直接失败；CI 构建显式传 `SITE_URL=https://example.test`。
+- 手机首页：带封面的首页文章在 ≤1040px 时封面独占一行，≤430px 时整行堆叠，标题不再被挤成几个字一行。
 - 本轮只改了代码与文档，未部署到服务器，未修改线上 Nginx。
 
 ## 2026-10-20 首篇正式文章发布（《AI、模型、Agent、Harness》）
