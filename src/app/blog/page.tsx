@@ -1,21 +1,49 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
 import { getAllPosts } from "@/lib/posts";
 import { cn, formatDate } from "@/lib/utils";
 
-type Props = { searchParams?: Promise<{ page?: string | string[]; tag?: string | string[] }> };
+type SearchParams = { page?: string | string[]; tag?: string | string[] };
+type Props = { searchParams?: Promise<SearchParams> };
 const PAGE_SIZE = 5;
-export const metadata = { title: "博客文章", description: "关于 Web、产品与日常的构建记录和思考。" };
 
-export default async function BlogPage({ searchParams }: Props) {
-  const params = (await searchParams) || {};
-  const parsedPage = Number(Array.isArray(params.page) ? params.page[0] : params.page);
-  const page = Number.isFinite(parsedPage) ? Math.max(1, Math.floor(parsedPage)) : 1;
-  const tag = (Array.isArray(params.tag) ? params.tag[0] : params.tag)?.toLowerCase();
+function readParam(value: string | string[] | undefined) {
+  return Array.isArray(value) ? value[0] : value;
+}
+
+// Out-of-range pages are soft 404s; invalid values collapse to the first page.
+async function resolveListing(searchParams: SearchParams | undefined) {
+  const parsedPage = Number(readParam(searchParams?.page));
+  const requestedPage = Number.isFinite(parsedPage) ? Math.max(1, Math.floor(parsedPage)) : 1;
+  const tag = readParam(searchParams?.tag)?.toLowerCase() || undefined;
   const posts = await getAllPosts();
   const filtered = tag ? posts.filter((post) => post.tags?.some((item) => item.toLowerCase() === tag)) : posts;
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
-  const currentPage = Math.min(page, totalPages);
+  return { posts, filtered, tag, totalPages, currentPage: Math.min(requestedPage, totalPages), requestedPage };
+}
+
+function listingPath(tag: string | undefined, page: number) {
+  const query = new URLSearchParams();
+  if (tag) query.set("tag", tag);
+  if (page > 1) query.set("page", String(page));
+  const search = query.toString();
+  return search ? `/blog?${search}` : "/blog";
+}
+
+export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
+  const { tag, currentPage } = await resolveListing(await searchParams);
+  return {
+    title: "博客文章",
+    description: "关于 Web、产品与日常的构建记录和思考。",
+    alternates: { canonical: listingPath(tag, currentPage) },
+  };
+}
+
+export default async function BlogPage({ searchParams }: Props) {
+  const { posts, filtered, tag, totalPages, currentPage, requestedPage } = await resolveListing(await searchParams);
+  if (requestedPage > totalPages) notFound();
   const pageItems = filtered.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
   const tags = Array.from(new Set(posts.flatMap((post) => post.tags ?? []))).sort();
 

@@ -14,10 +14,11 @@ export const metadata: Metadata = {
     template: `%s | ${siteMetadata.title}`,
   },
   description: siteMetadata.description,
+  alternates: { canonical: "/" },
   openGraph: {
     title: siteMetadata.title,
     description: siteMetadata.description,
-    url: getBaseUrl(),
+    url: "/",
     siteName: siteMetadata.title,
     type: "website",
     images: [{ url: "/og.png", width: 1200, height: 630, alt: "Robin · 工具、作品与记录" }],

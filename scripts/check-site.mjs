@@ -100,3 +100,53 @@ const savePost = await fetch(`${base}/api/dev/save-post`, {
 });
 assert.equal(savePost.status, 404, "production save endpoint must be gone");
 console.log("PASS /api/dev/save-post is disabled outside development");
+
+// Canonical links: each page points at itself, with out-of-range pages rejected.
+function canonicalOf(route) {
+  return bodies.get(route).match(/<link rel="canonical" href="([^"]+)"/)?.[1];
+}
+// Absolute links come from SITE_URL; fall back to the server under test.
+const origin = (process.env.SITE_URL ?? new URL(base).origin).replace(/\/$/, "");
+const canonicalExpectations = [
+  ["/", origin],
+  ["/blog", `${origin}/blog`],
+  ["/blog/tags", `${origin}/blog/tags`],
+  ["/blog?page=1", `${origin}/blog`],
+  ["/blog?page=1.5", `${origin}/blog`],
+  ["/blog?page=Infinity", `${origin}/blog`],
+  ["/blog?tag=ai", `${origin}/blog?tag=ai`],
+  ["/blog/ai-model-agent-harness", `${origin}/blog/ai-model-agent-harness`],
+  ["/blog/agent-usage-ecosystem", `${origin}/blog/agent-usage-ecosystem`],
+];
+for (const [route, expected] of canonicalExpectations) {
+  if (!bodies.has(route)) {
+    const response = await fetch(`${base}${route}`, { signal: AbortSignal.timeout(45000) });
+    assert.equal(response.status, 200, `${route} status`);
+    bodies.set(route, await response.text());
+  }
+  assert.equal(canonicalOf(route), expected, `${route} canonical`);
+}
+const outOfRange = await fetch(`${base}/blog?page=999999`, { signal: AbortSignal.timeout(30000) });
+assert.equal(outOfRange.status, 404, "page beyond the last one must be a 404, not a soft duplicate");
+console.log("PASS canonical links and pagination bounds");
+
+const sitemap = bodies.get("/sitemap.xml");
+for (const path of ["/blog", "/blog/tags", "/blog/ai-model-agent-harness", "/blog/agent-usage-ecosystem"]) {
+  assert.ok(sitemap.includes(`<loc>${origin}${path}</loc>`), `sitemap lists ${path}`);
+}
+assert.match(sitemap, new RegExp(`<url><loc>${origin}</loc></url>`), "homepage entry omits lastmod");
+console.log("PASS sitemap covers listings and only stamps articles with lastmod");
+
+// Article share cards must describe the article, not the homepage.
+for (const [slug, cover] of [["ai-model-agent-harness", "/images/posts/ai-model-agent-harness/cover.webp"], ["agent-usage-ecosystem", "/images/posts/agent-usage-ecosystem/cover.webp"]]) {
+  const html = bodies.get(`/blog/${slug}`);
+  const url = `${origin}/blog/${slug}`;
+  assert.ok(html.includes(`<meta property="og:url" content="${url}"`), `${slug} og:url`);
+  assert.ok(html.includes('<meta property="og:type" content="article"'), `${slug} og:type`);
+  assert.ok(html.includes(`<meta property="og:image" content="${origin}${cover}"`), `${slug} og:image uses its cover`);
+  assert.ok(html.includes('<meta name="twitter:title" content='), `${slug} twitter:title present`);
+  const ogTitle = html.match(/<meta property="og:title" content="([^"]+)"/)?.[1];
+  assert.ok(ogTitle && !ogTitle.includes("个人站点"), `${slug} og:title must be the article title`);
+  assert.ok(!html.includes(`<meta property="og:url" content="${origin}/"`), `${slug} og:url must not point at the homepage`);
+}
+console.log("PASS article share metadata points at each article");

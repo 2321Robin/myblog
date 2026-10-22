@@ -2,7 +2,11 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { getAllPosts } from "@/lib/posts";
 
-export const metadata = { title: "标签一览", description: "从感兴趣的主题开始阅读 Robin 的文章。" };
+export const metadata = {
+  title: "标签一览",
+  description: "从感兴趣的主题开始阅读 Robin 的文章。",
+  alternates: { canonical: "/blog/tags" },
+};
 
 export default async function TagsPage() {
   const posts = await getAllPosts();
