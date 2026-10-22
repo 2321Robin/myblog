@@ -23,9 +23,28 @@ export async function generateMetadata({ params }: PageParams) {
   const { slug } = await params;
   const mod = await findPost(slug);
   if (!mod) return {};
+  const { title, summary, cover, date } = mod.metadata;
+  const image = cover ?? "/og.png";
   return {
-    title: mod.metadata.title,
-    description: mod.metadata.summary,
+    title,
+    description: summary,
+    alternates: { canonical: `/blog/${slug}` },
+    openGraph: {
+      type: "article",
+      url: `/blog/${slug}`,
+      title,
+      description: summary,
+      publishedTime: date,
+      images: cover
+        ? [{ url: cover, width: 1448, height: 1086, alt: `${title} 封面` }]
+        : [{ url: "/og.png", width: 1200, height: 630, alt: "Robin · 工具、作品与记录" }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description: summary,
+      images: [image],
+    },
   };
 }
 
