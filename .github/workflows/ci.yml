@@ -38,8 +38,10 @@ jobs:
           SITE_URL: https://example.test
 
       - name: Smoke test the production build
+        env:
+          SITE_URL: https://example.test
         run: |
-          SITE_URL=https://example.test npx next start -H 127.0.0.1 -p 3100 &
+          npx next start -H 127.0.0.1 -p 3100 &
           for i in $(seq 1 60); do
             if curl -sf http://127.0.0.1:3100/robots.txt > /dev/null; then break; fi
             sleep 1
