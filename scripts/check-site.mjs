@@ -3,12 +3,14 @@ import assert from "node:assert/strict";
 const base = process.argv[2] ?? "http://127.0.0.1:3003";
 const routes = ["/", "/blog", "/blog/tags", "/blog/ai-model-agent-harness", "/blog/agent-usage-ecosystem", "/blog?tag=ai", "/blog?page=1.5", "/blog?page=Infinity", "/blog?tag=ai&tag=agent", "/blog?page=1&page=2", "/blog?tag=no-such-tag", "/rss.xml", "/sitemap.xml", "/robots.txt", "/search-index", "/og.png", "/icon.svg"];
 const bodies = new Map();
+const headers = new Map();
 
 for (const route of routes) {
   const response = await fetch(`${base}${route}`, { signal: AbortSignal.timeout(45000) });
   assert.equal(response.status, 200, `${route} status`);
   const body = await response.text();
   bodies.set(route, body);
+  headers.set(route, response.headers);
   if (route === "/" || route.startsWith("/blog")) {
     assert.equal((body.match(/<h1\b/g) ?? []).length, 1, `${route} should render one main heading`);
     assert.ok(body.includes('id="main-content"'), `${route} skip-link target`);
@@ -17,7 +19,31 @@ for (const route of routes) {
   console.log(`PASS ${route}`);
 }
 
-const home = bodies.get("/");
+// Security headers must be present on every HTML surface, and the framework banner must be gone.
+for (const route of ["/", "/blog", "/blog/tags", "/blog/ai-model-agent-harness", "/blog/agent-usage-ecosystem"]) {
+  const h = headers.get(route);
+  assert.equal(h.get("x-content-type-options"), "nosniff", `${route} nosniff`);
+  assert.equal(h.get("x-frame-options"), "SAMEORIGIN", `${route} frame options`);
+  assert.equal(h.get("referrer-policy"), "strict-origin-when-cross-origin", `${route} referrer policy`);
+  assert.match(h.get("permissions-policy") ?? "", /camera=\(\)/, `${route} permissions policy`);
+  const hsts = h.get("strict-transport-security") ?? "";
+  assert.match(hsts, /max-age=31536000/, `${route} HSTS max-age`);
+  assert.ok(!/includeSubDomains/i.test(hsts), `${route} HSTS must not cover unverified subdomains`);
+  assert.match(h.get("content-security-policy-report-only") ?? "", /default-src 'self'/, `${route} CSP report-only`);
+  assert.equal(h.get("x-powered-by"), null, `${route} must not advertise the framework`);
+}
+console.log("PASS security headers on every HTML surface");
+
+// Hashed build output is immutable; error pages must not be cached for a year.
+const homeHtml = bodies.get("/");
+const staticAsset = homeHtml.match(/\/_next\/static\/[^"]+\.(?:js|css)/)?.[0];
+assert.ok(staticAsset, "homepage references a hashed static asset");
+const staticResponse = await fetch(`${base}${staticAsset}`, { signal: AbortSignal.timeout(20000) });
+assert.equal(staticResponse.status, 200, `static asset ${staticAsset}`);
+assert.equal(staticResponse.headers.get("cache-control"), "public, max-age=31536000, immutable", "hashed assets cached for a year");
+console.log("PASS hashed static assets use a long-lived immutable cache");
+
+const home = homeHtml;
 assert.ok(home.includes("<title>Robin · 个人站点</title>"), "homepage must be the deployed Robin redesign, not a cached older version");
 assert.ok(home.includes('id="directory-title"') && home.includes("从这里，去逛逛。"), "navigation directory must be present in deployed HTML");
 for (const encoding of ["identity", "gzip, deflate, br"]) {
@@ -51,6 +77,7 @@ for (const slug of ["ai-model-agent-harness", "agent-usage-ecosystem"]) assert.o
 for (const slug of ["hello-world", "next-roadmap"]) assert.ok(!indexed.some((post) => post.slug === slug), `removed post ${slug} not indexed`);
 const missing = await fetch(`${base}/blog/not-an-existing-post`, { signal: AbortSignal.timeout(15000) });
 assert.equal(missing.status, 404, "unknown post");
+assert.ok(!/s-maxage=31536000/.test(missing.headers.get("cache-control") ?? ""), "404 must not be cached for a year");
 console.log("PASS selected destinations, project attribution, maintenance status, anchors, reading behavior, index and 404");
 
 const drafts = ["agent-getting-started", "harness-comparison", "model-landscape-2026"];

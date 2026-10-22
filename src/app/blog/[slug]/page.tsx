@@ -1,12 +1,21 @@
 import { notFound } from "next/navigation";
 import { ArticleEditor } from "@/components/article-editor";
 import { PostContent } from "@/components/post-content";
-import { getAllPosts, getPostBySlug, getPostHeadings, getPostSource, getPublishedPostBySlug } from "@/lib/posts";
+import { getAllPosts, getPostBySlug, getPostHeadings, getPostSlugs, getPostSource, getPublishedPostBySlug } from "@/lib/posts";
 
 // In Next.js 16 app router, dynamic route params arrive as a Promise; unwrap before use
 type PageParams = { params: Promise<{ slug: string }> };
 
+// Anything outside generateStaticParams is a 404, not an on-demand page: a
+// cached 404 would otherwise pin the wrong answer for a year.
+export const dynamicParams = false;
+
 export async function generateStaticParams() {
+  // Dev pre-renders drafts too so the local editor can open them.
+  if (process.env.NODE_ENV === "development") {
+    const slugs = await getPostSlugs();
+    return slugs.map((slug) => ({ slug }));
+  }
   const posts = await getAllPosts();
   return posts.map((post) => ({ slug: post.slug }));
 }
