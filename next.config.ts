@@ -1,12 +1,16 @@
+import path from "node:path";
 import type { NextConfig } from "next";
 import createMDX from "@next/mdx";
 
-// 使用字符串形式的插件名称以兼容 Turbopack 的可序列化要求
+// Turbopack 序列化 loader options，插件必须是模块路径字符串；函数引用无法序列化。
+// 用绝对路径，因为 loader 在 node_modules 里解析相对路径。
+const rehypeImageAttributes = path.join(__dirname, "scripts", "mdx-image-attributes.mjs");
+
 const withMDX = createMDX({
   extension: /\.mdx?$/,
   options: {
     remarkPlugins: ["remark-gfm"],
-    rehypePlugins: ["rehype-prism-plus", "rehype-slug"],
+    rehypePlugins: ["rehype-prism-plus", "rehype-slug", rehypeImageAttributes],
   },
 });
 
@@ -43,14 +47,17 @@ const nextConfig: NextConfig = {
     root: __dirname,
   },
   async headers() {
-    return [
-      { source: "/:path*", headers: SECURITY_HEADERS },
-      {
-        // 文件名自带内容哈希，可以长期缓存。
+    // Next 16 already emits immutable for hashed build output and warns when a
+    // custom Cache-Control applies in development, where chunks are rewritten on
+    // every edit. The override is for the production bundle only.
+    const headers = [{ source: "/:path*", headers: SECURITY_HEADERS }];
+    if (process.env.NODE_ENV === "production") {
+      headers.push({
         source: "/_next/static/:path*",
         headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
-      },
-    ];
+      });
+    }
+    return headers;
   },
 };
 
