@@ -48,11 +48,14 @@
 
 遗留：`node scripts/check-site.mjs` 第 45 行断言 `"记住这一句"` 在本轮之前就已失效——该内容在当前工作区（他人未提交改动）里已被删掉。不属于 P0 范围，未修改断言或他人文章。
 
-## 需服务器侧处理（2026-10-22 审查剩余项，仓库侧已做完）
+## 需服务器侧处理（2026-10-23 复审后确认，仓库侧已做完）
 
 - [ ] Nginx / 面板把 `/_next/static/**` 的 `Cache-Control` 压成了 `max-age=60`，需定位覆盖规则并改为 `public, max-age=31536000, immutable`（仓库侧 `next.config.ts` 已声明，本地构建实测生效）。
 - [ ] 线上 404 的共享缓存：仓库侧已用 `dynamicParams = false` 让文章 404 走 `private, no-cache`；需在 Nginx 侧确认错误页不被 `proxy_cache` 长期缓存。
 - [ ] HSTS 的 `includeSubDomains` / `preload`：需先核验全部子站都支持 HTTPS。
-- [ ] CSP 强制执行：当前为 `Content-Security-Policy-Report-Only`，观察期后再决定是否收严。
-- [ ] 定期核对依赖安全公告（镜像未实现 npm audit 接口，需另找数据源）。
+- [ ] CSP 强制执行：当前为 `Content-Security-Policy-Report-Only`，且没有报告接收端，观察期与收集方式待定。
+- [ ] 发布核验：公网仍跑 2026-10-21 的版本（无安全头、`max-age=60`、旧分享信息、旧 sitemap）。发布后重跑 `check-site.mjs` 对公网。
+- [ ] `/_next/image` 优化入口：16.4.2 已有 LRU（默认可用磁盘 50%），可按预算设 `maximumDiskCacheSize`，或评估关闭本站未使用的入口。
+- [ ] 正文图片缓存：图片仍走原路径可覆盖，当前 `public, max-age=0`；若要优化需先做资源版本化。
+- [ ] 依赖公告核对：镜像未实现 npm audit 接口，需用官方 registry 另找数据源；生产依赖已 0 漏洞，剩余 12 条全在 ESLint/tinyglobby 开发链。
 

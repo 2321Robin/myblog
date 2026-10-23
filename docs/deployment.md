@@ -5,7 +5,7 @@
 ## 2026-10-22 依赖升级与草稿发布隔离（代码侧，未部署）
 
 - 依赖：`next` / `@next/mdx` / `eslint-config-next` 由 16.1.6 升级到 16.4.2，React 保持 19.2.3。npm 的 `latest` 标签在 2026-10-22 指向 16.4.2；未使用 `npm audit fix --force`。
-- 本地保存接口：`npm run dev` 绑定 `127.0.0.1`；`POST /api/dev/save-post` 增加每次启动生成的访问令牌（页面 `<meta name="dev-save-token">` 注入）、Host/Origin 同源校验、`application/json` 与 512 KB 请求体上限。生产环境仍直接 404。
+- 本地保存接口：`npm run dev` 绑定 `127.0.0.1`；`POST /api/dev/save-post` 增加每次 dev 启动生成的访问令牌（页面 `<meta name="dev-save-token">` 注入）、Host/Origin 同源校验、`application/json` 与 512 KB 请求体上限。2026-10-23 复审后把上限改为**流式累计**：边读边计数，超限即断开，不再整份读完再判断。生产环境仍直接 404。
 - 草稿隔离：文章 metadata 新增 `published` 字段，`published: false` 不进入列表、静态参数、RSS、sitemap、搜索索引，直接访问 404。当前 `agent-getting-started`、`harness-comparison`、`model-landscape-2026` 三篇标记为草稿。**发布打包不再需要手工剔除草稿文件**，`git archive` 全量导出即可。
 - 检查脚本 `scripts/check-site.mjs` 新增草稿 404、索引隔离与生产保存接口 404 断言；CI 在构建后启动生产服务跑同一脚本。
 - 响应头与缓存：`next.config.ts` 增加 HSTS（`max-age=31536000`，不含 `includeSubDomains`）、`nosniff`、`SAMEORIGIN`、`strict-origin-when-cross-origin`、`Permissions-Policy`、CSP Report-Only，并关闭 `X-Powered-By`；`/_next/static/**` 显式声明 `public, max-age=31536000, immutable`。**线上实测 `/_next/static/**` 仍为 `max-age=60`，说明 Nginx 或面板规则覆盖了仓库设置，部署时需一并核对。**
@@ -14,6 +14,9 @@
 - 分享信息：每篇文章输出自身的 `og:title`/`og:url`/`og:type=article`/`og:image`（有封面用封面）与 `twitter:*`。
 - 站点地址：生产构建缺 `SITE_URL`、非 `https` 或非法 URL 时直接失败；CI 构建显式传 `SITE_URL=https://example.test`。
 - 手机首页：带封面的首页文章在 ≤1040px 时封面独占一行，≤430px 时整行堆叠，标题不再被挤成几个字一行。
+- 2026-10-23 复审补充：`postcss` 升到 8.5.31、`@tailwindcss/postcss` 升到 4.3.3，锁文件里的 `source-map-js` 从 1.2.1 升到 1.2.2，官方 registry 上 `npm audit --omit=dev` 归零；剩余 12 条公告全在 ESLint / tinyglobby 开发链，不进生产产物。
+- 2026-10-23 复审补充：正文图片改由构建期 rehype 插件（`scripts/mdx-image-attributes.mjs`）注入 `width`/`height`/`loading="lazy"`/`decoding="async"`，覆盖 Markdown 图片与正文内联 `<img>`（吉祥物）；文章页不再产生任何图片 preload。图片仍走原路径、可覆盖，缓存策略未变。
+- 2026-10-23 复审补充：`/_next/static/:path*` 的 Cache-Control 覆盖改为仅生产启用，避免 Next 16 对开发态覆盖的告警；`scripts/check-site.mjs` 的生产保存探测改用不存在的 slug 与空内容，回归时也不会误伤真实文章。
 - 本轮只改了代码与文档，未部署到服务器，未修改线上 Nginx。
 
 ## 2026-10-20 首篇正式文章发布（《AI、模型、Agent、Harness》）
