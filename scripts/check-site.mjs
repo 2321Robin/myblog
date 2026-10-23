@@ -91,11 +91,13 @@ for (const route of ["/blog", "/blog/tags", "/sitemap.xml", "/rss.xml", "/search
 }
 console.log("PASS draft posts stay out of every index");
 
-// The local editor writes MDX that Next.js compiles, so production must refuse it outright.
+// The local editor writes MDX that Next.js compiles, so production must refuse
+// it outright. Probe with a slug that does not exist and an empty body: if the
+// guard ever regresses, the request cannot damage a real article.
 const savePost = await fetch(`${base}/api/dev/save-post`, {
   method: "POST",
   headers: { "content-type": "application/json" },
-  body: JSON.stringify({ slug: "ai-model-agent-harness", content: "x" }),
+  body: JSON.stringify({ slug: "not-a-real-post", content: "" }),
   signal: AbortSignal.timeout(15000),
 });
 assert.equal(savePost.status, 404, "production save endpoint must be gone");
@@ -150,3 +152,20 @@ for (const [slug, cover] of [["ai-model-agent-harness", "/images/posts/ai-model-
   assert.ok(!html.includes(`<meta property="og:url" content="${origin}/"`), `${slug} og:url must not point at the homepage`);
 }
 console.log("PASS article share metadata points at each article");
+
+// Figures carry intrinsic dimensions so the layout cannot shift, and only the
+// first figure loads eagerly — the rest defer instead of being preloaded.
+for (const slug of ["ai-model-agent-harness", "agent-usage-ecosystem"]) {
+  const html = bodies.get(`/blog/${slug}`);
+  const figures = [...html.matchAll(/<img[^>]*src="(\/images\/[^"]+)"[^>]*>/g)];
+  assert.ok(figures.length > 0, `${slug} renders article figures`);
+  for (const [tag, src] of figures) {
+    assert.match(tag, /width="\d+"/, `${src} has intrinsic width`);
+    assert.match(tag, /height="\d+"/, `${src} has intrinsic height`);
+    assert.ok(!tag.includes('loading="eager"'), `${src} is not force-eager`);
+  }
+  const eager = figures.filter(([tag]) => !tag.includes('loading="lazy"'));
+  assert.ok(eager.length <= 1, `${slug} keeps at most one eager figure (got ${eager.length})`);
+  assert.ok(!html.includes('rel="preload" as="image"'), `${slug} must not preload its figures`);
+}
+console.log("PASS article figures have dimensions and defer below the first one");

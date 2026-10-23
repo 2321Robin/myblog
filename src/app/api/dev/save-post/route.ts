@@ -27,11 +27,28 @@ function rejection(request: Request): NextResponse | null {
   return null;
 }
 
+// Read the stream ourselves so the cap holds during the read, not after it: a
+// body larger than the limit is dropped as soon as the limit is crossed.
 async function readJsonBody(request: Request): Promise<{ ok: true; value: unknown } | { ok: false; status: 413 | 400 }> {
   const declared = Number(request.headers.get("content-length"));
   if (Number.isFinite(declared) && declared > MAX_BODY_BYTES) return { ok: false, status: 413 };
-  const raw = await request.text();
-  if (Buffer.byteLength(raw, "utf8") > MAX_BODY_BYTES) return { ok: false, status: 413 };
+  if (!request.body) return { ok: false, status: 400 };
+
+  const reader = request.body.getReader();
+  const chunks: Uint8Array[] = [];
+  let size = 0;
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    size += value.byteLength;
+    if (size > MAX_BODY_BYTES) {
+      await reader.cancel();
+      return { ok: false, status: 413 };
+    }
+    chunks.push(value);
+  }
+
+  const raw = Buffer.concat(chunks.map((chunk) => Buffer.from(chunk))).toString("utf8");
   try {
     return { ok: true, value: JSON.parse(raw) };
   } catch {
