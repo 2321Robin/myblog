@@ -2,6 +2,18 @@
 
 日期：2026-10-18。当前状态：新版本已部署至 `https://w2321.top`，正式服务与公网检查通过。
 
+## 2026-10-24 第三篇文章发布（《上手第一个 Agent》）
+
+- 发布目录：`/www/wwwroot/w2321.top-releases/20261024T054707Z`（systemd `20-release.conf` 已指向此目录，服务 active/enabled）。上一版本目录 `20261021T062945Z` 保留用于回退；切换前的旧配置备份在 `/var/backups/personal-homepage/20261024T054707Z/previous-release.conf`。
+- 源码包：`/root/myblog-deploy/myblog-20261024T054707Z.tar.gz`，SHA-256 `2f1374bc4d4ebfee541b8df7a8041ad373767ffe42f4fc49152232563810c66d`，本机与服务器核对一致。由 `git archive HEAD` 全量导出，草稿靠 `metadata.published` 隔离，不再手工剔除文件。
+- 依赖：`package.json` / `package-lock.json` 与上一发布目录一致（均为 16.4.2 构建链），但服务器旧目录内文件为 CRLF 且哈希不同，无法据此判定可复用，故本次在新目录独立 `npm ci`（521 个包，`.npm-cache` 留在发布目录内）。
+- 内容变化：`agent-getting-started` 去掉 `published: false` 正式发布，含 6 张正文截图（WebP，共 244 KB），无独立封面，分享图沿用 `/og.png`；`harness-comparison`、`model-landscape-2026` 仍为草稿，公网 404。
+- `scripts/check-site.mjs` 同步维护：路由清单、安全头与图片断言、canonical、sitemap、搜索索引、分享信息、正文图属性全部纳入新文章，草稿清单缩减为两篇；新增两条正文断言（标题锚点 `第-1-步下载安装包` 存在、已删除的“直接同意”旧建议不再出现）。
+- 服务器流程按 runbook 执行：以 `www` 用户 `SITE_URL=https://w2321.top` 生产构建；`npm test`（10 项）、`npm run type-check`、`npm run lint`、`check-article` 通过；3011 预览通过 `check-site` 全部路由；切换 `20-release.conf` 重启后 `127.0.0.1:3010` 全项通过。
+- 公网确认：`/blog/agent-getting-started` 200，标题、canonical、`og:url`、6 张 `image/webp` 均正确；首页、`/blog`、`/blog/tags`、`/blog?tag=beginner`、RSS、sitemap、`/search-index` 均已收录，最新一篇排在首位；两篇草稿公网 404；安全头（HSTS / nosniff / SAMEORIGIN / Referrer-Policy / Permissions-Policy）齐全且无 `X-Powered-By`。
+- 已知未解决：公网 `/_next/static/**` 仍为 `Cache-Control: max-age=60`，`check-site.mjs` 该条断言对公网不通过，根因是面板代理配置里 `\.(gif|png|jpg|css|js|woff|woff2)$` 的 `expires 1m` 覆盖了应用头，属 `docs/backlog.md` 记录的服务器侧待办，本轮未改 Nginx。
+- 临时 3011 预览已停止；`personal-homepage.service` 为 active/enabled。
+
 ## 2026-10-22 依赖升级与草稿发布隔离（代码侧，未部署）
 
 - 依赖：`next` / `@next/mdx` / `eslint-config-next` 由 16.1.6 升级到 16.4.2，React 保持 19.2.3。npm 的 `latest` 标签在 2026-10-22 指向 16.4.2；未使用 `npm audit fix --force`。
@@ -47,8 +59,8 @@
 - 正式域名：`https://w2321.top`。
 - 服务：`personal-homepage.service`，运行用户和组均为 `www`。
 - Nginx 将主页请求转发到 `127.0.0.1:3010`。
-- 当前版本目录：`/www/wwwroot/w2321.top-releases/20261021T054949Z`。
-- 上一版本目录：`/www/wwwroot/w2321.top-releases/20261020T004055Z`，保留用于回退。
+- 当前版本目录：`/www/wwwroot/w2321.top-releases/20261024T054707Z`。
+- 上一版本目录：`/www/wwwroot/w2321.top-releases/20261021T062945Z`，保留用于回退。
 - 原版本保留在 `/www/wwwroot/w2321.top`。
 - 构建和运行均使用 `SITE_URL=https://w2321.top`。
 
