@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 
 const base = process.argv[2] ?? "http://127.0.0.1:3003";
-const routes = ["/", "/blog", "/blog/tags", "/blog/ai-model-agent-harness", "/blog/agent-usage-ecosystem", "/blog?tag=ai", "/blog?page=1.5", "/blog?page=Infinity", "/blog?tag=ai&tag=agent", "/blog?page=1&page=2", "/blog?tag=no-such-tag", "/rss.xml", "/sitemap.xml", "/robots.txt", "/search-index", "/og.png", "/icon.svg"];
+const routes = ["/", "/blog", "/blog/tags", "/blog/ai-model-agent-harness", "/blog/agent-usage-ecosystem", "/blog/agent-getting-started", "/blog?tag=ai", "/blog?page=1.5", "/blog?page=Infinity", "/blog?tag=ai&tag=agent", "/blog?page=1&page=2", "/blog?tag=no-such-tag", "/rss.xml", "/sitemap.xml", "/robots.txt", "/search-index", "/og.png", "/icon.svg"];
 const bodies = new Map();
 const headers = new Map();
 
@@ -20,7 +20,7 @@ for (const route of routes) {
 }
 
 // Security headers must be present on every HTML surface, and the framework banner must be gone.
-for (const route of ["/", "/blog", "/blog/tags", "/blog/ai-model-agent-harness", "/blog/agent-usage-ecosystem"]) {
+for (const route of ["/", "/blog", "/blog/tags", "/blog/ai-model-agent-harness", "/blog/agent-usage-ecosystem", "/blog/agent-getting-started"]) {
   const h = headers.get(route);
   assert.equal(h.get("x-content-type-options"), "nosniff", `${route} nosniff`);
   assert.equal(h.get("x-frame-options"), "SAMEORIGIN", `${route} frame options`);
@@ -68,19 +68,22 @@ assert.ok(!home.includes("访问统计"), "capture counter must not be mislabele
 for (const id of ["blog", "about", "projects", "links"]) assert.ok(home.includes(`id="${id}"`), `anchor ${id}`);
 assert.ok(home.indexOf('id="projects"') < home.indexOf('id="blog"'), "directory precedes articles");
 assert.ok(bodies.get("/blog/ai-model-agent-harness").includes('id="先从一场股灾说起"'), "MDX heading anchor");
+assert.ok(bodies.get("/blog/agent-getting-started").includes('id="第-1-步下载安装包"'), "getting-started heading anchor");
+assert.ok(bodies.get("/blog/agent-getting-started").includes("允许完全访问"), "getting-started revised permission wording");
+assert.ok(!bodies.get("/blog/agent-getting-started").includes("直接同意"), "retired approval advice must not reappear");
 assert.ok(bodies.get("/blog/agent-usage-ecosystem").includes('id="hooks门禁检查"'), "ecosystem article heading anchor");
 assert.ok(bodies.get("/blog/agent-usage-ecosystem").includes("门禁检查"), "ecosystem article revised wording");
 assert.ok(!bodies.get("/blog/agent-usage-ecosystem").includes("门禁卡"), "retired metaphor must not reappear");
 assert.ok(bodies.get("/blog?tag=no-such-tag").includes("这个标签下还没有文章"), "empty filter state");
 const indexed = JSON.parse(bodies.get("/search-index")).posts;
-for (const slug of ["ai-model-agent-harness", "agent-usage-ecosystem"]) assert.ok(indexed.some((post) => post.slug === slug), `post ${slug} indexed`);
+for (const slug of ["ai-model-agent-harness", "agent-usage-ecosystem", "agent-getting-started"]) assert.ok(indexed.some((post) => post.slug === slug), `post ${slug} indexed`);
 for (const slug of ["hello-world", "next-roadmap"]) assert.ok(!indexed.some((post) => post.slug === slug), `removed post ${slug} not indexed`);
 const missing = await fetch(`${base}/blog/not-an-existing-post`, { signal: AbortSignal.timeout(15000) });
 assert.equal(missing.status, 404, "unknown post");
 assert.ok(!/s-maxage=31536000/.test(missing.headers.get("cache-control") ?? ""), "404 must not be cached for a year");
 console.log("PASS selected destinations, project attribution, maintenance status, anchors, reading behavior, index and 404");
 
-const drafts = ["agent-getting-started", "harness-comparison", "model-landscape-2026"];
+const drafts = ["harness-comparison", "model-landscape-2026"];
 for (const draft of drafts) {
   const response = await fetch(`${base}/blog/${draft}`, { signal: AbortSignal.timeout(45000) });
   assert.equal(response.status, 404, `${draft} draft must stay offline`);
@@ -119,6 +122,7 @@ const canonicalExpectations = [
   ["/blog?tag=ai", `${origin}/blog?tag=ai`],
   ["/blog/ai-model-agent-harness", `${origin}/blog/ai-model-agent-harness`],
   ["/blog/agent-usage-ecosystem", `${origin}/blog/agent-usage-ecosystem`],
+  ["/blog/agent-getting-started", `${origin}/blog/agent-getting-started`],
 ];
 for (const [route, expected] of canonicalExpectations) {
   if (!bodies.has(route)) {
@@ -133,7 +137,7 @@ assert.equal(outOfRange.status, 404, "page beyond the last one must be a 404, no
 console.log("PASS canonical links and pagination bounds");
 
 const sitemap = bodies.get("/sitemap.xml");
-for (const path of ["/blog", "/blog/tags", "/blog/ai-model-agent-harness", "/blog/agent-usage-ecosystem"]) {
+for (const path of ["/blog", "/blog/tags", "/blog/ai-model-agent-harness", "/blog/agent-usage-ecosystem", "/blog/agent-getting-started"]) {
   assert.ok(sitemap.includes(`<loc>${origin}${path}</loc>`), `sitemap lists ${path}`);
 }
 assert.match(sitemap, new RegExp(`<url><loc>${origin}</loc></url>`), "homepage entry omits lastmod");
@@ -155,7 +159,7 @@ console.log("PASS article share metadata points at each article");
 
 // Figures carry intrinsic dimensions so the layout cannot shift, and only the
 // first figure loads eagerly — the rest defer instead of being preloaded.
-for (const slug of ["ai-model-agent-harness", "agent-usage-ecosystem"]) {
+for (const slug of ["ai-model-agent-harness", "agent-usage-ecosystem", "agent-getting-started"]) {
   const html = bodies.get(`/blog/${slug}`);
   const figures = [...html.matchAll(/<img[^>]*src="(\/images\/[^"]+)"[^>]*>/g)];
   assert.ok(figures.length > 0, `${slug} renders article figures`);
