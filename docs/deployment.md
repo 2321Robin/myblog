@@ -25,6 +25,16 @@
 - `node scripts/check-article.mjs` 在服务器上报 9 处加粗未渲染，全部落在两篇仍为草稿的文章（`harness-comparison` 8 处、`model-landscape-2026` 1 处）；本地结果一致，与本轮封面改动无关，未在本轮修改，留待各篇自己的会话处理。
 - 临时 3011 预览已停止；`personal-homepage.service` 为 active/enabled。
 
+### 阅读时长修正发布（2026-10-24 15:13 UTC）
+
+- 问题：`computeReadingTimeMinutes` 只剔除代码块与 `<img>`，把图片 alt 文字（每篇约 300 字）、链接地址、frontmatter 也计入正文，全站阅读时长系统性偏高 1–3 分钟。
+- 修正：新增 `stripNonProse`，剔除 frontmatter、围栏与行内代码、图片（含 alt）、链接地址（保留链接文字）、MDX 注释与 HTML 标签后再统计；`computeReadingTimeMinutes` 改为导出以便测试，新增 `tests/reading-time.test.mjs` 6 项。
+- 影响：`agent-getting-started` 16→14、`agent-usage-ecosystem` 17→15、`ai-model-agent-harness` 15→13、`harness-comparison` 20→19、`model-landscape-2026` 24→21（分钟）。
+- 发布目录：`/www/wwwroot/w2321.top-releases/20261024T151351Z`（`20-release.conf` 已指向此目录，服务 active）。上一版本目录 `20261024T113352Z` 保留回退；旧配置备份在 `/var/backups/personal-homepage/20261024T151351Z/previous-release.conf`。
+- 源码包：`/root/myblog-deploy/myblog-20261024T151351Z.tar.gz`，SHA-256 `be7ae426c6e89fde51dd4221e08dd4a961029036b10c50bbbf4c46d4ce0be7ac`，本机与服务器一致（提交 `9e31ec6`）；依赖未变，复用上一发布目录的 `node_modules`。
+- 验证：服务器 `npm test` 16 项、`type-check`、`lint` 通过；3011 预览与 `127.0.0.1:3010` 的 `check-site` 全部通过；公网检查除 `/_next/static/**` 缓存一条（已知 Nginx 覆盖）外全部通过；公网文章页显示 14 分钟，首页三篇为 14 / 15 / 13。
+- 临时 3011 预览已停止；`personal-homepage.service` 为 active/enabled。
+
 ## 2026-10-22 依赖升级与草稿发布隔离（代码侧，未部署）
 
 - 依赖：`next` / `@next/mdx` / `eslint-config-next` 由 16.1.6 升级到 16.4.2，React 保持 19.2.3。npm 的 `latest` 标签在 2026-10-22 指向 16.4.2；未使用 `npm audit fix --force`。
@@ -70,8 +80,8 @@
 - 正式域名：`https://w2321.top`。
 - 服务：`personal-homepage.service`，运行用户和组均为 `www`。
 - Nginx 将主页请求转发到 `127.0.0.1:3010`。
-- 当前版本目录：`/www/wwwroot/w2321.top-releases/20261024T113352Z`。
-- 上一版本目录：`/www/wwwroot/w2321.top-releases/20261024T054707Z`，保留用于回退。
+- 当前版本目录：`/www/wwwroot/w2321.top-releases/20261024T151351Z`。
+- 上一版本目录：`/www/wwwroot/w2321.top-releases/20261024T113352Z`，保留用于回退。
 - 原版本保留在 `/www/wwwroot/w2321.top`。
 - 构建和运行均使用 `SITE_URL=https://w2321.top`。
 
