@@ -144,7 +144,7 @@ assert.match(sitemap, new RegExp(`<url><loc>${origin}</loc></url>`), "homepage e
 console.log("PASS sitemap covers listings and only stamps articles with lastmod");
 
 // Article share cards must describe the article, not the homepage.
-for (const [slug, cover] of [["ai-model-agent-harness", "/images/posts/ai-model-agent-harness/cover.webp"], ["agent-usage-ecosystem", "/images/posts/agent-usage-ecosystem/cover.webp"]]) {
+for (const [slug, cover] of [["ai-model-agent-harness", "/images/posts/ai-model-agent-harness/cover.webp"], ["agent-usage-ecosystem", "/images/posts/agent-usage-ecosystem/cover.webp"], ["agent-getting-started", "/images/posts/agent-getting-started/cover.webp"]]) {
   const html = bodies.get(`/blog/${slug}`);
   const url = `${origin}/blog/${slug}`;
   assert.ok(html.includes(`<meta property="og:url" content="${url}"`), `${slug} og:url`);

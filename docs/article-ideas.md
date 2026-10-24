@@ -63,5 +63,6 @@
 - 三篇复审记录:`docs/reviews/three-articles-review-2026-10-20.md`(26 项 P1 + 5 项 P2,已于 2026-10-20 全部按意见修订正文;配图仍未生成,发布前需落实)
 - 各篇配图状态(**实时更新**:图片到手即插入正文并在此同步,规则见 `docs/writing-guide.md` 第四节):
   - 生态篇 `agent-usage-ecosystem`:3 张信息图 + 封面均已插入正文,`metadata.cover` 已补,PNG 已压缩为 WebP,待终审后发布;
-  - 入门篇 `agent-getting-started`、harness 篇 `harness-comparison`、模型篇 `model-landscape-2026`:第二轮外审的正文意见已全部修订;**配图仍未生成**——图像生成接口 2026-10-20 返回 429(账号组耗尽),重试仍失败,待接口恢复后按 `docs/research/*-plan.md` 的配图清单生成,正文保留 `{/* 配图n(待生成) */}` 占位,封面未出(metadata 未写 cover);
+  - 入门篇 `agent-getting-started`:正文 6 张实操截图已插入;封面已到手(`cover.webp`,1448×1086,31 KB),`metadata.cover` 已补,列表缩略图与文章分享图均指向封面;
+  - harness 篇 `harness-comparison`、模型篇 `model-landscape-2026`:第二轮外审的正文意见已全部修订;**配图仍未生成**——图像生成接口 2026-10-20 返回 429(账号组耗尽),重试仍失败,待接口恢复后按 `docs/research/*-plan.md` 的配图清单生成,正文保留 `{/* 配图n(待生成) */}` 占位,封面未出(metadata 未写 cover);
   - 概念篇 `ai-model-agent-harness`:已发布,配图与封面齐备。

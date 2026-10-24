@@ -13,6 +13,7 @@
 - 公网确认：`/blog/agent-getting-started` 200，标题、canonical、`og:url`、6 张 `image/webp` 均正确；首页、`/blog`、`/blog/tags`、`/blog?tag=beginner`、RSS、sitemap、`/search-index` 均已收录，最新一篇排在首位；两篇草稿公网 404；安全头（HSTS / nosniff / SAMEORIGIN / Referrer-Policy / Permissions-Policy）齐全且无 `X-Powered-By`。
 - 已知未解决：公网 `/_next/static/**` 仍为 `Cache-Control: max-age=60`，`check-site.mjs` 该条断言对公网不通过，根因是面板代理配置里 `\.(gif|png|jpg|css|js|woff|woff2)$` 的 `expires 1m` 覆盖了应用头，属 `docs/backlog.md` 记录的服务器侧待办，本轮未改 Nginx。
 - 临时 3011 预览已停止；`personal-homepage.service` 为 active/enabled。
+- 同日追加（封面，仓库侧已完成，未部署）：`agent-getting-started` 补独立 4:3 封面 `public/images/posts/agent-getting-started/cover.webp`（1448×1086，31 KB，PNG 经 `compress-images.mjs` 转 WebP）并写入 `metadata.cover`；首页列表缩略图、文章 `og:image` / `twitter:image` 改指封面，`check-site.mjs` 的分享信息断言把该篇纳入。部署后需重新核对公网 `og:image` 与首页缩略图。
 
 ## 2026-10-22 依赖升级与草稿发布隔离（代码侧，未部署）
 
