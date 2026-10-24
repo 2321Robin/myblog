@@ -46,10 +46,25 @@ function extractHeadingsFromSource(source: string): Heading[] {
   return headings;
 }
 
-function computeReadingTimeMinutes(source: string) {
-  const cleaned = source.replace(/```[\s\S]*?```/g, " ").replace(/<img[^>]*>/g, " ");
-  const cjkChars = (cleaned.match(/[\u4e00-\u9fff]/g) ?? []).length;
-  const latinWords = (cleaned.match(/[A-Za-z0-9]+(?:[-'’][A-Za-z0-9]+)*/g) ?? []).length;
+// 阅读时长按「读者真正要读的字」估算：frontmatter、代码块、图片（含 alt 文字）、
+// 链接地址、HTML 标签和 MDX 注释都不计入。旧实现只去掉代码块与 <img>，
+// 把图片 alt（每篇几百字）和链接 URL 也当正文数，结果系统性偏高。
+function stripNonProse(source: string) {
+  return source
+    .replace(/^export const metadata[\s\S]*?\n\};/m, " ")
+    .replace(/```[\s\S]*?```/g, " ")
+    .replace(/`[^`\n]*`/g, " ")
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, " ")
+    .replace(/<img\b[^>]*>/g, " ")
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")
+    .replace(/\{\/\*[\s\S]*?\*\/\}/g, " ")
+    .replace(/<[^>]+>/g, " ");
+}
+
+export function computeReadingTimeMinutes(source: string) {
+  const prose = stripNonProse(source);
+  const cjkChars = (prose.match(/[\u4e00-\u9fff]/g) ?? []).length;
+  const latinWords = (prose.match(/[A-Za-z0-9]+(?:[-'’][A-Za-z0-9]+)*/g) ?? []).length;
   return Math.max(1, Math.ceil(cjkChars / 400 + latinWords / 200));
 }
 
