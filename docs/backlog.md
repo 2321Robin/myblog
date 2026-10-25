@@ -66,3 +66,13 @@
 - 面板代理配置对非静态扩展名统一 `add_header Cache-Control no-cache`，与应用自身的缓存头叠加出双 `Cache-Control`：首页 HTML（`s-maxage=31536000` + `no-cache`）、`/api/csp-report`（`no-store, no-cache`）、RSS / sitemap / robots.txt / search-index（`max-age=3600` 被削为需再验证）。功能无损（no-cache 只强制再验证）；要收干净需再加 `^~` 透传 location 或移除该面板规则，且面板重新生成配置时要一并保留。
 - 文章 `og:image:width/height` 对所有封面硬编码 1448×1086（`src/app/blog/[slug]/page.tsx`），封面比例不同时声明不准。
 
+## 美化实施计划（2026-10-25 用户确认）
+
+> 调研后用户确认的三步计划，每步单独开一个对话实施。三个仓库 2026-10-25 查证均在近一个月内有提交（活跃标准：一个月内）。实施时沿用上方「实现时的注意点」的双主题与 `prefers-reduced-motion` 要求。
+
+- [ ] 第一步·动效层：引入 `motion` + `motion-primitives`（https://github.com/motiondivision/motion 、https://github.com/ibelick/motion-primitives ）。落点：首页 intro 标题字符入场与名片卡浮入、站点目录卡片滚动 stagger 进场 + hover 光斑（Spotlight）、文章页小节轻微滚动渐显（幅度克制，不抢阅读）。
+- [ ] 第二步·全文搜索：`Pagefind`（https://github.com/Pagefind/pagefind ）构建后索引 HTML、纯客户端运行。现有 `search-index` 路由只有标题/摘要/标签元数据，此步补全文检索。
+- [ ] 第三步·评论：`Waline`（https://github.com/walinejs/waline ，备选 Twikoo https://github.com/twikoojs/twikoo ），浅深色主题配色对齐现有靛蓝/青绿。
+
+边界：本轮三步均不动现有配色（墨蓝纸页方案已随 ddf3757 回退）；2026-10-20 记录的 `#93b5cf` 改色设想仍未安排，与本计划独立。不引入 Vanta 类 3D 背景（停更且与清爽卡片风冲突）。
+
