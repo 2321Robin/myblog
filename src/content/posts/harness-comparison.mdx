@@ -196,7 +196,7 @@ export const metadata = {
 
 　　**路线一：用国产外壳。** Qwen Code（国内支付顺畅，走 QwenCloud Token、百炼 Coding Plan 这类方案），以及有国内版本的 TRAE、Qoder、CodeBuddy；DeepSeek 也在今年 8 月交出了自家壳——开源的 **DeepSeek Harness**（MIT 许可），主打“一切皆插件”，模型、工具甚至 UI 都做成可替换的插件，目前还在开发者预览阶段。
 
-　　**路线二：通用外壳，接国产模型。** 不少外壳并不锁引擎：GLM 官方提供了把 Claude Code 接到 GLM 模型的指南；DeepSeek 更进一步，直接给出官方 Anthropic 兼容端点（[接入文档看这里](https://api-docs.deepseek.com/guides/anthropic_api)），把 Claude 的 opus 档映射到自家的 deepseek-v4-pro、haiku 与 sonnet 档映射到 deepseek-flash，另有面向 Codex 的官方接入指南。crush 原生支持 Moonshot 与 Z.ai，opencode 与 Codex CLI 也能指向任意兼容端点；pi、oh-my-pi 的支持名单里同样有 Kimi、MiniMax 这些国产引擎。外壳照常用，引擎换成国产的。
+　　**路线二：通用外壳，接国产模型。** 不少外壳并不锁引擎：GLM 官方提供了把 Claude Code 接到 GLM 模型的指南；DeepSeek 更进一步，直接给出官方 Anthropic 兼容端点（[接入文档看这里](https://api-docs.deepseek.com/guides/anthropic_api)），把 Claude 的 opus 档映射到自家的 deepseek-v4-pro、haiku 与 sonnet 档映射到 deepseek-flash，另有面向 Codex 的官方接入指南。crush 原生支持 Moonshot 与 Z.ai，opencode、Codex CLI、pi、oh-my-pi 则把“接谁”交给你自己——支持名单只是起步盘，没列进去的引擎，改改配置指向兼容端点就能接上，pi 这类还能写扩展自定义服务商。通用外壳的“通用”，不在名单里列了哪家，而在缺哪家都能补齐。外壳照常用，引擎换成国产的。
 
 　　两条路怎么挑？图省事、想一步到位的，路线一的国产外壳把付费与模型都打包好了；已经在外壳生态里扎了营、攒了一堆配置的，路线二让你只换引擎、不搬家，代价是多一道接线的手续。各有取舍，但共同点是：两条路线都有模型服务商或外壳厂商提供的资料。还要分清谁负责支持——DeepSeek、GLM 的兼容指南证明接线方式有据可查，但这与 Anthropic 的支持承诺不是一回事：当前 Anthropic 文档明确不支持经网关把 Claude Code 路由到非 Claude 模型，升级后的兼容性仍需按服务商指南核对。
 
