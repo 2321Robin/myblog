@@ -20,17 +20,17 @@ export const metadata = {
 
 　　为什么外壳易主值得当回事？因为你在一只外壳里住久了，攒下的从来不只是订阅：写好的规则文件、装好的工具、调教的技能包，还有肌肉记忆本身，都沉淀在外壳里。外壳一换手，方向一变，这些家当跟着悬。所以“选外壳”这件事，比“选个顺手的软件”要重。
 
-　　所以这篇文章不打算评“最强外壳”。外壳换手都这么快，跟着榜单选就更要慎重。核心判断先给出：**2026 年选 harness，选的不只是一个软件，而是三样东西——形态（你在哪干活）、生态（扩展能不能带走）、模型绑定（引擎锁不锁死）。**下面全篇，就沿着这条线展开。
+　　所以这篇文章不打算评“最强外壳”。外壳换手都这么快，跟着榜单选就更要慎重。核心判断先给出：**2026 年选 harness，选的不只是一个软件，而是三样东西——形态（你在哪干活）、生态（扩展能不能带走）、模型绑定（引擎锁不锁死）。** 下面全篇，就沿着这条线展开。
 
 ## 先对齐口径：什么叫外壳，本文比什么
 
-　　先做定义回扣。上一篇[《AI、模型、Agent、Harness》](/blog/ai-model-agent-harness)留下过定义：**Harness 是模型权重之外、组织模型运行的那部分系统；它可以由官方提供，也可以由第三方开发。**本文标题里的“外壳”，说的就是它——系统提示词、工具、主循环、上下文管理、权限保障，这些部件的每一个具体载体。这个词的来历与内涵，上一篇讲过，此处不重复；顺带说明，社区里 harness、外壳、agent harness 几种叫法常混用，本文一律当同一个意思。
+　　先做定义回扣。上一篇[《AI、模型、Agent、Harness》](/blog/ai-model-agent-harness)留下过定义：**Harness 是模型权重之外、组织模型运行的那部分系统；它可以由官方提供，也可以由第三方开发。** 本文标题里的“外壳”，说的就是它——系统提示词、工具、主循环、上下文管理、权限保障，这些部件的每一个具体载体。这个词的来历与内涵，上一篇讲过，此处不重复；顺带说明，社区里 harness、外壳、agent harness 几种叫法常混用，本文一律当同一个意思。
 
 　　本文产品格局以 2026 年 10 月 20 日的官方页面为准；价格按官方页面标注的币种引用，等你读到时，有些数字可能已经过时。
 
 　　另外先说清楚：**本文不跑分，也不评“最强外壳”**——编程榜单的成绩从来是“模型 + harness”的组合分，上一篇已经聊过。我们固定六个对比维度：
 
-- **形态**：终端 CLI、IDE 或编辑器，还是网页与云端；
+- **形态**：终端 CLI、IDE 或编辑器、桌面 App，还是网页与云端；
 - **模型绑定**：引擎锁死一家，还是谁都能接；
 - **扩展机制**：MCP、Skills、Hooks、规则文件齐不齐、通不通用；
 - **权限与沙箱**：默认能做什么，边界划在哪里；
@@ -45,7 +45,7 @@ export const metadata = {
 
 　　最早的 harness 大多住在终端里，到今天，终端也还是硬核用户浓度最高的形态。
 
-　　名气最大的是 Anthropic 的 **Claude Code**（以成文时的 v2.1.303 为准）。它的活动范围早已不限于终端：终端 CLI、IDE 扩展、网页版（[claude.ai/code](https://claude.ai/code)）与移动端入口，同一套能力分布在多种形态里。它默认绑定 Claude 系模型，但门没锁死：可以接 Amazon Bedrock、Google Cloud 的 Agent Platform（原 Vertex）、Microsoft Foundry，也可以改一个环境变量指向自建网关。权限上默认交互式审批（改前先问、只出计划、全自动几档自选），另备一套可选的操作系统级沙箱（macOS 的 Seatbelt、Linux 的 bubblewrap，外加网络代理白名单），默认关闭，想加固再开。价格随 Claude 订阅走：Pro 档每月 20 美元（年付折合每月 17 美元）即可使用，更高一档的 Max 从每月 100 美元起。
+　　名气最大的是 Anthropic 的 **Claude Code**（以成文时的 v2.1.303 为准）。它的活动范围早已不限于终端：终端 CLI、IDE 扩展、桌面 App、网页版（[claude.ai/code](https://claude.ai/code)）与移动端入口，同一套能力分布在多种形态里。它默认绑定 Claude 系模型，但门没锁死：可以接 Amazon Bedrock、Google Cloud 的 Agent Platform（原 Vertex）、Microsoft Foundry，也可以改一个环境变量指向自建网关。权限上默认交互式审批（改前先问、只出计划、全自动几档自选），另备一套可选的操作系统级沙箱（macOS 的 Seatbelt、Linux 的 bubblewrap，外加网络代理白名单），默认关闭，想加固再开。价格随 Claude 订阅走：Pro 档每月 20 美元（年付折合每月 17 美元）即可使用，更高一档的 Max 从每月 100 美元起。
 
 　　OpenAI 的 **Codex CLI**（成文时 v0.163.0）走了开源路线（Apache-2.0 许可）。README 自我定位是“轻量的本地 agent”，小而快，绑定 GPT 系模型，配置文件可以指向任意兼容的服务商。权限上它把沙箱范围与审批策略分开配置：交互模式在版本控制目录通常推荐 Auto，允许在工作区内读写和运行命令；未信任目录可能从只读开始，非交互的 codex exec 默认只读。越过权限边界的操作可能需要审批。隔离由操作系统实施——macOS 用 Seatbelt，Linux 默认用 bubblewrap 加 seccomp；此外还有更放手的自动模式，和一柄彻底跳过沙箱的开关。计费走 ChatGPT 订阅或 API key——订阅现价成文时未能核实，以官网为准。
 
@@ -53,11 +53,13 @@ export const metadata = {
 
 　　还有两款源码可见的工具：**opencode**（SST 时期的项目，现归 Anomaly，成文时 v2.0.32）讲究 provider 无关，任何一家的 API key 塞进来就能跑，MCP、插件、ACP、自定义工具一应俱全；Charmbracelet 的 **crush** 免费使用并公开源码，采用 FSL-1.1-MIT 许可——Fair Source 类型，现阶段限制竞争性用途，各版本发布两年后才转为 MIT。它原生支持 Moonshot、Z.ai 等服务商，Skills 机制直接兼容 .claude/skills 目录——Claude Code 的老用户搬家，技能可以原样带走。
 
+　　极简阵营里人气最高的，是 libGDX 作者 Mario Zechner 写的 **pi**（[pi.dev](https://pi.dev)，MIT 许可）。它的路线与上面几位正相反：不是把功能堆全，而是把外壳削到最小——子代理、计划模式、权限弹窗、待办列表这些别家的标配，一概不内置，要用什么，写 TypeScript 扩展自己装；Skills、提示词模板、主题还能打包成包，一句 `pi install` 就能分发。它同样只住在终端里，但能以 RPC、SDK 等形态嵌进别的应用。模型绑定几乎不设防：Anthropic、OpenAI、Google、OpenRouter、Ollama 等十五家以上服务商都能接，Kimi、MiniMax 也在列。社区还在它之上长出了衍生：**oh-my-pi** 把 pi 改造成“自带 IDE 工作台”的编码优先形态——会话、子代理、斜杠命令、扩展一应俱全，同样 MIT 开源；我自己眼下常用的就是它。
+
 　　顺带交代开场事件的后续：Gemini CLI 的免费层在 6 月 18 日正式转出，个人免费层与 Google AI Pro、Ultra 用户转向 Antigravity CLI，付费 API key 用户不受影响；仓库本身也没停更，stable、preview 两条发布线仍在周更，nightly 更是逐日构建。承接免费用户的 Antigravity CLI 用 Go 重写，保留了 Skills、Hooks、子代理与扩展机制，主打异步多 agent 工作流，并与 Antigravity 桌面 App 组成“统一 harness”。
 
-　　终端这一拨里，其实藏着两种活法。Claude Code、Codex CLI 是“原厂套装”：外壳与自家引擎配套设计、配套调优，胜在省心——当然，前文说过，两家的门都没有锁死，都可以改接别家端点。opencode、crush、Qwen Code 则是“自选动力”：外壳不站队，引擎随你换。两条路没有对错，对应的是第二把尺子——模型绑定。你在意开箱即用，选前者；想保留换引擎的自由，选后者。
+　　终端这一拨里，其实藏着两种活法。Claude Code、Codex CLI 是“原厂套装”：外壳与自家引擎配套设计、配套调优，胜在省心——当然，前文说过，两家的门都没有锁死，都可以改接别家端点。opencode、crush、pi、Qwen Code 则是“自选动力”：外壳不站队，引擎随你换。两条路没有对错，对应的是第二把尺子——模型绑定。你在意开箱即用，选前者；想保留换引擎的自由，选后者。
 
-　　**记住这一句：终端外壳把文件、终端、权限的钥匙最直接地交到你手上——它默认你知道自己在干什么。**
+　　一句话说清终端外壳：它把文件、终端、权限的钥匙最直接地交到你手上——默认你知道自己在干什么。
 
 ## IDE 与编辑器：看着代码干活
 
@@ -75,7 +77,10 @@ export const metadata = {
 
 　　国内厂商是另一条产品线：字节跳动的 **TRAE**（IDE，带 SOLO 模式，另有开源的 trae-agent）、阿里系的 **Qoder**（IDE、CLI、移动端等形态）、腾讯的 **CodeBuddy**（IDE 加 CodeBuddy Code CLI）。3 月 18 日，JetBrains 的中文公告还把 Qoder、TRAE、CodeBuddy 等一并接入了插件市场。这三家的模型清单与价格未见官方页面全面核实，本文不列具体数字，以官网为准。
 
-　　**记住这一句：IDE 外壳卖的是“看着干活”——agent 在编辑器里动手，每一处改动都落在你眼前。**
+　　IDE 外壳卖的是“看着干活”：agent 在编辑器里动手，每一处改动都落在你眼前。
+
+　　编辑器之外，桌面应用正在成为外壳的第四个住处。智谱 Z.ai 的 **ZCode** 把“GLM-5.3 官方 harness”直接写在官网标题上：主打桌面工作区，多智能体协作，Remote 与 Bot 通道照看长任务，计费走 GLM Coding Plan；上一篇的主角 **WorkBuddy** 则走大众路线——办公、开发双模式，微信扫码即用；Claude Code 与 Codex 也都备有桌面版。它们共同的路数是：外壳本身就是一个装好即用的应用——不问你在哪写代码，先让 agent 住进你的电脑。
+【这里感觉可以每介绍一个就放一张官网首页的截图，或者放些别的什么图，总之一大堆文字没有图不太好】
 
 ## 网页与云端：派活，而不是盯活
 
@@ -83,19 +88,19 @@ export const metadata = {
 
 　　Anthropic 给过官方分工口径：云端会话适合本地没有的仓库、不需频繁干预的任务与探索性提问；需要本机环境的活儿，归本地外壳管。Claude Code 的网页版就是这么工作的：任务跑在一台克隆了你仓库的隔离虚拟机里，关掉浏览器它也不停。官方还把并行的账算明了：云端每个任务独立会话、可以开分支，等于替你免去了本地并行时的 worktree 管理；哪一步想亲手接手，把会话领回本地终端继续跑就是。
 
-　　Devin 的东家 Cognition 说得更直白，官方口径大意是：本地代理让你更快，云代理在你不在时把活干完。他们 4 月 27 日发布的 Devin CLI 就按这个路数设计——本地起步，移交云端。OpenAI 的 Codex 也有对应的云端入口（chatgpt.com/codex），与本地 CLI、IDE 扩展等形态互补。
+　　Devin 的东家 Cognition 说得更直白，官方口径大意是：本地代理让你更快，云代理在你不在时把活干完。他们 4 月 27 日发布的 Devin CLI 就按这个路数设计——本地起步，移交云端。OpenAI 的 Codex 也有对应的云端入口（chatgpt.com/codex），与本地 CLI、桌面 App、IDE 扩展等形态互补。
 
 　　GitHub 则想再往上一层：Agent HQ 之后，问题从“选哪只外壳”变成了“怎么指挥一群外壳”——从 GitHub、VS Code、移动端到 CLI，任务统一派发与治理，第三方 agent 同台干活。
 
 　　这一形态适合谁？计划切得清、可以整段外包的任务，或者手头几件事想同时推进的人。反过来，需要边做边跟 agent 商量的活儿，隔着网页来回传话反而别扭——形态没有高低，只有合不合手。
 
-　　**记住这一句：云端外壳的本质是并行与托管——你不在场时任务照样在隔离环境里跑，你管的不再是过程，而是验收。**
+　　云端外壳的本质是并行与托管——你不在场时任务照样在隔离环境里跑，你管的不再是过程，而是验收。
 
 ## 扩展生态：换壳成本正在下降
 
 　　形态看完，再看外壳之间的“门”。先把四个名词用一句话各安个位：**MCP** 是给模型接外部工具的协议，数据库、浏览器、内部系统都能通过它变成模型的手；**Skills** 是把操作手册打包成的技能包，装上就会新手艺；**Hooks** 是挂在生命周期节点上的自定义脚本，事前拦截、事后收尾都归它管；**规则文件**（AGENTS.md、CLAUDE.md 这类）则是写给 agent 看的项目偏好与约定。去年换壳，最大的成本是这一套全部重配；今年，事情在起变化——扩展标准正在跨外壳趋同。
 
-　　**MCP（模型上下文协议）**是先行的那一个：本文列出的主流外壳几乎都支持，在下表里接近全员。**Agent Skills** 紧随其后：agentskills.io 这份名录收录的支持客户端已有四十多个，Codex、Copilot、VS Code、Cursor、Gemini CLI、Kiro、TRAE 都在列。**规则文件**也在打通：Codex、Copilot、opencode、crush 都认 AGENTS.md，Claude Code 的 CLAUDE.md 也兼容 AGENTS.md。至于 **Hooks**，则还各玩各的。另外还有一条专门管“外壳之间互相借兵”的协议——ACP，Zed 靠它接入外部 agent，Kiro 也兼容——上一节 IDE 阵营里它已经露过面了。
+　　**MCP（模型上下文协议）** 是先行的那一个：本文列出的主流外壳几乎都支持，在下表里接近全员。**Agent Skills** 紧随其后：agentskills.io 这份名录收录的支持客户端已有四十多个，Codex、Copilot、VS Code、Cursor、Gemini CLI、Kiro、TRAE 都在列。**规则文件**也在打通：Codex、Copilot、opencode、crush、pi 都认 AGENTS.md，Claude Code 的 CLAUDE.md 也兼容 AGENTS.md。至于 **Hooks**，则还各玩各的。另外还有一条专门管“外壳之间互相借兵”的协议——ACP，Zed 靠它接入外部 agent，Kiro 也兼容——上一节 IDE 阵营里它已经露过面了。
 
 | 外壳 | MCP | Skills | Hooks | 规则文件 |
 | --- | --- | --- | --- | --- |
@@ -104,6 +109,7 @@ export const metadata = {
 | Qwen Code | 有 | 有（Auto-Skills） | 有 | QWEN.md（兼容 AGENTS.md） |
 | opencode | 有 | 有 | —（以插件代之） | AGENTS.md |
 | crush | 有 | 有（兼容 .claude/skills） | 有 | CRUSH.md、AGENTS.md |
+| pi | 有 | 有 | —（以扩展代之） | AGENTS.md |
 | Cursor | 有 | 有 | 有（hooks.json） | rules |
 | GitHub Copilot | 有 | 有 | 有（CLI、云端；其它入口另查） | AGENTS.md 等 |
 | Kiro | 有 | 有 | 有 | AGENTS.md、Skills.md、Steering |
@@ -116,7 +122,7 @@ export const metadata = {
 
 {/* 配图2（待生成）：多个外壳图标横排，上方以 MCP、Skills、AGENTS.md 三个通用标准层贯穿相连，箭头表示配置跟着人走 */}
 
-　　**记住这一句：MCP 决定它能用什么工具，Skills 决定它会什么手艺，规则文件决定它怎么做人——三样都能带走，换壳才算真的便宜。**
+　　换个壳贵不贵，就看三样带不带走：MCP 决定它能用什么工具，Skills 决定它会什么手艺，规则文件决定它怎么做人。
 
 ## 权限与沙箱：外壳的安全责任
 
@@ -126,15 +132,15 @@ export const metadata = {
 
 　　三派没有绝对高下，区别是默认姿势：有的把选择权留给你，有的先把门锁上，有的干脆连门都不让你操心。上一篇拆 harness 解剖图时，“权限与沙箱”就是其中一格；到了真实产品里，这一格的做法开始直接决定你敢把多大的事交给它。个人如此，团队更是：真要整队上，还得加问一句权限能不能统一管——Agent HQ、Kiro 与 Claude 的企业档，在这上面都有专门的动作。外壳越自主，你越应该问清三件事：默认能做什么，哪些要先经我同意，边界墙砌在哪里。
 
-　　**记住这一句：外壳的自主性和安全责任是一起买走的——它越能自己走步，你越要让它把墙砌得清楚。**
+　　自主性和安全责任是一起买走的：它越能自己走步，你越要让它把墙砌得清楚。
 
 ## 国内用户的两条路
 
 　　对国内读者，眼下有两条走得通的路。
 
-　　**路线一：用国产外壳。**Qwen Code（国内支付顺畅，走 QwenCloud Token、百炼 Coding Plan 这类方案），以及有国内版本的 TRAE、Qoder、CodeBuddy。
+　　**路线一：用国产外壳。** Qwen Code（国内支付顺畅，走 QwenCloud Token、百炼 Coding Plan 这类方案），以及有国内版本的 TRAE、Qoder、CodeBuddy；DeepSeek 也在今年 8 月交出了自家壳——开源的 **DeepSeek Harness**（MIT 许可），主打“一切皆插件”，模型、工具甚至 UI 都做成可替换的插件，目前还在开发者预览阶段。
 
-　　**路线二：通用外壳，接国产模型。**不少外壳并不锁引擎：GLM 官方提供了把 Claude Code 接到 GLM 模型的指南；DeepSeek 更进一步，直接给出官方 Anthropic 兼容端点（[接入文档看这里](https://api-docs.deepseek.com/guides/anthropic_api)），把 Claude 的 opus 档映射到自家的 deepseek-v4-pro、haiku 与 sonnet 档映射到 deepseek-flash，另有面向 Codex 的官方接入指南。crush 原生支持 Moonshot 与 Z.ai，opencode 与 Codex CLI 也能指向任意兼容端点。外壳照常用，引擎换成国产的。
+　　**路线二：通用外壳，接国产模型。** 不少外壳并不锁引擎：GLM 官方提供了把 Claude Code 接到 GLM 模型的指南；DeepSeek 更进一步，直接给出官方 Anthropic 兼容端点（[接入文档看这里](https://api-docs.deepseek.com/guides/anthropic_api)），把 Claude 的 opus 档映射到自家的 deepseek-v4-pro、haiku 与 sonnet 档映射到 deepseek-flash，另有面向 Codex 的官方接入指南。crush 原生支持 Moonshot 与 Z.ai，opencode 与 Codex CLI 也能指向任意兼容端点。外壳照常用，引擎换成国产的。
 
 　　两条路怎么挑？图省事、想一步到位的，路线一的国产外壳把付费与模型都打包好了；已经在外壳生态里扎了营、攒了一堆配置的，路线二让你只换引擎、不搬家，代价是多一道接线的手续。各有取舍，但共同点是：两条路线都有模型服务商或外壳厂商提供的资料。还要分清谁负责支持——DeepSeek、GLM 的兼容指南证明接线方式有据可查，但这与 Anthropic 的支持承诺不是一回事：当前 Anthropic 文档明确不支持经网关把 Claude Code 路由到非 Claude 模型，升级后的兼容性仍需按服务商指南核对。
 
@@ -146,21 +152,22 @@ export const metadata = {
 
 　　说了这么多，收拢一下。站在 2026 年的货架前，先问自己三个问题。
 
-　　**第一问：你在哪干活？**整天泡在终端里，就从 Claude Code、Codex CLI、Qwen Code、opencode、crush 里挑；离不开 IDE，看 Cursor、Copilot、Zed、Kiro；活儿大多能外包出去，用网页与云端外壳。
+　　**第一问：你在哪干活？** 整天泡在终端里，就从 Claude Code、Codex CLI、Qwen Code、opencode、crush、pi 里挑；离不开 IDE，看 Cursor、Copilot、Zed、Kiro；想装完就用，ZCode、WorkBuddy 这类桌面应用直接上手；活儿大多能外包出去，用网页与云端外壳。
 
-　　**第二问：活儿能不能托管、并行？**目标明确、不需频繁照看、耗时又长的任务，交给云端会话；需要跟你来回商量的活儿，留在本地。用 Agent HQ 那类多外壳编排，你甚至可以同时给一排外壳派活。
+　　**第二问：活儿能不能托管、并行？** 目标明确、不需频繁照看、耗时又长的任务，交给云端会话；需要跟你来回商量的活儿，留在本地。用 Agent HQ 那类多外壳编排，你甚至可以同时给一排外壳派活。
 
-　　**第三问：模型想不想锁死？**认准一家官方引擎，绑定官方模型的壳最省心；想货比三家、随时换引擎，选 provider 无关的 opencode、crush，或者用配置文件把大厂外壳指向自定义端点。
+　　**第三问：模型想不想锁死？** 认准一家官方引擎，绑定官方模型的壳最省心；想货比三家、随时换引擎，选 provider 无关的 opencode、crush、pi，或者用配置文件把大厂外壳指向自定义端点。
 
 | 形态 | 代表 | 适合谁 |
 | --- | --- | --- |
 | 终端 CLI | Claude Code、Codex CLI、Qwen Code、opencode、crush | 愿意住在终端里的效率党与开源爱好者 |
 | IDE 与编辑器 | Cursor、GitHub Copilot、Zed、Kiro | 看着代码干活的重度 IDE 用户 |
+| 桌面应用 | ZCode、WorkBuddy | 想装完就用、不泡终端也不配 IDE 的人 |
 | 网页与云端 | claude.ai/code、chatgpt.com/codex、Devin、Agent HQ | 派活不盯活、要并行托管的人 |
 
 　　三个问题问完，候选基本收敛到两三只，挨个装上试一周即可——试用的门槛大多不高：Copilot、Kiro、Cursor 都有免费档，opencode 免费开源，crush 免费使用并公开源码，Claude Code 与 Codex 则随各家订阅奉送。外壳的安装成本不高，真正的成本在你搬进去之后，这也是为什么前一章的“搬家清单”值得先想后搬。
 
-　　**记住这一句：选外壳就是选工作方式——终端管深度，云端管并行，扩展生态决定你换壳的代价。**
+　　选外壳就是选工作方式：终端管深度，云端管并行，扩展生态决定你换壳的代价。
 
 ## 写在最后
 
@@ -206,6 +213,8 @@ export const metadata = {
 - crush 仓库：[github.com/charmbracelet/crush](https://github.com/charmbracelet/crush)
 - crush 实际许可证（FSL-1.1-MIT）：[github.com/charmbracelet/crush/blob/main/LICENSE.md](https://github.com/charmbracelet/crush/blob/main/LICENSE.md)
 - Fair Source 许可（FSL）官方说明：[fsl.software](https://fsl.software/)
+- pi 官网与仓库：[pi.dev](https://pi.dev)、[github.com/earendil-works/pi](https://github.com/earendil-works/pi)
+- oh-my-pi 仓库：[github.com/can1357/oh-my-pi](https://github.com/can1357/oh-my-pi)
 - Cursor 文档与定价：[cursor.com/docs](https://cursor.com/docs)、[cursor.com/pricing](https://cursor.com/pricing)
 - Cognition 博客（Devin Desktop、Devin CLI 等公告）：[cognition.com/blog](https://cognition.com/blog)
 - GitHub Agent HQ 公告：[github.blog](https://github.blog/news-insights/company-news/welcome-home-agents)
@@ -218,6 +227,8 @@ export const metadata = {
 - Agent Skills 标准与支持客户端名录：[agentskills.io](https://agentskills.io/)
 - Kiro 官网与定价：[kiro.dev](https://kiro.dev/)、[kiro.dev/pricing](https://kiro.dev/pricing)
 - GLM 接入 Claude Code 指南：[docs.z.ai/devpack/tool/claude](https://docs.z.ai/devpack/tool/claude)
+- ZCode 官网与文档：[zcode.z.ai](https://zcode.z.ai)
+- DeepSeek Harness 仓库：[github.com/deepseek-ai/deepseek-harness](https://github.com/deepseek-ai/deepseek-harness)
 - Claude Code 网关支持边界：[code.claude.com/docs/en/llm-gateway](https://code.claude.com/docs/en/llm-gateway)
 - Claude Code 云端认证、安全与隔离说明：[code.claude.com/docs/en/claude-code-on-the-web](https://code.claude.com/docs/en/claude-code-on-the-web)
 - JetBrains 中文博客 AI China 公告：[blog.jetbrains.com/zh-hans](https://blog.jetbrains.com/zh-hans/blog/2026/03/18/ai-china)
