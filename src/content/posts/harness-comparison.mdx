@@ -54,11 +54,17 @@ export const metadata = {
 
 　　OpenAI 的 **Codex CLI**（成文时 v0.163.0）走了开源路线（Apache-2.0 许可）。README 自我定位是“轻量的本地 agent”，小而快，绑定 GPT 系模型，配置文件可以指向任意兼容的服务商。权限上它把沙箱范围与审批策略分开配置：交互模式在版本控制目录通常推荐 Auto，允许在工作区内读写和运行命令；未信任目录可能从只读开始，非交互的 codex exec 默认只读。越过权限边界的操作可能需要审批。隔离由操作系统实施——macOS 用 Seatbelt，Linux 默认用 bubblewrap 加 seccomp；此外还有更放手的自动模式，和一柄彻底跳过沙箱的开关。外壳本体开源免费，计费走 ChatGPT 订阅或 API key。
 
+![OpenAI Codex CLI（v0.163.0）的终端首屏：列出 /init、/status、/permissions、/model、/review 五个命令，底部输入框旁显示模型档 GPT-6-Astra max fast，黄字提醒 5 小时用量额度所剩不多](/images/posts/harness-comparison/codex-cli.webp)
+
 　　阿里 Qwen 团队的 **Qwen Code**，出身是 Gemini CLI 的衍生项目，但从 v0.1 起走向独立，变成一套多协议 agent 框架：Qwen、OpenAI、Anthropic、Gemini 兼容端点都能接，本地的 Ollama 与 vLLM 也支持。形态覆盖相当齐全——终端、桌面端、编辑器插件（VS Code、Zed、JetBrains）、网页，连微信、飞书、钉钉、Telegram 这些即时通信入口都有——还带一个“Agent Teams”机制，把大任务拆给一群小 agent 分头去干。提醒一句：原有 Qwen OAuth 免费档已停止；可以选择 QwenCloud、百炼等托管方案，也可接其他服务商或本地模型，费用按所选服务计算。
 
 　　还有两款源码可见的工具：**opencode**（SST 时期的项目，现归 Anomaly，成文时 v2.0.32）讲究 provider 无关，任何一家的 API key 塞进来就能跑，MCP、插件、ACP、自定义工具一应俱全；Charmbracelet 的 **crush** 免费使用并公开源码，采用 FSL-1.1-MIT 许可——Fair Source 类型，现阶段限制竞争性用途，各版本发布两年后才转为 MIT。它原生支持 Moonshot、Z.ai 等服务商，Skills 机制直接兼容 .claude/skills 目录——Claude Code 的老用户搬家，技能可以原样带走。
 
+![opencode 的终端首屏：像素字 logo 与「Ask anything…」输入框，模型行显示 Build · GPT-6.1-Sol · Codex magpie，下方提示 /update 可升级新版本、Tip 建议切到 Plan agent](/images/posts/harness-comparison/opencode-cli.webp)
+
 　　极简阵营里人气最高的，是 libGDX 作者 Mario Zechner 写的 **pi**（[pi.dev](https://pi.dev)，MIT 许可）。它的路线与上面几位正相反：不是把功能堆全，而是把外壳削到最小——子代理、计划模式、权限弹窗、待办列表这些别家的标配，一概不内置，要用什么，写 TypeScript 扩展自己装；Skills、提示词模板、主题还能打包成包，一句 `pi install` 就能分发。它同样只住在终端里，但能以 RPC、SDK 等形态嵌进别的应用。模型绑定几乎不设防：Anthropic、OpenAI、Google、OpenRouter、Ollama 等十五家以上服务商都能接，Kimi、MiniMax 也在列。社区还在它之上长出了衍生：**oh-my-pi** 把 pi 改造成“自带 IDE 工作台”的编码优先形态——会话、子代理、斜杠命令、扩展一应俱全，同样 MIT 开源；我自己眼下常用的就是它。
+
+![oh-my-pi（omp，v18.12.6）的终端首屏：像素风 π 形 logo，Tip 提示 /force read 可把下一轮固定到指定工具，状态栏显示当前模型档、目录与 1M 上下文](/images/posts/harness-comparison/oh-my-pi-cli.webp)
 
 　　顺带交代开场事件的后续：Gemini CLI 的免费层在 6 月 18 日正式转出，个人免费层与 Google AI Pro、Ultra 用户转向 Antigravity CLI，付费 API key 用户不受影响；仓库本身也没停更，stable、preview 两条发布线仍在周更，nightly 更是逐日构建。承接免费用户的 Antigravity CLI 用 Go 重写，保留了 Skills、Hooks、子代理与扩展机制，主打异步多 agent 工作流，并与 Antigravity 桌面 App 组成“统一 harness”。
 
