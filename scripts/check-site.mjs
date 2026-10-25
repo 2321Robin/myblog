@@ -76,6 +76,10 @@ assert.ok(!bodies.get("/blog/agent-getting-started").includes("直接同意"), "
 assert.ok(bodies.get("/blog/agent-usage-ecosystem").includes('id="hooks门禁检查"'), "ecosystem article heading anchor");
 assert.ok(bodies.get("/blog/agent-usage-ecosystem").includes("门禁检查"), "ecosystem article revised wording");
 assert.ok(!bodies.get("/blog/agent-usage-ecosystem").includes("门禁卡"), "retired metaphor must not reappear");
+// Figure placeholders live in drafts only; a published article must never ship one.
+for (const slug of ["ai-model-agent-harness", "agent-usage-ecosystem", "agent-getting-started"]) {
+  assert.ok(!bodies.get(`/blog/${slug}`).includes("待配图"), `${slug} must not ship with figure placeholders`);
+}
 assert.ok(bodies.get("/blog?tag=no-such-tag").includes("这个标签下还没有文章"), "empty filter state");
 const indexed = JSON.parse(bodies.get("/search-index")).posts;
 for (const slug of ["ai-model-agent-harness", "agent-usage-ecosystem", "agent-getting-started"]) assert.ok(indexed.some((post) => post.slug === slug), `post ${slug} indexed`);
