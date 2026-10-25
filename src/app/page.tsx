@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowDown, ArrowRight, ArrowUpRight, Mail, Rss } from "lucide-react";
+import { FloatIn, IntroTitle } from "@/components/home-intro-motion";
 import { SiteDirectory } from "@/components/site-directory";
 import { getLinkHost, siteLinks } from "@/lib/site-links";
 import { getAllPosts } from "@/lib/posts";
@@ -15,19 +16,19 @@ export default async function Home() {
     <main id="main-content" className="site-width home-main">
       <section className="home-intro" aria-labelledby="home-title">
         <div className="intro-copy">
-          <p className="intro-greeting"><span className="greeting-line" />你好，我是 Robin</p>
-          <h1 id="home-title">一些想法，<br />一些<span className="title-accent">正在做的事。</span></h1>
-          <p className="intro-description">写作、构建，把想法落到可用的界面里。<br className="desktop-break" />这里收录了我的工具、项目和日常记录，欢迎随意逛逛。</p>
-          <a href="#projects" className="intro-link">探索我的站点 <ArrowDown size={16} aria-hidden="true" /></a>
+          <FloatIn><p className="intro-greeting"><span className="greeting-line" />你好，我是 Robin</p></FloatIn>
+          <IntroTitle />
+          <FloatIn delay={0.4}><p className="intro-description">写作、构建，把想法落到可用的界面里。<br className="desktop-break" />这里收录了我的工具、项目和日常记录，欢迎随意逛逛。</p></FloatIn>
+          <FloatIn delay={0.5}><a href="#projects" className="intro-link">探索我的站点 <ArrowDown size={16} aria-hidden="true" /></a></FloatIn>
         </div>
-        <div className="intro-index" aria-label="站点索引">
+        <FloatIn delay={0.25} y={30}><div className="intro-index" aria-label="站点索引">
           <div className="index-top"><span className="index-favicon" aria-hidden="true">r.</span><span translate="no">w2321.top</span><span className="index-label">个人空间</span></div>
           <div className="index-body">
             <p>把好奇心，<br />变成可以打开的链接<span>↗</span></p>
             <div className="index-branches" aria-hidden="true">{tools.map((link) => <span key={link.id}>{getLinkHost(link.href).split(".")[0]}.</span>)}</div>
           </div>
           <div className="index-bottom"><span>Web · 工具 · 生活</span><span>保持好奇 <span aria-hidden="true">✳</span></span></div>
-        </div>
+        </div></FloatIn>
       </section>
 
       <SiteDirectory links={siteLinks} />

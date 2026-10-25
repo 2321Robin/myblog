@@ -304,6 +304,13 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid 
 .neighbor-posts p:last-child { overflow-wrap: anywhere; font-weight: 600; }
 .neighbor-empty { font-size: 13px; color: var(--muted); border-style: dashed; }
 
+/* 动效层（motion / motion-primitives）。带 data-entrance 的元素初始态由 JS 内联样式
+   隐藏，layout 里的 noscript 规则在无 JS 时把它们恢复为可见。 */
+.intro-title-char { display: inline-block; }
+.site-spotlight { background: radial-gradient(circle at center, color-mix(in srgb, var(--brand) 30%, transparent), transparent 72%); }
+.reveal-item { opacity: 0; translate: 0 12px; transition: opacity .45s cubic-bezier(.22, 1, .36, 1), translate .45s cubic-bezier(.22, 1, .36, 1); }
+.reveal-item.is-revealed { opacity: 1; translate: 0 0; }
+
 @media (max-width: 900px) {
   .site-width { width: calc(100% - 48px); }
   .header-inner { gap: 28px; }

@@ -4,6 +4,7 @@ import type { ComponentProps } from "react";
 import GithubSlugger from "github-slugger";
 import { ShareBar } from "./share-bar";
 import { TableOfContents } from "./table-of-contents";
+import { ArticleReveal } from "./scroll-reveal";
 import type { Heading, PostMeta, PostModule } from "@/lib/posts";
 import { formatDate } from "@/lib/utils";
 
@@ -28,7 +29,8 @@ export function PostContent({ Content, metadata, slug, prev, next, headings }: P
           <div className="tag-list">{metadata.tags?.map((tag) => <Link key={tag} href={`/blog?tag=${encodeURIComponent(tag)}`} className="tag">#{tag}</Link>)}</div>
         </header>
         <div className="post-layout">
-          <article className="article-prose" data-mdx><Content components={{ h1: BodyHeading }} /></article>
+          {/* key={slug}：文章间导航时重挂载，让滚动渐显对每篇文章重新生效 */}
+          <ArticleReveal key={slug} className="article-prose" data-mdx><Content components={{ h1: BodyHeading }} /></ArticleReveal>
           {headings.length > 0 && <div className="post-sidebar"><TableOfContents headings={headings} /></div>}
         </div>
         <ShareBar key={slug} title={metadata.title} url={`/blog/${slug}`} />

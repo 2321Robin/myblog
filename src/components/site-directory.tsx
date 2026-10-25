@@ -7,8 +7,17 @@ import {
   ArrowRight, ArrowUpRight, BarChart3, BookOpenText, Calculator, FileText,
   FolderKanban, Gamepad2, Github, Home, PenLine, Rss, Search, Tags, Video, X,
 } from "lucide-react";
+import { motion, type Variants } from "motion/react";
+import { Spotlight } from "./motion-primitives/spotlight";
 import { filterSiteLinks, getLinkHost, siteGroups } from "@/lib/site-links";
 import type { SiteIcon, SiteLink } from "@/lib/site-links";
+
+// 网格滚入视口时卡片逐张浮现；社交/紧凑卡片不加光斑（透明底上会发糊）。
+const gridVariants: Variants = { visible: { transition: { staggerChildren: 0.05 } } };
+const cardVariants: Variants = {
+  hidden: { opacity: 0, y: 16 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease: "easeOut" } },
+};
 
 const icons = {
   score: Calculator, game: Gamepad2, resume: FileText, projects: FolderKanban,
@@ -16,11 +25,12 @@ const icons = {
   blog: BookOpenText, tags: Tags, rss: Rss,
 } satisfies Record<SiteIcon, typeof Calculator>;
 
-function SiteCard({ link }: { link: SiteLink }) {
+function SiteCard({ link, spotlight = false }: { link: SiteLink; spotlight?: boolean }) {
   const Icon = icons[link.icon];
   const external = link.href.startsWith("http");
   const content = (
     <>
+      {spotlight && <Spotlight size={180} />}
       <div className="site-card-top">
         <span className={`site-icon icon-${link.icon}`}><Icon size={23} strokeWidth={1.7} aria-hidden="true" /></span>
         {external ? <ArrowUpRight size={17} className="card-arrow" aria-hidden="true" /> : <ArrowRight size={17} className="card-arrow" aria-hidden="true" />}
@@ -86,7 +96,13 @@ function DirectoryContents({ links, query, onQueryChange }: { links: SiteLink[];
           return (
             <section key={group.id} className={`directory-group group-${group.id}`} aria-labelledby={`group-${group.id}`}>
               <div className="group-heading"><h3 id={`group-${group.id}`}>{group.title}</h3><span>{group.description}</span></div>
-              <div className="site-grid">{items.map((link) => <SiteCard key={link.id} link={link} />)}</div>
+              <motion.div className="site-grid" variants={gridVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "0px 0px -8% 0px" }}>
+                {items.map((link) => (
+                  <motion.div key={link.id} variants={cardVariants} data-entrance>
+                    <SiteCard link={link} spotlight={group.id === "tools" || group.id === "projects"} />
+                  </motion.div>
+                ))}
+              </motion.div>
             </section>
           );
         })}

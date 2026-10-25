@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ThemeProvider } from "@/components/theme-provider";
+import { MotionProvider } from "@/components/motion-provider";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { getBaseUrl, siteMetadata } from "@/lib/site";
@@ -40,6 +41,14 @@ export default function RootLayout({
     <html lang="zh-CN" data-scroll-behavior="smooth" suppressHydrationWarning>
       <head>
         {process.env.NODE_ENV === "development" && <meta name="dev-save-token" content={getDevSaveToken()} />}
+        {/* 入场动效的初始隐藏态是 JS 写的内联样式；无 JS 时用这条规则兜底恢复内容 */}
+        <noscript>
+          <style
+            dangerouslySetInnerHTML={{
+              __html: "[data-entrance],[data-entrance] span{opacity:1 !important;transform:none !important;filter:none !important}",
+            }}
+          />
+        </noscript>
       </head>
       <body className="antialiased">
         <a
@@ -48,7 +57,7 @@ export default function RootLayout({
         >
           跳到主要内容
         </a>
-        <ThemeProvider><SiteHeader />{children}<SiteFooter /></ThemeProvider>
+        <ThemeProvider><MotionProvider><SiteHeader />{children}<SiteFooter /></MotionProvider></ThemeProvider>
       </body>
     </html>
   );

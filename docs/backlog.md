@@ -70,9 +70,18 @@
 
 > 调研后用户确认的三步计划，每步单独开一个对话实施。三个仓库 2026-10-25 查证均在近一个月内有提交（活跃标准：一个月内）。实施时沿用上方「实现时的注意点」的双主题与 `prefers-reduced-motion` 要求。
 
-- [ ] 第一步·动效层：引入 `motion` + `motion-primitives`（https://github.com/motiondivision/motion 、https://github.com/ibelick/motion-primitives ）。落点：首页 intro 标题字符入场与名片卡浮入、站点目录卡片滚动 stagger 进场 + hover 光斑（Spotlight）、文章页小节轻微滚动渐显（幅度克制，不抢阅读）。
+- [x] 第一步·动效层（2026-10-25 已实施，见下方记录）：引入 `motion` + `motion-primitives`（https://github.com/motiondivision/motion 、https://github.com/ibelick/motion-primitives ）。落点：首页 intro 标题字符入场与名片卡浮入、站点目录卡片滚动 stagger 进场 + hover 光斑（Spotlight）、文章页小节轻微滚动渐显（幅度克制，不抢阅读）。
 - [ ] 第二步·全文搜索：`Pagefind`（https://github.com/Pagefind/pagefind ）构建后索引 HTML、纯客户端运行。现有 `search-index` 路由只有标题/摘要/标签元数据，此步补全文检索。
 - [ ] 第三步·评论：`Waline`（https://github.com/walinejs/waline ，备选 Twikoo https://github.com/twikoojs/twikoo ），浅深色主题配色对齐现有靛蓝/青绿。
 
 边界：本轮三步均不动现有配色（墨蓝纸页方案已随 ddf3757 回退）；2026-10-20 记录的 `#93b5cf` 改色设想仍未安排，与本计划独立。不引入 Vanta 类 3D 背景（停更且与清爽卡片风冲突）。
+
+## 已完成：第一步·动效层（2026-10-25）
+
+- 依赖：`motion` 14.6 入 package.json；`motion-primitives` 的 npm 包只是 CLI（拉 registry 源码进仓库），故将其 `Spotlight` 组件 vendor 到 `src/components/motion-primitives/spotlight.tsx`，渐变改用 `var(--brand)` 主题变量；`AnimatedGroup` 仅支持进场即播（无 whileInView），未采用，目录 stagger 直接用 motion variants 实现。
+- 首页 intro：标题逐字符入场（`IntroTitle`，sr-only 完整句 + 逐字 span aria-hidden，避免读屏逐字朗读；改文案只动 `titleLines`），问候/描述/链接/名片卡 `FloatIn` 浮入。
+- 站点目录：卡片滚入视口 stagger 进场（`whileInView` + `once`，grid staggerChildren 0.05s）；工具/项目大卡加 Spotlight 光斑，社交/紧凑卡（透明底）不加。
+- 文章页：正文按 h2 分节，`ArticleReveal`（IntersectionObserver + CSS 过渡）整节渐显，幅度 opacity + 12px 位移；文章间导航 `key={slug}` 重挂载重新生效；已滚过视口顶端的段落直接展示。
+- 适配：`MotionProvider`（`MotionConfig reducedMotion="user"`）接管 motion 动画；正文渐显在减少动态偏好/无 IO 时不隐藏任何内容；`layout.tsx` 的 noscript 规则恢复 `[data-entrance]` 初始隐藏态（无 JS 可见性兜底）；Spotlight 渐变 `color-mix(in srgb, var(--brand) 30%, transparent)` 浅深主题自适应。
+- 验证：`npm test` 16 项、`npm run type-check`、`npm run lint`、`SITE_URL=https://example.test npm run build` 通过；`next start -p 3003`（隐藏控制台，验后即停）+ `SITE_URL=https://example.test node scripts/check-site.mjs` 全部通过；SSR 抽查：首页 h1 唯一、13 个字符 span、10 张大卡带光斑，文章页正文 SSR 不含 reveal 类（初始不隐藏）。
 
