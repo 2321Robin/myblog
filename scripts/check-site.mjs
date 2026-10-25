@@ -28,8 +28,10 @@ for (const route of ["/", "/blog", "/blog/tags", "/blog/ai-model-agent-harness",
   assert.match(h.get("permissions-policy") ?? "", /camera=\(\)/, `${route} permissions policy`);
   const hsts = h.get("strict-transport-security") ?? "";
   assert.match(hsts, /max-age=31536000/, `${route} HSTS max-age`);
-  assert.ok(!/includeSubDomains/i.test(hsts), `${route} HSTS must not cover unverified subdomains`);
-  assert.match(h.get("content-security-policy-report-only") ?? "", /default-src 'self'/, `${route} CSP report-only`);
+  assert.ok(/includeSubDomains/i.test(hsts), `${route} HSTS covers the verified subdomains`);
+  const csp = h.get("content-security-policy") ?? "";
+  assert.match(csp, /default-src 'self'/, `${route} CSP enforced`);
+  assert.match(csp, /report-uri \/api\/csp-report/, `${route} CSP reports to the collector`);
   assert.equal(h.get("x-powered-by"), null, `${route} must not advertise the framework`);
 }
 console.log("PASS security headers on every HTML surface");
@@ -105,6 +107,17 @@ const savePost = await fetch(`${base}/api/dev/save-post`, {
 });
 assert.equal(savePost.status, 404, "production save endpoint must be gone");
 console.log("PASS /api/dev/save-post is disabled outside development");
+
+// The CSP report collector accepts reports and is never cached.
+const cspReport = await fetch(`${base}/api/csp-report`, {
+  method: "POST",
+  headers: { "content-type": "application/csp-report" },
+  body: JSON.stringify({ "csp-report": { "document-uri": "check-site-probe", "violated-directive": "probe" } }),
+  signal: AbortSignal.timeout(15000),
+});
+assert.equal(cspReport.status, 204, "csp report collector responds 204");
+assert.equal(cspReport.headers.get("cache-control"), "no-store", "csp report collector is not cached");
+console.log("PASS /api/csp-report collects violation reports");
 
 // Canonical links: each page points at itself, with out-of-range pages rejected.
 function canonicalOf(route) {

@@ -14,8 +14,9 @@ const withMDX = createMDX({
   },
 });
 
-// Report-Only：先观察违规，不拦截。RSC 载荷与 next-themes 的内联脚本需要 unsafe-inline，
-// 收紧到 nonce 会让整站转为动态渲染，收益不抵代价。
+// Enforced since 2026-10-25; violations land in /api/csp-report. RSC 载荷与
+// next-themes 的内联脚本需要 unsafe-inline，收紧到 nonce 会让整站转为动态
+// 渲染，收益不抵代价。
 const CONTENT_SECURITY_POLICY = [
   "default-src 'self'",
   "script-src 'self' 'unsafe-inline'",
@@ -27,16 +28,19 @@ const CONTENT_SECURITY_POLICY = [
   "base-uri 'self'",
   "form-action 'self'",
   "object-src 'none'",
+  "report-uri /api/csp-report",
 ].join("; ");
 
 const SECURITY_HEADERS = [
-  // 不带 includeSubDomains / preload：其它子站未逐一核验。
-  { key: "Strict-Transport-Security", value: "max-age=31536000" },
+  // includeSubDomains：2026-10-25 核验 score / resume / minesweeper /
+  // covenant / count 五个子站 HTTPS 均可达，knowquest / projects 已无解析。
+  // 不做 preload：提交 hstspreload.org 后近乎不可逆，另案再议。
+  { key: "Strict-Transport-Security", value: "max-age=31536000; includeSubDomains" },
   { key: "X-Content-Type-Options", value: "nosniff" },
   { key: "X-Frame-Options", value: "SAMEORIGIN" },
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
   { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), payment=(), usb=()" },
-  { key: "Content-Security-Policy-Report-Only", value: CONTENT_SECURITY_POLICY },
+  { key: "Content-Security-Policy", value: CONTENT_SECURITY_POLICY },
 ];
 
 const nextConfig: NextConfig = {
