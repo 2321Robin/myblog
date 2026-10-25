@@ -2,6 +2,18 @@
 
 日期：2026-10-18。当前状态：新版本已部署至 `https://w2321.top`，正式服务与公网检查通过。
 
+## 2026-10-25 第四篇文章发布（《Harness 横评》）
+
+- 发布目录：`/www/wwwroot/w2321.top-releases/20261025T155106Z`（`20-release.conf` 已指向此目录，服务 active）。上一版本目录 `20261025T083331Z` 保留回退；切换前旧配置备份在 `/var/backups/personal-homepage/20261025T155106Z/previous-release.conf`。
+- 源码包：`/root/myblog-deploy/myblog-20261025T155106Z.tar.gz`，SHA-256 `8ccc1e5cc3d2c5fbea9c25030c608a482c6d04836e1425fa744460dc0ed638d5`，本机与服务器一致；由 `git archive HEAD` 导出（提交 `c56497b`）。
+- 内容变化：`harness-comparison` 正式发布（发布日期 2026-10-25，去掉 `published: false`）：封面 1 + 二次元风信息图 8 + 终端实机截图 3 + 官网截图 8，共 20 张 WebP（正文图合计约 2 MB）；阅读时长 23 分钟（6830 汉字 + 1051 拉丁词，按 10-24 修正后的统一算法）；CodeBuddy 截图按作者决定取消。本发布同时带上上一发布之后的仓库侧改动：站点美化第一步动效层（`c4fdd1b`）与 postcss/tailwind 构建链升级（`493e5b4`）。
+- `scripts/check-site.mjs` 同步维护：路由、安全头、标题锚点、占位符、搜索索引、canonical、sitemap、分享卡、图片属性断言全部纳入 `harness-comparison`；草稿清单缩减为 `model-landscape-2026` 一篇。
+- 依赖：`package.json` / `package-lock.json` 与上一发布目录不一致（构建链升级所致），新目录独立 `npm ci`（`.npm-cache` 留在发布目录内）。
+- 服务器流程：以 `www` 用户 `SITE_URL=https://w2321.top` 生产构建；`npm test` 16 项、type-check、lint 通过；3011 预览与 `127.0.0.1:3010` 的 `check-site` 全部通过；公网 `check-site https://w2321.top` 全部通过。
+- 插曲：3011 端口被上一发布（`083331Z`）验收时遗留的预览进程（PID 940723，cwd 在旧发布目录）占用，导致本轮首次预览绑定失败、旧构建对新文章返回 404；确认属遗留预览后已终止，生产服务（3010 systemd）未受影响。本轮验收后 3011 已按 runbook 停止。
+- 公网确认：`/blog/harness-comparison` 200，`dateTime` 2026-10-25、正文「23 分钟阅读」、`og:image` 指向带 `?v=` 哈希的 `cover.webp`；页面共 21 处 `/images/posts/harness-comparison` 引用（20 张正文图 + 分享卡封面）；`/blog` 列表最新一篇为本文；`model-landscape-2026` 仍为草稿 404。
+- 已知未处理（汇报不修）：HEAD 中 `model-landscape-2026` 草稿第 191 行一处加粗未渲染（`check-article` 报 1 处，草稿不上线，留待该篇自己的会话处理）；面板对非静态扩展名叠加双 `Cache-Control` 的旧待办不变。
+
 ## 2026-10-25 服务器侧待办集中处置与发布
 
 - 背景：`docs/backlog.md` 记录的 8 项服务器侧待办一次处理完毕。仓库侧四个提交：图片内容哈希版本化（be7585c）、关闭图片优化入口（0582762）、HSTS 覆盖子域 + CSP 转强制（d62d18f）、断言兼容代理叠加头（821aec1）。
