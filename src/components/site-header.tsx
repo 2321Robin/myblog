@@ -9,7 +9,7 @@ export function SiteHeader() {
     <header className="site-header">
       <div className="site-width header-inner">
         <Link href="/" className="site-brand" aria-label="Robin，返回主页">
-          <span className="brand-mark" aria-hidden="true"><svg width="30" height="30" viewBox="0 0 64 64"><path d="M17 50V13h12v7c4-6 10-8 18-7v12c-11-2-18 3-18 12v13z" fill="currentColor" /><circle cx="48" cy="49" r="6" fill="var(--brand-fill)" /></svg></span>
+          <span className="brand-mark" aria-hidden="true"><svg width="32" height="32" viewBox="0 0 64 64"><path d="M17 50V13h12v7c4-6 10-8 18-7v12c-11-2-18 3-18 12v13z" fill="white" /><circle cx="48" cy="49" r="6" fill="#a5e0de" /></svg></span>
           <span className="brand-name" translate="no">Robin<span>个人站点</span></span>
         </Link>
         <nav className="primary-nav" aria-label="主导航">

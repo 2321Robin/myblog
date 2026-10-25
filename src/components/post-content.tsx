@@ -2,7 +2,6 @@ import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import type { ComponentProps } from "react";
 import GithubSlugger from "github-slugger";
-import { ReadingProgress } from "./reading-progress";
 import { ShareBar } from "./share-bar";
 import { TableOfContents } from "./table-of-contents";
 import type { Heading, PostMeta, PostModule } from "@/lib/posts";
@@ -19,28 +18,25 @@ export function PostContent({ Content, metadata, slug, prev, next, headings }: P
 
   return (
     <main id="main-content" className="site-width content-main">
-      <ReadingProgress target=".article-prose" />
       <div className="post-shell">
         <nav className="breadcrumb" aria-label="面包屑"><Link href="/blog"><ArrowLeft size={14} aria-hidden="true" />&nbsp; 返回文章列表</Link><span aria-hidden="true">/</span><span aria-current="page">{metadata.title}</span></nav>
-        <div className="post-sheet">
-          <header className="post-heading">
-            <p className="eyebrow">FROM ROBIN’S NOTEBOOK</p>
-            <h1>{metadata.title}</h1>
-            {metadata.summary && <p>{metadata.summary}</p>}
-            <div className="post-meta"><time dateTime={metadata.date}>{formatDate(metadata.date)}</time><span>{metadata.readingTimeMinutes ?? 1} 分钟阅读</span></div>
-            <div className="tag-list">{metadata.tags?.map((tag) => <Link key={tag} href={`/blog?tag=${encodeURIComponent(tag)}`} className="tag">#{tag}</Link>)}</div>
-          </header>
-          <div className="post-layout">
-            <article className="article-prose" data-mdx><Content components={{ h1: BodyHeading }} /></article>
-            {headings.length > 0 && <div className="post-sidebar"><TableOfContents headings={headings} /></div>}
-          </div>
-          <ShareBar key={slug} title={metadata.title} url={`/blog/${slug}`} />
-          {(prev || next) && <nav className="neighbor-posts" aria-label="相邻文章">
-            {prev ? <Link href={`/blog/${prev.slug}`}><p>← 较新文章</p><p>{prev.title}</p></Link> : <div className="neighbor-empty">已经是最新文章</div>}
-            {next ? <Link href={`/blog/${next.slug}`}><p>较早文章 →</p><p>{next.title}</p></Link> : <div className="neighbor-empty">已经是最早文章</div>}
-          </nav>}
-          <Link href="/blog" className="text-link">查看全部文章 <ArrowRight size={14} aria-hidden="true" /></Link>
+        <header className="post-heading">
+          <p className="eyebrow">FROM ROBIN’S NOTEBOOK</p>
+          <h1>{metadata.title}</h1>
+          {metadata.summary && <p>{metadata.summary}</p>}
+          <div className="post-meta"><time dateTime={metadata.date}>{formatDate(metadata.date)}</time><span>{metadata.readingTimeMinutes ?? 1} 分钟阅读</span></div>
+          <div className="tag-list">{metadata.tags?.map((tag) => <Link key={tag} href={`/blog?tag=${encodeURIComponent(tag)}`} className="tag">#{tag}</Link>)}</div>
+        </header>
+        <div className="post-layout">
+          <article className="article-prose" data-mdx><Content components={{ h1: BodyHeading }} /></article>
+          {headings.length > 0 && <div className="post-sidebar"><TableOfContents headings={headings} /></div>}
         </div>
+        <ShareBar key={slug} title={metadata.title} url={`/blog/${slug}`} />
+        {(prev || next) && <nav className="neighbor-posts" aria-label="相邻文章">
+          {prev ? <Link href={`/blog/${prev.slug}`}><p>← 较新文章</p><p>{prev.title}</p></Link> : <div className="neighbor-empty">已经是最新文章</div>}
+          {next ? <Link href={`/blog/${next.slug}`}><p>较早文章 →</p><p>{next.title}</p></Link> : <div className="neighbor-empty">已经是最早文章</div>}
+        </nav>}
+        <Link href="/blog" className="text-link">查看全部文章 <ArrowRight size={14} aria-hidden="true" /></Link>
       </div>
     </main>
   );
