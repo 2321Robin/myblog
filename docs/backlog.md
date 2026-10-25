@@ -46,16 +46,23 @@
 
 验证：`npm test` 6 项通过；`npm run type-check`、`npm run lint`、`npm run build` 通过；1440 / 900 / 768 / 390 / 320 五档宽度无横向溢出，最小字号 11px；亮暗双主题抽查首页、文章列表、标签页、文章详情。
 
-遗留：`node scripts/check-site.mjs` 第 45 行断言 `"记住这一句"` 在本轮之前就已失效——该内容在当前工作区（他人未提交改动）里已被删掉。不属于 P0 范围，未修改断言或他人文章。
+遗留：`node scripts/check-site.mjs` 第 45 行断言 `"记住这一句"` 在本轮之前就已失效——该内容在当前工作区（他人未提交改动）里已被删掉。不属于 P0 范围，未修改断言或他人文章。（2026-10-25 补记：该断言已随后续提交整体移除，脚本中不复存在。）
 
-## 需服务器侧处理（2026-10-23 复审后确认，仓库侧已做完）
+## 已完成：服务器侧待办 8 项（2026-10-25）
 
-- [ ] Nginx / 面板把 `/_next/static/**` 的 `Cache-Control` 压成了 `max-age=60`，需定位覆盖规则并改为 `public, max-age=31536000, immutable`（仓库侧 `next.config.ts` 已声明，本地构建实测生效）。
-- [ ] 线上 404 的共享缓存：仓库侧已用 `dynamicParams = false` 让文章 404 走 `private, no-cache`；需在 Nginx 侧确认错误页不被 `proxy_cache` 长期缓存。
-- [ ] HSTS 的 `includeSubDomains` / `preload`：需先核验全部子站都支持 HTTPS。
-- [ ] CSP 强制执行：当前为 `Content-Security-Policy-Report-Only`，且没有报告接收端，观察期与收集方式待定。
-- [ ] 发布核验：公网仍跑 2026-10-21 的版本（无安全头、`max-age=60`、旧分享信息、旧 sitemap）。发布后重跑 `check-site.mjs` 对公网。
-- [ ] `/_next/image` 优化入口：16.4.2 已有 LRU（默认可用磁盘 50%），可按预算设 `maximumDiskCacheSize`，或评估关闭本站未使用的入口。
-- [ ] 正文图片缓存：图片仍走原路径可覆盖，当前 `public, max-age=0`；若要优化需先做资源版本化。
-- [ ] 依赖公告核对：镜像未实现 npm audit 接口，需用官方 registry 另找数据源；生产依赖已 0 漏洞，剩余 12 条全在 ESLint/tinyglobby 开发链。
+> 2026-10-23 复审确认的 8 项已随发布目录 `20261025T083331Z` 全部闭环，细节与证据见 `docs/deployment.md` 的 2026-10-25 一节。
+
+- [x] `/_next/static/**` 缓存：面板代理配置新增 `^~ /_next/static/` 透传 location，绕开 `expires 1m` 覆盖；公网年缓存断言首次通过。
+- [x] 404 共享缓存：站点级 `proxy_cache off` + `dynamicParams = false`，公网 404 实测单条 `private, no-cache`，无共享缓存。
+- [x] HSTS：五个子站与 knowquest 的 HTTPS 核验通过后加 `includeSubDomains`；preload 明确不做。
+- [x] CSP：由 Report-Only 转强制，自建 `/api/csp-report` 接收端，报告以单行 JSON 落 journald（`journalctl -u personal-homepage` 查询）。
+- [x] 发布核验：公网已运行 `20261025T083331Z`，`node scripts/check-site.mjs https://w2321.top` 全部通过。
+- [x] `/_next/image` 入口：`images.unoptimized: true` + 页脚备案图标改原生 `<img>`，入口关闭。
+- [x] 正文图片缓存：构建期按内容哈希追加 `?v=<sha1-8>`，`/images/**` 一年 immutable，图片仍可原路径覆盖更新。
+- [x] 依赖公告：官方 registry `npm audit --omit=dev` 0 漏洞；全量 7 条（2 moderate、5 high）全在开发链，只记录未修。
+
+## 新记录（2026-10-25，待用户安排）
+
+- 面板代理配置对非静态扩展名统一 `add_header Cache-Control no-cache`，与应用自身的缓存头叠加出双 `Cache-Control`：首页 HTML（`s-maxage=31536000` + `no-cache`）、`/api/csp-report`（`no-store, no-cache`）、RSS / sitemap / robots.txt / search-index（`max-age=3600` 被削为需再验证）。功能无损（no-cache 只强制再验证）；要收干净需再加 `^~` 透传 location 或移除该面板规则，且面板重新生成配置时要一并保留。
+- 文章 `og:image:width/height` 对所有封面硬编码 1448×1086（`src/app/blog/[slug]/page.tsx`），封面比例不同时声明不准。
 

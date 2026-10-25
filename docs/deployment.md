@@ -2,6 +2,22 @@
 
 日期：2026-10-18。当前状态：新版本已部署至 `https://w2321.top`，正式服务与公网检查通过。
 
+## 2026-10-25 服务器侧待办集中处置与发布
+
+- 背景：`docs/backlog.md` 记录的 8 项服务器侧待办一次处理完毕。仓库侧四个提交：图片内容哈希版本化（be7585c）、关闭图片优化入口（0582762）、HSTS 覆盖子域 + CSP 转强制（d62d18f）、断言兼容代理叠加头（821aec1）。
+- 发布目录：`/www/wwwroot/w2321.top-releases/20261025T083331Z`（`20-release.conf` 已指向此目录，服务 active/enabled）。上一版本目录 `20261024T151351Z` 保留回退；切换前旧配置备份在 `/var/backups/personal-homepage/20261025T083331Z/previous-release.conf`。
+- 源码包：`/root/myblog-deploy/myblog-20261025T083331Z.tar.gz`，SHA-256 `45d1511ec1f1409ec4085678ad87094c39328862b3e3483bd8a0ef6c633b1949`，本机与服务器一致；由 `git archive HEAD` 全量导出。`package.json` / `package-lock.json` 与上一发布目录逐字节一致，复用其 `node_modules`。
+- 服务器流程：以 `www` 用户 `SITE_URL=https://w2321.top` 构建，`npm test` 16 项、type-check、lint 通过；3011 预览与 `127.0.0.1:3010` 的 `check-site` 全部通过；临时预览已停止（预览日志写在发布目录内，`www` 用户不可写 `/tmp` 下 root 属主的旧日志）。
+- 本轮变化：
+  - 正文与封面图片 URL 构建期追加内容哈希 `?v=<sha1 前 8 位>`（rehype 插件 + `src/lib/image-version.ts`），`/images/**` 生产环境输出 `public, max-age=31536000, immutable`；og:image / twitter:image / 首页与列表封面背景 / 搜索索引同步带版本参数，图片仍可原路径覆盖更新。
+  - `images.unoptimized: true`，页脚备案图标改原生 `<img>`，`/_next/image` 优化入口不再被任何页面引用。
+  - HSTS 加 `includeSubDomains`：score / resume / minesweeper / covenant / count 五个子站 HTTPS 200、证书校验通过、http 均跳 https；knowquest.w2321.top 仍解析到本机（60.204.199.250）且 HTTPS 200（http 308 跳转）；projects.w2321.top 公网无解析。preload 明确不做。
+  - CSP 由 Report-Only 转强制，追加 `report-uri /api/csp-report`；接收端把最小字段以单行 JSON 打到 stdout，经 journald 落盘（`journalctl -u personal-homepage` 查询，已实测收到公网探针报告）。
+- Nginx 修改（`/www/server/panel/vhost/nginx/proxy/w2321.top/efc4fea69d55a7f7d6ce144e04c7b151_w2321.top.conf`）：在 `location ^~ /` 之前新增 `location ^~ /_next/static/` 与 `location ^~ /images/` 两个透传 location（复制原有 proxy 头与 `proxy_cache off`，不带 `expires`、不叠加 `add_header`），绕开面板 `\.(gif|png|jpg|css|js|woff|woff2)$` 的 `expires 1m` 与非静态扩展名的 `add_header Cache-Control no-cache`。修改前备份：`/var/backups/personal-homepage/20261025T083331Z/proxy-before-static-cache-fix.conf`。`nginx -t` 通过后平滑重载。**面板重新生成代理配置时需保留这两个 location（连同既有 `proxy_cache off`）。**
+- 公网验收：`node scripts/check-site.mjs https://w2321.top` 全部通过，`/_next/static/**` 年缓存断言对公网首次通过。抽查：静态资源与内容图片均为单条 `Cache-Control: public, max-age=31536000, immutable`；404 为单条 `private, no-cache, no-store, max-age=0, must-revalidate`；HSTS / 强制 CSP 响应头正确。
+- 依赖公告（官方 registry）：`npm audit --omit=dev` 0 漏洞；全量 7 条（2 moderate、5 high）全在开发链（@humanfs/node、ajv、brace-expansion、flatted 及 ESLint 链），与 2026-10-23 记录的 12 条相比为公告库更新所致。未运行 `npm audit fix`，保持锁文件不变以复用依赖。
+- 已知未处理（汇报不修）：面板对非静态扩展名统一 `add_header Cache-Control no-cache`，会给应用已带缓存头的首页 HTML 与 `/api/csp-report`、RSS、sitemap 等叠加出双 `Cache-Control`，功能无损（no-cache 只强制再验证）；已记入 backlog 待安排。
+
 ## 2026-10-24 第三篇文章发布（《上手第一个 Agent》）
 
 - 发布目录：`/www/wwwroot/w2321.top-releases/20261024T054707Z`（systemd `20-release.conf` 已指向此目录，服务 active/enabled）。上一版本目录 `20261021T062945Z` 保留用于回退；切换前的旧配置备份在 `/var/backups/personal-homepage/20261024T054707Z/previous-release.conf`。
@@ -80,8 +96,8 @@
 - 正式域名：`https://w2321.top`。
 - 服务：`personal-homepage.service`，运行用户和组均为 `www`。
 - Nginx 将主页请求转发到 `127.0.0.1:3010`。
-- 当前版本目录：`/www/wwwroot/w2321.top-releases/20261024T151351Z`。
-- 上一版本目录：`/www/wwwroot/w2321.top-releases/20261024T113352Z`，保留用于回退。
+- 当前版本目录：`/www/wwwroot/w2321.top-releases/20261025T083331Z`。
+- 上一版本目录：`/www/wwwroot/w2321.top-releases/20261024T151351Z`，保留用于回退。
 - 原版本保留在 `/www/wwwroot/w2321.top`。
 - 构建和运行均使用 `SITE_URL=https://w2321.top`。
 
