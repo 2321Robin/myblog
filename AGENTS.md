@@ -32,7 +32,7 @@
 
 > 每个会话只负责一类改动（文字或图片），任务相关的验证只跑与本改动相关的部分：`npm test` / `npm run type-check` / `npm run lint`，站点类改动再跑 `node scripts/check-site.mjs`。**改过正文的会话必须再跑 `node scripts/check-article.mjs`**：它用与站点相同的解析器反查，任何写了 `**` 却没渲染成加粗的地方都会被列出来（CommonMark 不允许闭合的 `**` 紧贴中文标点后再接汉字，例如 `**「开发」**就行` 会原样显示星号）。
 
-- **本地服务即起即停（2026-10-25 立规）**：`next dev` / `next start` 这类本地验证服务只在验证当轮存在，检查跑完立刻按 PID 整树终止（`taskkill /F /T`），**MUST NOT** 把后台 node 服务留过任务边界，也不要替用户"顺手"常驻一个 dev 预览。原因：Windows 下从 Git Bash 后台启动的 node 进程树，每派生一个子进程就闪一个 cmd 窗口（dev 的编译 worker 会随文件变动反复派生），后台残留 = 用户桌面持续弹出 node.exe 窗口。用户要看草稿预览时，由用户自己在终端前台跑 `npm run dev`。
+- **本地服务即起即停（2026-10-25 立规）**：`next dev` / `next start` 这类本地验证服务只在验证当轮存在，检查跑完立刻按 PID 整树终止（`taskkill /F /T`），**MUST NOT** 把后台 node 服务留过任务边界，也不要替用户"顺手"常驻一个 dev 预览。原因：Windows 下从无控制台的后台 shell 启动的 node 进程树，每派生一个子进程（dev 的编译 worker、`node --test` 的测试子进程）就闪一个 cmd 窗口，后台残留 = 用户桌面持续弹出 node.exe 窗口。确需在本会话跑会大量派生子进程的命令（dev、start、test），用 `powershell -WindowStyle Hidden -Command "npm test"` 一类包装，让整棵树共享一个隐藏控制台。用户要看草稿预览时，由用户自己在终端前台跑 `npm run dev`。
 
 ## 四、图片一律由作者本人绘制
 
