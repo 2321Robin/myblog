@@ -14,12 +14,11 @@ const withMDX = createMDX({
   },
 });
 
-// Enforced since 2026-10-25; violations land in /api/csp-report. RSC 载荷与
-// next-themes 的内联脚本需要 unsafe-inline，收紧到 nonce 会让整站转为动态
-// 渲染，收益不抵代价。
-const CONTENT_SECURITY_POLICY = [
-  "default-src 'self'",
-  "script-src 'self' 'unsafe-inline'",
+// 生产强制（2026-10-25 起），违规落 /api/csp-report。RSC 载荷与 next-themes 的
+// 内联脚本需要 unsafe-inline，收紧到 nonce 会让整站转为动态渲染，收益不抵代价。
+// 开发环境例外：React dev 需要 eval() 重建调用栈，dev 下改发 Report-Only 并
+// 放宽 script-src 的 unsafe-eval，避免拦截浮层阻塞本地开发。
+const CSP_REST = [
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data:",
   "font-src 'self'",
@@ -29,7 +28,16 @@ const CONTENT_SECURITY_POLICY = [
   "form-action 'self'",
   "object-src 'none'",
   "report-uri /api/csp-report",
-].join("; ");
+];
+
+function cspHeader() {
+  const scriptSrc =
+    process.env.NODE_ENV === "development" ? "script-src 'self' 'unsafe-inline' 'unsafe-eval'" : "script-src 'self' 'unsafe-inline'";
+  const policy = ["default-src 'self'", scriptSrc, ...CSP_REST].join("; ");
+  return process.env.NODE_ENV === "development"
+    ? { key: "Content-Security-Policy-Report-Only", value: policy }
+    : { key: "Content-Security-Policy", value: policy };
+}
 
 const SECURITY_HEADERS = [
   // includeSubDomains：2026-10-25 核验 score / resume / minesweeper /
@@ -40,7 +48,6 @@ const SECURITY_HEADERS = [
   { key: "X-Frame-Options", value: "SAMEORIGIN" },
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
   { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), payment=(), usb=()" },
-  { key: "Content-Security-Policy", value: CONTENT_SECURITY_POLICY },
 ];
 
 const nextConfig: NextConfig = {
@@ -60,7 +67,7 @@ const nextConfig: NextConfig = {
     // Next 16 already emits immutable for hashed build output and warns when a
     // custom Cache-Control applies in development, where chunks are rewritten on
     // every edit. The override is for the production bundle only.
-    const headers = [{ source: "/:path*", headers: SECURITY_HEADERS }];
+    const headers = [{ source: "/:path*", headers: [...SECURITY_HEADERS, cspHeader()] }];
     if (process.env.NODE_ENV === "production") {
       headers.push(
         {
