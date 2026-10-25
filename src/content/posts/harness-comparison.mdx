@@ -66,7 +66,7 @@ export const metadata = {
 
 　　OpenAI 的 **Codex CLI**（成文时 v0.163.0）走了开源路线（Apache-2.0 许可）。README 自我定位是“轻量的本地 agent”，小而快，绑定 GPT 系模型，配置文件可以指向任意兼容的服务商。权限上它把沙箱范围与审批策略分开配置：交互模式在版本控制目录通常推荐 Auto，允许在工作区内读写和运行命令；未信任目录可能从只读开始，非交互的 codex exec 默认只读。越过权限边界的操作可能需要审批。隔离由操作系统实施——macOS 用 Seatbelt，Linux 默认用 bubblewrap 加 seccomp；此外还有更放手的自动模式，和一柄彻底跳过沙箱的开关。外壳本体开源免费，计费走 ChatGPT 订阅或 API key。
 
-　　阿里 Qwen 团队的 **Qwen Code**，出身是 Gemini CLI 的衍生项目，但从 v0.1 起走向独立，变成一套多协议 agent 框架：Qwen、OpenAI、Anthropic、Gemini 兼容端点都能接，本地的 Ollama 与 vLLM 也支持。形态覆盖相当齐全——终端、桌面端、编辑器插件（VS Code、Zed、JetBrains）、网页，连微信、飞书、钉钉、Telegram 这些即时通信入口都有——还带一个“Agent Teams”机制，把大任务拆给一群小 agent 分头去干。提醒一句：早先的 Qwen OAuth 免费档已于 2026 年 4 月 15 日停止，现在模型用量要走 QwenCloud Token、百炼 Coding Plan 这类方案。
+　　阿里 Qwen 团队的 **Qwen Code**，出身是 Gemini CLI 的衍生项目，但从 v0.1 起走向独立，变成一套多协议 agent 框架：Qwen、OpenAI、Anthropic、Gemini 兼容端点都能接，本地的 Ollama 与 vLLM 也支持。形态覆盖相当齐全——终端、桌面端、编辑器插件（VS Code、Zed、JetBrains）、网页，连微信、飞书、钉钉、Telegram 这些即时通信入口都有——还带一个“Agent Teams”机制，把大任务拆给一群小 agent 分头去干。提醒一句：它的模型用量要走 QwenCloud Token、百炼 Coding Plan 这类付费方案。
 
 　　还有两款源码可见的工具：**opencode**（SST 时期的项目，现归 Anomaly，成文时 v2.0.32）讲究 provider 无关，任何一家的 API key 塞进来就能跑，MCP、插件、ACP、自定义工具一应俱全；Charmbracelet 的 **crush** 免费使用并公开源码，采用 FSL-1.1-MIT 许可——Fair Source 类型，现阶段限制竞争性用途，各版本发布两年后才转为 MIT。它原生支持 Moonshot、Z.ai 等服务商，Skills 机制直接兼容 .claude/skills 目录——Claude Code 的老用户搬家，技能可以原样带走。
 
@@ -196,9 +196,11 @@ export const metadata = {
 
 　　**路线一：用国产外壳。** Qwen Code（国内支付顺畅，走 QwenCloud Token、百炼 Coding Plan 这类方案），以及有国内版本的 TRAE、Qoder、CodeBuddy；DeepSeek 也在今年 8 月交出了自家壳——开源的 **DeepSeek Harness**（MIT 许可），主打“一切皆插件”，模型、工具甚至 UI 都做成可替换的插件，目前还在开发者预览阶段。
 
-　　**路线二：通用外壳，接国产模型。** 不少外壳并不锁引擎：GLM 官方提供了把 Claude Code 接到 GLM 模型的指南；DeepSeek 更进一步，直接给出官方 Anthropic 兼容端点（[接入文档看这里](https://api-docs.deepseek.com/guides/anthropic_api)），把 Claude 的 opus 档映射到自家的 deepseek-v4-pro、haiku 与 sonnet 档映射到 deepseek-flash，另有面向 Codex 的官方接入指南。crush 原生支持 Moonshot 与 Z.ai，opencode 与 Codex CLI 也能指向任意兼容端点。外壳照常用，引擎换成国产的。
+　　**路线二：通用外壳，接国产模型。** 不少外壳并不锁引擎：GLM 官方提供了把 Claude Code 接到 GLM 模型的指南；DeepSeek 更进一步，直接给出官方 Anthropic 兼容端点（[接入文档看这里](https://api-docs.deepseek.com/guides/anthropic_api)），把 Claude 的 opus 档映射到自家的 deepseek-v4-pro、haiku 与 sonnet 档映射到 deepseek-flash，另有面向 Codex 的官方接入指南。crush 原生支持 Moonshot 与 Z.ai，opencode 与 Codex CLI 也能指向任意兼容端点；pi、oh-my-pi 的支持名单里同样有 Kimi、MiniMax 这些国产引擎。外壳照常用，引擎换成国产的。
 
 　　两条路怎么挑？图省事、想一步到位的，路线一的国产外壳把付费与模型都打包好了；已经在外壳生态里扎了营、攒了一堆配置的，路线二让你只换引擎、不搬家，代价是多一道接线的手续。各有取舍，但共同点是：两条路线都有模型服务商或外壳厂商提供的资料。还要分清谁负责支持——DeepSeek、GLM 的兼容指南证明接线方式有据可查，但这与 Anthropic 的支持承诺不是一回事：当前 Anthropic 文档明确不支持经网关把 Claude Code 路由到非 Claude 模型，升级后的兼容性仍需按服务商指南核对。
+
+　　再补一句实话：厂商的支持边界拦得住官方承诺，拦不住自己动手的人。社区里已经有人把个人网关做成了顺手工具，比如本地网关应用 **magpie**：所有 agent 共用一张本地网关，Claude Code 跑 Kimi、Codex 跑 DeepSeek、Gemini CLI 跑 GLM，菜单栏点一下就切，遇到限流、欠费、超时还会自动熔断换道。我自己就在用它，玩法留到后面“我的工具箱”那篇细说，这里只报名字——路子官方不背书，舒不舒服得自己铺。
 
 > 待配图 13｜位置：「两条路怎么挑」一段之后、「两句提醒」一段之前。
 > 风格锚点：扁平杂志风（参考 Stripe 博客插图），禁手绘感 / 3D / 照片 / emoji。
@@ -206,8 +208,7 @@ export const metadata = {
 > 构图与流向：左右两条路——左侧一整块套餐盒（外壳与引擎封装在一起，路线一）；右侧一只通用外壳，底部引擎方块正被抽出、换上另一枚（路线二）；两条路在右端汇于「开工」；阅读自左向右。
 > 比例配色：3:2 横版；浅灰白底 #F7F9FC，靛蓝主色 #4255CF。
 
-　　两句提醒：其一，Qwen Code 的 Qwen OAuth 免费档已于 2026 年 4 月 15 日停止，免费午餐在退潮；其二，TRAE、Qoder、CodeBuddy 的模型与价格本文不背书，一切以官网为准。
-
+　　一句提醒：TRAE、Qoder、CodeBuddy 的模型与价格本文不背书，一切以官网为准。
 　　**外壳和引擎可以分开选：国产外壳配国产引擎，通用外壳配国产引擎，两条路都有据可查，但要分清资料是谁家的。**
 
 ## 怎么选：三个问题
@@ -242,8 +243,6 @@ export const metadata = {
 　　外壳还会继续换手，明年这张表多半就和今天不一样了。但形态、生态、绑定这三个问题，一时半会儿不会过时：2026 年的三连变，指向的其实是同一件事——外壳的竞争已经从“谁接的模型多”，挪到了“谁的工作方式更顺手”，扩展标准反倒成了大家的公共底座。产品怎么洗牌，先问自己在哪干活、活儿能不能交出去、引擎锁不锁死，答案自然会收敛出候选名单，剩下的交给上手试。
 
 　　这个系列的下一篇想更个人一点：聊聊我自己这一年用下来的感悟，还有我的 AI 工具箱——先后顺序暂不剧透。
-
-　　照例说句题外话：从调研、大纲到成文，这篇同样是一个人、一个模型和一只外壳协作的产物。至于帮我写文的 agent 住在哪只壳里、我又给它挂了哪些规则文件和技能包，就留到下一篇再交代吧。
 
 ## 大事记：2026 年的外壳变动
 
@@ -297,6 +296,7 @@ export const metadata = {
 - GLM 接入 Claude Code 指南：[docs.z.ai/devpack/tool/claude](https://docs.z.ai/devpack/tool/claude)
 - ZCode 官网与文档：[zcode.z.ai](https://zcode.z.ai)
 - DeepSeek Harness 仓库：[github.com/deepseek-ai/deepseek-harness](https://github.com/deepseek-ai/deepseek-harness)
+- magpie 仓库：[github.com/yetone/magpie](https://github.com/yetone/magpie)
 - Claude Code 网关支持边界：[code.claude.com/docs/en/llm-gateway](https://code.claude.com/docs/en/llm-gateway)
 - Claude Code 云端认证、安全与隔离说明：[code.claude.com/docs/en/claude-code-on-the-web](https://code.claude.com/docs/en/claude-code-on-the-web)
 - JetBrains 中文博客 AI China 公告：[blog.jetbrains.com/zh-hans](https://blog.jetbrains.com/zh-hans/blog/2026/03/18/ai-china)
