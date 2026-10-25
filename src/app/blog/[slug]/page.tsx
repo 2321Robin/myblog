@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { ArticleEditor } from "@/components/article-editor";
 import { PostContent } from "@/components/post-content";
 import { getAllPosts, getPostBySlug, getPostHeadings, getPostSlugs, getPostSource, getPublishedPostBySlug } from "@/lib/posts";
+import { versionedImageUrl } from "@/lib/image-version";
 
 // In Next.js 16 app router, dynamic route params arrive as a Promise; unwrap before use
 type PageParams = { params: Promise<{ slug: string }> };
@@ -45,14 +46,14 @@ export async function generateMetadata({ params }: PageParams) {
       description: summary,
       publishedTime: date,
       images: cover
-        ? [{ url: cover, width: 1448, height: 1086, alt: `${title} 封面` }]
+        ? [{ url: versionedImageUrl(cover), width: 1448, height: 1086, alt: `${title} 封面` }]
         : [{ url: "/og.png", width: 1200, height: 630, alt: "Robin · 工具、作品与记录" }],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description: summary,
-      images: [image],
+      images: [versionedImageUrl(image)],
     },
   };
 }

@@ -52,10 +52,19 @@ const nextConfig: NextConfig = {
     // every edit. The override is for the production bundle only.
     const headers = [{ source: "/:path*", headers: SECURITY_HEADERS }];
     if (process.env.NODE_ENV === "production") {
-      headers.push({
-        source: "/_next/static/:path*",
-        headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
-      });
+      headers.push(
+        {
+          source: "/_next/static/:path*",
+          headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
+        },
+        // Content images carry a build-time ?v= content hash (rehype plugin +
+        // versionedImageUrl), so they can be immutable-cached and still be
+        // replaced in place.
+        {
+          source: "/images/:path*",
+          headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
+        },
+      );
     }
     return headers;
   },

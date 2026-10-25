@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
 import { getAllPosts } from "@/lib/posts";
+import { versionedImageUrl } from "@/lib/image-version";
 import { cn, formatDate } from "@/lib/utils";
 
 type SearchParams = { page?: string | string[]; tag?: string | string[] };
@@ -63,7 +64,7 @@ export default async function BlogPage({ searchParams }: Props) {
       <section aria-label="文章列表">
         {pageItems.length === 0 ? <div className="empty-state"><p>这个标签下还没有文章。</p><Link href="/blog" className="text-link">查看全部文章 <ArrowRight size={14} aria-hidden="true" /></Link></div> : pageItems.map((post) => (
           <article className="archive-post" key={post.slug}>
-            <div className="archive-cover" aria-hidden="true">{post.cover ? <div className="archive-cover-image" style={{ backgroundImage: `url(${post.cover})` }} /> : <span>{post.title.slice(0, 2)}</span>}</div>
+            <div className="archive-cover" aria-hidden="true">{post.cover ? <div className="archive-cover-image" style={{ backgroundImage: `url(${versionedImageUrl(post.cover)})` }} /> : <span>{post.title.slice(0, 2)}</span>}</div>
             <div className="min-w-0">
               <div className="post-meta"><time dateTime={post.date}>{formatDate(post.date)}</time><span>{post.readingTimeMinutes ?? 1} 分钟阅读</span></div>
               <h2><Link href={`/blog/${post.slug}`}>{post.title}</Link></h2>

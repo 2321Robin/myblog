@@ -1,3 +1,4 @@
+import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 import { visit } from "unist-util-visit";
@@ -7,8 +8,12 @@ import sharp from "sharp";
 // intrinsic dimensions and lazy loading without any runtime cost. Applies to
 // markdown images and to the inline <img> tags the author writes for mascots,
 // which MDX compiles as JSX rather than routing through components.img.
+// The src is also stamped with a content-hash query (?v=) so /images/** can be
+// served as immutable while files stay replaceable in place; releases build
+// into a fresh .next, so the hash is recomputed on every build.
 const PUBLIC_DIR = path.join(process.cwd(), "public");
 const dimensionCache = new Map();
+const versionCache = new Map();
 
 async function dimensionsFor(src) {
   if (dimensionCache.has(src)) return dimensionCache.get(src);
@@ -24,6 +29,19 @@ async function dimensionsFor(src) {
   }
   dimensionCache.set(src, dimensions);
   return dimensions;
+}
+
+function versionFor(src) {
+  if (versionCache.has(src)) return versionCache.get(src);
+  let version = null;
+  try {
+    const buffer = fs.readFileSync(path.join(PUBLIC_DIR, src.replace(/^\//, "")));
+    version = crypto.createHash("sha1").update(buffer).digest("hex").slice(0, 8);
+  } catch {
+    version = null;
+  }
+  versionCache.set(src, version);
+  return version;
 }
 
 function readSrc(node) {
@@ -63,6 +81,16 @@ export default function rehypeImageAttributes() {
           }
           setAttribute(node, "loading", "lazy");
           setAttribute(node, "decoding", "async");
+          const version = versionFor(src);
+          if (version) {
+            const versioned = `${src}?v=${version}`;
+            if (node.type === "element") {
+              node.properties.src = versioned;
+            } else {
+              const attribute = (node.attributes ?? []).find((item) => item.name === "src");
+              if (attribute) attribute.value = versioned;
+            }
+          }
         })()
       );
     });

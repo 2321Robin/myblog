@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getAllPosts } from "@/lib/posts";
+import { versionedImageUrl } from "@/lib/image-version";
 
 export const revalidate = 3600; // revalidate hourly
 
@@ -11,7 +12,7 @@ export async function GET() {
     summary: post.summary ?? "",
     tags: post.tags ?? [],
     date: post.date,
-    cover: post.cover ?? null,
+    cover: post.cover ? versionedImageUrl(post.cover) : null,
     readingTimeMinutes: post.readingTimeMinutes ?? null,
   }));
 

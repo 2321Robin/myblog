@@ -149,7 +149,7 @@ for (const [slug, cover] of [["ai-model-agent-harness", "/images/posts/ai-model-
   const url = `${origin}/blog/${slug}`;
   assert.ok(html.includes(`<meta property="og:url" content="${url}"`), `${slug} og:url`);
   assert.ok(html.includes('<meta property="og:type" content="article"'), `${slug} og:type`);
-  assert.ok(html.includes(`<meta property="og:image" content="${origin}${cover}"`), `${slug} og:image uses its cover`);
+  assert.ok(html.includes(`<meta property="og:image" content="${origin}${cover}?v=`), `${slug} og:image uses its versioned cover`);
   assert.ok(html.includes('<meta name="twitter:title" content='), `${slug} twitter:title present`);
   const ogTitle = html.match(/<meta property="og:title" content="([^"]+)"/)?.[1];
   assert.ok(ogTitle && !ogTitle.includes("个人站点"), `${slug} og:title must be the article title`);
@@ -167,9 +167,18 @@ for (const slug of ["ai-model-agent-harness", "agent-usage-ecosystem", "agent-ge
     assert.match(tag, /width="\d+"/, `${src} has intrinsic width`);
     assert.match(tag, /height="\d+"/, `${src} has intrinsic height`);
     assert.ok(!tag.includes('loading="eager"'), `${src} is not force-eager`);
+    assert.match(src, /\?v=[0-9a-f]{8}$/, `${src} carries a content-hash version`);
   }
   const eager = figures.filter(([tag]) => !tag.includes('loading="lazy"'));
   assert.ok(eager.length <= 1, `${slug} keeps at most one eager figure (got ${eager.length})`);
   assert.ok(!html.includes('rel="preload" as="image"'), `${slug} must not preload its figures`);
 }
 console.log("PASS article figures have dimensions and defer below the first one");
+
+// /images/** is content-versioned (?v=), so it must be immutable-cached.
+const contentImage = [...bodies.get("/blog/agent-getting-started").matchAll(/<img[^>]*src="(\/images\/[^"]+)"/g)][0]?.[1];
+assert.ok(contentImage, "article references a content image");
+const imageResponse = await fetch(`${base}${contentImage}`, { signal: AbortSignal.timeout(20000) });
+assert.equal(imageResponse.status, 200, `image ${contentImage}`);
+assert.equal(imageResponse.headers.get("cache-control"), "public, max-age=31536000, immutable", "content images cached for a year");
+console.log("PASS content images are versioned and immutable-cached");

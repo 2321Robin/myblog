@@ -3,6 +3,7 @@ import { ArrowDown, ArrowRight, ArrowUpRight, Mail, Rss } from "lucide-react";
 import { SiteDirectory } from "@/components/site-directory";
 import { getLinkHost, siteLinks } from "@/lib/site-links";
 import { getAllPosts } from "@/lib/posts";
+import { versionedImageUrl } from "@/lib/image-version";
 import { formatDate } from "@/lib/utils";
 
 export default async function Home() {
@@ -41,7 +42,7 @@ export default async function Home() {
             {posts.length ? posts.slice(0, 4).map((post) => (
               <article key={post.slug} className="recent-post">
                 <time dateTime={post.date}>{formatDate(post.date)}</time>
-                {post.cover && <div className="recent-cover"><div className="recent-cover-image" role="img" aria-label={`${post.title} 封面图`} style={{ backgroundImage: `url(${post.cover})` }} /></div>}
+                {post.cover && <div className="recent-cover"><div className="recent-cover-image" role="img" aria-label={`${post.title} 封面图`} style={{ backgroundImage: `url(${versionedImageUrl(post.cover)})` }} /></div>}
                 <div className="recent-body"><h3><Link href={`/blog/${post.slug}`}>{post.title}<ArrowUpRight size={18} aria-hidden="true" /></Link></h3>{post.summary && <p>{post.summary}</p>}</div>
                 <span className="reading-time">{post.readingTimeMinutes ?? 1} 分钟阅读</span>
               </article>
