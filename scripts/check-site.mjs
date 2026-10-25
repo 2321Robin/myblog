@@ -116,7 +116,8 @@ const cspReport = await fetch(`${base}/api/csp-report`, {
   signal: AbortSignal.timeout(15000),
 });
 assert.equal(cspReport.status, 204, "csp report collector responds 204");
-assert.equal(cspReport.headers.get("cache-control"), "no-store", "csp report collector is not cached");
+// Shared proxies may stack their own no-cache directive; no-store must survive.
+assert.match(cspReport.headers.get("cache-control") ?? "", /no-store/, "csp report collector is not cached");
 console.log("PASS /api/csp-report collects violation reports");
 
 // Canonical links: each page points at itself, with out-of-range pages rejected.
