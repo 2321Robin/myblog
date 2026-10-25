@@ -80,37 +80,37 @@ export const metadata = {
 
 　　**Cursor** 今年的经历跌宕：8 月换了东家（如开场所说），产品上则是一贯的路线——自研 Composer 系模型，聚合 Claude、GPT、Grok、Gemini 等第三方模型，外加先规划后动手的 Plan Mode。计费的门道全在模型用量的打包上（以官方定价页为准）：免费档之外，Plus 仅提供 Grok 模型；Premium 及以上可使用第三方模型，但其用量不含在订阅里，另按 API 标价结算。套餐内的 Grok 用量池在 Cursor 与 Grok 产品之间共享，每周刷新。
 
-> 待配图 5（官网截图）｜位置：Cursor 一段之后。
-> 要求：截 cursor.com 首页首屏，宽 ≥1280px，隐藏浏览器书签栏与个人账号信息；无需绘制，作者截图后到手即插（改名落盘、压缩 webp、写 alt）。
+![Cursor 官网首页：标语「Cursor 是您的编程智能体，助您构建雄心勃勃的软件」，主视觉展示 Cursor Desktop 的任务面板、代码改动与本地预览窗口，右下角浮着 Cursor CLI 对话面板](/images/posts/harness-comparison/cursor-home.webp)
 
 　　**GitHub Copilot** 背靠 GitHub 本尊：VS Code 与 JetBrains 都有 agent 模式，VS Code 还加了先规划后动手的 Plan Mode，另有独立的 Copilot CLI 与 github.com 站上的云端 agent。免费档之外有多档订阅，按 AI Credits 额度计量。它过去一年的大动作，是 2025 年 10 月 28 日公告的 Agent HQ：把 Claude Code、Codex 这些第三方 agent 收编到统一指挥下。GitHub 接入的 Claude 与 Codex agent 可用 Copilot 订阅结算，无须另买相应厂商订阅；运行仍消耗 AI Credits 与 GitHub Actions 分钟，在包含额度内才无额外费用，超出可能另计费，各入口的开放条件也有区别。
 
-> 待配图 6（官网截图）｜位置：GitHub Copilot 一段之后。
-> 要求：截 github.com/features/copilot 首页首屏，规格同待配图 5。
+![GitHub Copilot 官网首页：标语「Command your craft」，主视觉展示 Agent 工作台——左侧是会话列表，中间输入框可切换 Interactive 与 Auto 模式，下方「On your radar」列出仓库待办](/images/posts/harness-comparison/copilot-home.webp)
 
 　　**Zed** 走“开放舞台”路线：编辑器本体免费，外部 agent 通过 Agent Client Protocol（ACP，一套类比 LSP 的通用接口协议）接入——Claude、Codex、Gemini CLI 等进了 Zed，在外部 agent 这条路线里自带模型与计费，Zed 不当二道贩子；官方 Registry 里点一下就能装好常用 agent，旧外壳里的会话历史也能导进来接着用，你在 Zed 里配好的 MCP，还能经 ACP 转发给外部 agent。AI 服务本身的费用另算，以官方定价页为准。
 
-> 待配图 7（官网截图）｜位置：Zed 一段之后。
-> 要求：截 zed.dev 首页首屏，规格同待配图 5。
+![Zed 官网首页：并列展示 Delta（Est 2026）与 Zed（Est 2021）两个产品卡片，下方编辑器截图展示 AI 会话面板与代码 diff，页脚有 Agent Client Protocol、GPUI、Tree-sitter 三个入口](/images/posts/harness-comparison/zed-home.webp)
 
 　　AWS 的 **Kiro** 主打规格驱动：需求先写成 Specs，agent 照规格实现，另有 Steering 机制沉淀长期约定。形态从 IDE（基于 Code OSS）铺到 CLI、网页与移动端，另有开源的 Kiro Crew 工作区。计费按信用点，免费档含 50 点，够小规模试用；用 Kimi、DeepSeek、GLM、Qwen 这些开源权重模型时点数消耗明显更低，免费档也能用开源权重模型。
 
-> 待配图 8（官网截图）｜位置：Kiro 一段之后。
-> 要求：截 kiro.dev 首页首屏，规格同待配图 5。
+![Kiro 官网首页：提供 Kiro Crew、IDE、CLI 三个下载入口，主视觉展示 Kiro 桌面端的会话列表与规格评审界面，右下角终端欢迎页写着「Welcome to Kiro CLI V3」](/images/posts/harness-comparison/kiro-home.webp)
 
 　　算一笔钱就能看出 IDE 阵营的两种账法：Copilot 的 AI Credits、Kiro 的信用点，是把模型用量打进自家订阅里统一结算；Zed 在外部 agent 这条路线上则反过来，把计费原样还给 agent 本尊，编辑器自己分文不取。哪种更划算，取决于你的用量落在哪一档——这也是第五把尺子，价格，最值得动手算一算的地方。
 
 　　国内厂商是另一条产品线：字节跳动的 **TRAE**（IDE，带 SOLO 模式，另有开源的 trae-agent）、阿里系的 **Qoder**（IDE、CLI、移动端等形态）、腾讯的 **CodeBuddy**（IDE 加 CodeBuddy Code CLI）。3 月 18 日，JetBrains 的中文公告还把 Qoder、TRAE、CodeBuddy 等一并接入了插件市场。这三家的模型清单与价格未见官方页面全面核实，本文不列具体数字，以官网为准。
 
-> 待配图 9（官网截图 ×3）｜位置：国内厂商一段之后。
-> 要求：分别截 TRAE、Qoder、CodeBuddy 官网首页首屏（以国内可访问的官方站为准），规格同待配图 5；三张依次插入，各自写 alt。
+![TRAE 官网首页：标语「TRAE，你的全链路 AI 开发平台」，介绍双端融合的 Agent 模式，主视觉展示项目文件树与代码编辑区，顶部挂着邀请好友得积分的活动横幅](/images/posts/harness-comparison/trae-home.webp)
+
+![Qoder 官网首页：标语「全新 Qoder，你的智能体工作台」，主视觉展示任务面板与执行轨迹——搜索工作区、运行终端命令、思考中，底部显示步骤进度与文件改动](/images/posts/harness-comparison/qoder-home.webp)
+
+> 待配图 9（官网截图）｜位置：接在 Qoder 截图之后。国内三线还差腾讯 CodeBuddy 一张：截其官网首页首屏，宽 ≥1280px、隐藏个人账号信息，到手即插。
 
 　　IDE 外壳卖的是“看着干活”：agent 在编辑器里动手，每一处改动都落在你眼前。
 
 　　编辑器之外，桌面应用正在成为外壳的第四个住处。智谱 Z.ai 的 **ZCode** 把“GLM-5.3 官方 harness”直接写在官网标题上：主打桌面工作区，多智能体协作，Remote 与 Bot 通道照看长任务，计费走 GLM Coding Plan；上一篇的主角 **WorkBuddy** 则走大众路线——办公、开发双模式，微信扫码即用；Claude Code 与 Codex 也都备有桌面版。它们共同的路数是：外壳本身就是一个装好即用的应用——不问你在哪写代码，先让 agent 住进你的电脑。
 
-> 待配图 10（官网截图 ×2）｜位置：桌面应用一段之后。
-> 要求：分别截 ZCode（zcode.z.ai）与 WorkBuddy（workbuddy.cn）官网首页首屏，规格同待配图 5；两张依次插入，各自写 alt。
+![ZCode 官网首页：提供 Windows 下载，主视觉是深色工作台——左侧任务列表，主窗口演示一个五子棋小游戏的生成过程，右栏显示变更统计与目标完成进度，输入框选着 GLM-5.3 模型](/images/posts/harness-comparison/zcode-home.webp)
+
+![WorkBuddy 官网首页：标语「WorkBuddy 我帮你」，自述为腾讯出品的 AI 办公工作台，主视觉展示新建任务、助手、项目等侧栏与居中的对话输入框](/images/posts/harness-comparison/workbuddy-home.webp)
 
 ## 网页与云端：派活，而不是盯活
 
