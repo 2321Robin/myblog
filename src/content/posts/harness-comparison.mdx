@@ -62,7 +62,7 @@ export const metadata = {
 
 　　最早的 harness 大多住在终端里，到今天，终端也还是硬核用户浓度最高的形态。
 
-　　名气最大的是 Anthropic 的 **Claude Code**（以成文时的 v2.1.303 为准）。它的活动范围早已不限于终端：终端 CLI、IDE 扩展、桌面 App、网页版（[claude.ai/code](https://claude.ai/code)）与移动端入口，同一套能力分布在多种形态里。它默认绑定 Claude 系模型，但门没锁死：可以接 Amazon Bedrock、Google Cloud 的 Agent Platform（原 Vertex）、Microsoft Foundry，也可以改一个环境变量指向自建网关。权限上提供 Manual、Accept edits、Plan、Auto 几种模式，默认用哪种取决于版本、入口与配置（详见后文“权限与沙箱”一节）；另备一套可选的操作系统级沙箱（macOS 的 Seatbelt、Linux 的 bubblewrap，外加网络代理白名单），默认关闭，主要约束 shell 命令。计费随 Claude 订阅走：Pro 档即可使用，更高的 Max 档面向重度用户——账单是模型订阅的钱，外壳本体不另收费。
+　　名气最大的是 Anthropic 的 **Claude Code**（以成文时的 v2.1.303 为准）。它的活动范围早已不限于终端：终端 CLI、IDE 扩展、桌面 App、网页版（[claude.ai/code](https://claude.ai/code)）与移动端入口，同一套能力分布在多种形态里。它默认绑定 Claude 系模型，但门没锁死：可以接 Amazon Bedrock、Google Cloud 的 Agent Platform（原 Vertex）、Microsoft Foundry，也可以改一个环境变量指向自建网关。权限上提供 Manual、Accept edits、Plan、Auto 几种模式，默认用哪种取决于版本、入口与配置（详见后文“权限与沙箱”一节）；另备一套可选的操作系统级沙箱（macOS 的 Seatbelt、Linux 的 bubblewrap，外加网络代理白名单），默认关闭，主要约束 shell 命令。计费随 Claude 订阅走（Pro 档即可使用，更高的 Max 档面向重度用户），也可改走 API 按量计费或云平台结算——账单是模型的钱，外壳本体不另收费。
 
 　　OpenAI 的 **Codex CLI**（成文时 v0.163.0）走了开源路线（Apache-2.0 许可）。README 自我定位是“轻量的本地 agent”，小而快，绑定 GPT 系模型，配置文件可以指向任意兼容的服务商。权限上它把沙箱范围与审批策略分开配置：交互模式在版本控制目录通常推荐 Auto，允许在工作区内读写和运行命令；未信任目录可能从只读开始，非交互的 codex exec 默认只读。越过权限边界的操作可能需要审批。隔离由操作系统实施——macOS 用 Seatbelt，Linux 默认用 bubblewrap 加 seccomp；此外还有更放手的自动模式，和一柄彻底跳过沙箱的开关。外壳本体开源免费，计费走 ChatGPT 订阅或 API key。
 
@@ -146,11 +146,11 @@ export const metadata = {
 
 　　形态看完，再看外壳之间的“门”。先把四个名词用一句话各安个位：**MCP** 是给模型接外部工具的协议，数据库、浏览器、内部系统都能通过它变成模型的手；**Skills** 是把操作手册打包成的技能包，装上就会新手艺；**Hooks** 是挂在生命周期节点上的自定义脚本，事前拦截、事后收尾都归它管；**规则文件**（AGENTS.md、CLAUDE.md 这类）则是写给 agent 看的项目偏好与约定。去年换壳，最大的成本是这一套全部重配；今年，事情在起变化——扩展标准正在跨外壳趋同。
 
-　　**MCP（模型上下文协议）** 是先行的那一个：本文列出的主流外壳几乎都支持，在下表里接近全员。**Agent Skills** 紧随其后：agentskills.io 这份名录收录的支持客户端已有四十多个，Codex、Copilot、VS Code、Cursor、Gemini CLI、Kiro、TRAE 都在列。**规则文件**也在打通：Codex、Copilot、opencode、crush、pi 都认 AGENTS.md；Claude Code 默认只认 CLAUDE.md，AGENTS.md 要导入或改设置才会加载。至于 **Hooks**，则还各玩各的。另外还有一条 ACP，管的是编辑器与编码 agent 之间的对话——编辑器以统一方式接入外部编码 agent，Zed 就靠它承载 Claude、Codex 等工具，Kiro 也兼容——上一节 IDE 阵营里它已经露过面了。
+　　**MCP（模型上下文协议）** 是先行的那一个：本文列出的主流外壳几乎都支持，在下表里接近全员。**Agent Skills** 紧随其后：agentskills.io 这份名录收录的支持客户端已有四十多个，Codex、Copilot、VS Code、Cursor、Gemini CLI、Kiro、TRAE 都在列。**规则文件**也在打通：Codex、Copilot、opencode、crush、pi 都认 AGENTS.md；新版 Claude Code 也可直接读取 AGENTS.md——项目路径已有 CLAUDE.md 或 CLAUDE.local.md 时，默认优先读取后者，要同时加载需导入或调整设置。至于 **Hooks**，则还各玩各的。另外还有一条 ACP，管的是编辑器与编码 agent 之间的对话——编辑器以统一方式接入外部编码 agent，Zed 就靠它承载 Claude、Codex 等工具，Kiro 也兼容——上一节 IDE 阵营里它已经露过面了。
 
 | 外壳 | MCP | Skills | Hooks | 规则文件 |
 | --- | --- | --- | --- | --- |
-| Claude Code | 有 | 有 | 有 | CLAUDE.md（AGENTS.md 需导入或改设置） |
+| Claude Code | 有 | 有 | 有 | CLAUDE.md／AGENTS.md（加载条件见正文） |
 | Codex CLI | 有 | 有 | 有 | AGENTS.md |
 | Qwen Code | 有 | 有（Auto-Skills） | 有 | QWEN.md（兼容 AGENTS.md） |
 | opencode | 有 | 有 | —（以插件代之） | AGENTS.md |
@@ -236,15 +236,15 @@ export const metadata = {
 
 　　顺手把文中反复出现的几只主流外壳，按六把尺子收进一张统一口径的表，省得你来回翻：
 
-| 外壳 | 模型绑定 | 扩展机制 | 权限与沙箱 | 计费打包 | 国内接入 |
-| --- | --- | --- | --- | --- | --- |
-| Claude Code | 绑 Claude 系；可接 Bedrock、Foundry、自建网关 | MCP、Skills、Hooks；CLAUDE.md（AGENTS.md 需导入） | 四种权限模式（新版交互场景默认 Auto）；可选 OS 沙箱，仅限 shell | 随 Claude 订阅 | 有官方 GLM、DeepSeek 接入指南 |
-| Codex CLI | 绑 GPT 系；配置可指向任意兼容服务商 | MCP、Skills、Hooks；AGENTS.md | 沙箱与审批分开配置；OS 级隔离 | ChatGPT 订阅或 API key | 可自配第三方端点 |
-| Qwen Code | 多协议；支持 Ollama、vLLM 本地模型 | MCP、Hooks、Agent Teams；QWEN.md | — | 托管方案、第三方或本地，按所选服务计费 | 国内支付顺畅 |
-| opencode | 任意 provider API key | MCP、插件、ACP、Skills；AGENTS.md | — | 开源免费，按所选模型计费 | 可配任意国内模型 |
-| Cursor | 自研 Composer；第三方可接入 | MCP、Skills、hooks.json；rules 与 AGENTS.md | — | 订阅带 Grok 用量池；第三方按 API 另计 | 未全面核实，以官网为准 |
-| GitHub Copilot | 聚合第三方（Claude、Codex 等） | MCP、Skills、Hooks（CLI、云端）；AGENTS.md 等 | — | AI Credits 计量 | — |
-| ZCode | 官方适配 GLM-5.3 | — | — | GLM Coding Plan | 国内友好 |
+| 外壳 | 主要形态 | 模型绑定 | 扩展机制 | 权限与沙箱 | 计费打包 | 国内接入 |
+| --- | --- | --- | --- | --- | --- | --- |
+| Claude Code | 终端、IDE 扩展、桌面、网页、移动 | 绑 Claude 系；可接 Bedrock、Foundry、自建网关 | MCP、Skills、Hooks；CLAUDE.md／AGENTS.md（加载条件见正文） | 四种权限模式（新版交互场景默认 Auto）；可选 OS 沙箱，仅限 shell | Claude 订阅、API 按量计费或云平台结算 | 有官方 GLM、DeepSeek 接入指南 |
+| Codex CLI | 终端、IDE 扩展、桌面、云端 | 绑 GPT 系；配置可指向任意兼容服务商 | MCP、Skills、Hooks；AGENTS.md | 沙箱与审批分开配置；OS 级隔离 | ChatGPT 订阅或 API key | 可自配第三方端点 |
+| Qwen Code | 终端、桌面、编辑器插件、网页、IM | 多协议；支持 Ollama、vLLM 本地模型 | MCP、Hooks、Agent Teams；QWEN.md | — | 托管方案、第三方或本地，按所选服务计费 | 国内支付顺畅 |
+| opencode | 终端 TUI、桌面、IDE 扩展 | 任意 provider API key | MCP、插件、ACP、Skills；AGENTS.md | — | 开源免费，按所选模型计费 | 可配任意国内模型 |
+| Cursor | IDE | 自研 Composer；第三方可接入 | MCP、Skills、hooks.json；rules 与 AGENTS.md | — | 订阅带 Grok 用量池；第三方按 API 另计 | 未全面核实，以官网为准 |
+| GitHub Copilot | VS Code、JetBrains、CLI、云端 | 支持多家模型，具体可选项随入口与套餐变化 | MCP、Skills、Hooks（CLI、云端）；AGENTS.md 等 | — | AI Credits 计量 | — |
+| ZCode | 桌面 | 官方适配 GLM-5.3 | — | — | GLM Coding Plan | 国内友好 |
 
 　　注：表中”—“指正文未展开的角度，不代表产品没有该能力；各家演进都很快，请以官方文档为准。
 
