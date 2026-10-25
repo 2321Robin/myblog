@@ -42,6 +42,12 @@ const SECURITY_HEADERS = [
 const nextConfig: NextConfig = {
   pageExtensions: ["ts", "tsx", "js", "jsx", "md", "mdx"],
   poweredByHeader: false,
+  // No page uses the optimizer (content images are plain <img> with build-time
+  // dimensions; the footer badge is a 14px PNG), so serve everything as-is and
+  // keep the /_next/image entry out of the runtime.
+  images: {
+    unoptimized: true,
+  },
   // 明确 Turbopack 根目录，避免父级 pnpm-lock 误判工作区
   turbopack: {
     root: __dirname,

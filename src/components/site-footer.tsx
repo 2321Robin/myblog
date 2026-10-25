@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, Rss } from "lucide-react";
 
@@ -19,7 +18,7 @@ export function SiteFooter() {
           <div className="record-links">
             <a href="https://beian.miit.gov.cn/" target="_blank" rel="noreferrer">赣ICP备2026002780号</a>
             <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=36098302260203" target="_blank" rel="noreferrer">
-              <Image src="/gongan_beian.png" alt="" width={14} height={14} className="record-icon" />赣公网安备36098302260203号
+              <img src="/gongan_beian.png" alt="" width={14} height={14} className="record-icon" loading="lazy" decoding="async" />赣公网安备36098302260203号
             </a>
           </div>
         </div>
