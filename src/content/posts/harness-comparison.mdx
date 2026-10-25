@@ -240,9 +240,9 @@ export const metadata = {
 | --- | --- | --- | --- | --- | --- | --- |
 | Claude Code | 终端、IDE 扩展、桌面、网页、移动 | 绑 Claude 系；可接 Bedrock、Foundry、自建网关 | MCP、Skills、Hooks；CLAUDE.md／AGENTS.md（加载条件见正文） | 四种权限模式（新版交互场景默认 Auto）；可选 OS 沙箱，仅限 shell | Claude 订阅、API 按量计费或云平台结算 | 有官方 GLM、DeepSeek 接入指南 |
 | Codex CLI | 终端、IDE 扩展、桌面、云端 | 绑 GPT 系；配置可指向任意兼容服务商 | MCP、Skills、Hooks；AGENTS.md | 沙箱与审批分开配置；OS 级隔离 | ChatGPT 订阅或 API key | 可自配第三方端点 |
-| Qwen Code | 终端、桌面、编辑器插件、网页、IM | 多协议；支持 Ollama、vLLM 本地模型 | MCP、Hooks、Agent Teams；QWEN.md | — | 托管方案、第三方或本地，按所选服务计费 | 国内支付顺畅 |
+| Qwen Code | 终端、桌面、编辑器插件、网页、IM | 多协议；支持 Ollama、vLLM 本地模型 | MCP、Skills（Auto-Skills）、Hooks、Agent Teams；QWEN.md（兼容 AGENTS.md） | — | 托管方案、第三方或本地，按所选服务计费 | 国内支付顺畅 |
 | opencode | 终端 TUI、桌面、IDE 扩展 | 任意 provider API key | MCP、插件、ACP、Skills；AGENTS.md | — | 开源免费，按所选模型计费 | 可配任意国内模型 |
-| Cursor | IDE | 自研 Composer；第三方可接入 | MCP、Skills、hooks.json；rules 与 AGENTS.md | — | 订阅带 Grok 用量池；第三方按 API 另计 | 未全面核实，以官网为准 |
+| Cursor | IDE、CLI、云端 | 自研 Composer；第三方可接入 | MCP、Skills、hooks.json；rules 与 AGENTS.md | — | 订阅带 Grok 用量池；第三方按 API 另计 | 未全面核实，以官网为准 |
 | GitHub Copilot | VS Code、JetBrains、CLI、云端 | 支持多家模型，具体可选项随入口与套餐变化 | MCP、Skills、Hooks（CLI、云端）；AGENTS.md 等 | — | AI Credits 计量 | — |
 | ZCode | 桌面 | 官方适配 GLM-5.3 | — | — | GLM Coding Plan | 国内友好 |
 
